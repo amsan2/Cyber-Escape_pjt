@@ -4,7 +4,7 @@ import Input from "@/components/common/Input"
 import ThemeCarousel from "@/components/common/ThemeCarousel"
 import Button from "@/components/common/Button"
 import Checkbox from "@mui/material/Checkbox"
-import * as S from "@/app/(isLogIn)/game/multi/create/createStyle"
+import * as S from "@/app/@modal/game/multi/create/createStyle"
 import { useState, useEffect } from "react"
 const Create = () => {
   const [theme, selectTheme] = useState<number>(0)
