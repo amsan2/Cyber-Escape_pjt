@@ -1,7 +1,7 @@
 "use client"
 import React, { useState, useEffect } from "react"
 import Container from "@/components/common/Container"
-import * as S from "../../../../app/(isLogIn)/game/multi/waiting/waitingStyle"
+import * as S from "../../../../app/@modal/game/multi/waiting/waitingStyle"
 import ChattingBox from "@/components/game/multi/waiting/ChattingBox"
 import Openvidu from "./Openvidu"
 
