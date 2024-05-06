@@ -8,6 +8,7 @@ import { useRouter } from "next/navigation"
 import CameraMoveToPosition, {
   CameraMoveToPositionRef,
 } from "./CameraMoveToPosition"
+import HeaderNav from "../common/HeaderNav"
 // import useUserStore from "@/stores/UserStore"
 
 interface HomeProps {
@@ -53,6 +54,7 @@ const Home = ({ showText = true }: HomeProps) => {
         <HomeRoom onLoaded={setIsModelLoaded} />
         <CameraMoveToPosition ref={pointerLockControlsRef} />
       </Canvas>
+      {!showText ? <HeaderNav /> : null}
       {isModelLoaded ? (
         <>
           {!isStartClicked && showText ? (
