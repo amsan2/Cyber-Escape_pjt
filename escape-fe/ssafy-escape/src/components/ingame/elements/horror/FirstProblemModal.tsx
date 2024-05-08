@@ -7,7 +7,7 @@ import extractSubstring from "@/hooks/extractSubstring"
 
 // 첫 번째 문제 모달
 // 문제 모달 중복 코드 많아서 추후 리팩토링 필요
-const FirstProblemModal = ({ onClose }: ProblemProps) => {
+const FirstProblemModal = ({ onClose, fanalty, setFanalty }: ProblemProps) => {
   const problem = "16+9 = 1, 8+6 = 2, 14+13 = 3, 4+11 = ?"
   const choices = ["1", "3", "5", "7"]
   // const { solved, setSolved } = useIngameSolvedStore()
@@ -18,6 +18,7 @@ const FirstProblemModal = ({ onClose }: ProblemProps) => {
     // 오답이면
     // alert("오답입니다")
     // + 패널티 추가(시간 깎거나 무서운 연출)
+    setFanalty(fanalty + 1)
   }
   return (
     <MainContainer>
@@ -66,6 +67,9 @@ const FirstProblemModal = ({ onClose }: ProblemProps) => {
           />
         </ChoiceBox>
       </SubContainer>
+      <GuideText>
+        ※ ALT 또는 ESC 버튼을 누르면 마우스 커서가 나타납니다.
+      </GuideText>
     </MainContainer>
   )
 }
@@ -80,6 +84,7 @@ const MainContainer = styled.div`
   left: 50%;
   transform: translate(-50%, -50%);
   padding: 20px;
+  z-index: 20;
 `
 
 const SubContainer = styled.div`
@@ -100,6 +105,12 @@ const ProblemText = styled.div`
   margin-bottom: 20px;
   font-size: 24px;
   word-break: keep-all;
+`
+const GuideText = styled.div`
+  position: fixed;
+  bottom: 130px;
+  left: 180px;
+  font-size: 15px;
 `
 
 const ChoiceBox = styled.div`

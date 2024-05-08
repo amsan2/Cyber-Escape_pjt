@@ -6,7 +6,7 @@ import extractSubstring from "@/hooks/extractSubstring"
 // import useIngameSolvedStore from "@/stores/IngameSolved"
 
 // 두 번째 문제 모달
-const SecondProblemModal = ({ onClose }: ProblemProps) => {
+const SecondProblemModal = ({ onClose, fanalty, setFanalty }: ProblemProps) => {
   const problem = "16+9 = 1, 8+6 = 2, 14+13 = 3, 4+11 = ?"
   const choices = ["1", "3", "5", "7"]
   // const { solved, setSolved } = useIngameSolvedStore()
@@ -17,6 +17,7 @@ const SecondProblemModal = ({ onClose }: ProblemProps) => {
     // 오답이면
     // alert("오답입니다")
     // + 패널티 추가(시간 깎거나 무서운 연출)
+    setFanalty(fanalty + 1)
   }
   return (
     <MainContainer>
@@ -74,6 +75,7 @@ const MainContainer = styled.div`
   left: 50%;
   transform: translate(-50%, -50%);
   padding: 20px;
+  z-index: 20;
 `
 
 const SubContainer = styled.div`
