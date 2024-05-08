@@ -1,0 +1,43 @@
+import React from "react"
+import { useGLTF } from "@react-three/drei"
+import { Mesh } from "three"
+
+interface KeyProps {
+  onClick: any
+  position: [number, number, number]
+  active: boolean
+  setInteractNum: any
+}
+
+const KeyModels = ({ onClick, position, active, setInteractNum }: KeyProps) => {
+  const { scene } = useGLTF("/glb/key.glb")
+
+  return (
+    <>
+      {active &&
+        scene.children.map((child, index) => {
+          if (child instanceof Mesh) {
+            return (
+              <mesh
+                key={index}
+                geometry={child.geometry}
+                material={child.material}
+                position={position}
+                scale={[0.2, 0.2, 0.2]}
+                onClick={onClick}
+                onPointerOver={() => {
+                  setInteractNum(2)
+                }}
+                onPointerOut={() => {
+                  setInteractNum(1)
+                }}
+              />
+            )
+          }
+          return null
+        })}
+    </>
+  )
+}
+
+export default KeyModels
