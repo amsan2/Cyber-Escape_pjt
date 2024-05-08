@@ -25,8 +25,8 @@ const FirstProblemModal = ({ onClose, fanalty, setFanalty }: ProblemProps) => {
       <Image
         src="/image/paper.png"
         alt="쪽지 이미지"
-        width={650}
-        height={650}
+        width={600}
+        height={550}
       />
       <IconBox onClick={onClose}>
         <CloseIcon sx={{ fontSize: 40 }} />
@@ -122,6 +122,7 @@ const ChoiceBox = styled.div`
 const IconBox = styled.div`
   position: absolute;
   cursor: pointer;
-  right: 115px;
-  top: 85px;
+  right: 110px;
+  top: 75px;
+  z-index: 10;
 `
