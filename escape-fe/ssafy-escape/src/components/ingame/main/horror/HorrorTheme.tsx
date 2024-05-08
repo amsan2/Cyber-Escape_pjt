@@ -64,10 +64,19 @@ const HorrorTheme = ({ isGameStart, setIsModelLoaded }: IngameMainProps) => {
     setIsFlowerClicked(true)
   }
 
+  // 숨겨진 문고리 찾아서 클릭 시 이벤트
   const handleKnobClick = () => {
     setIsKnobClicked(true)
+    setSubtitle("얼른, 얼른 밖으로 나가야 해.")
+    setTimeout(() => {
+      setSubtitle("제발 열려라, 제발...")
+      setTimeout(() => {
+        setSubtitle("")
+      }, 4000)
+    }, 4000)
   }
 
+  // 문고리 클릭 시 이벤트
   const handleFinal = () => {
     // 탈출 성공 로직
     console.log("탈출성공")
@@ -78,14 +87,15 @@ const HorrorTheme = ({ isGameStart, setIsModelLoaded }: IngameMainProps) => {
     if (solved === 0) {
       setShowFirstProblem(!showFirstProblem)
     }
-    setSolved(solved + 1)
   }
+
   // 두 번째 문제 모달
   const handleSecondProblem = () => {
     if (solved === 1) {
       setShowSecondProblem(!showSecondProblem)
     }
   }
+  
   // 세 번째 문제 모달
   const handleThirdProblem = () => {
     if (solved === 2) {
@@ -102,6 +112,7 @@ const HorrorTheme = ({ isGameStart, setIsModelLoaded }: IngameMainProps) => {
           onClose={handleFirstProblem}
           fanalty={fanalty}
           setFanalty={setFanalty}
+          setSubtitle={setSubtitle}
         />
       ) : null}
       {showSecondProblem ? (
@@ -109,6 +120,7 @@ const HorrorTheme = ({ isGameStart, setIsModelLoaded }: IngameMainProps) => {
           onClose={handleSecondProblem}
           fanalty={fanalty}
           setFanalty={setFanalty}
+          setSubtitle={setSubtitle}
         />
       ) : null}
       {showThirdProblem ? (
@@ -116,6 +128,7 @@ const HorrorTheme = ({ isGameStart, setIsModelLoaded }: IngameMainProps) => {
           onClose={handleThirdProblem}
           fanalty={fanalty}
           setFanalty={setFanalty}
+          setSubtitle={setSubtitle}
         />
       ) : null}
       <PlaySound soundNum={soundNum} fanalty={fanalty} />

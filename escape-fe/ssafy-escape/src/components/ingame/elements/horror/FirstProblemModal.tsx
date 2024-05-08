@@ -7,7 +7,12 @@ import extractSubstring from "@/hooks/extractSubstring"
 
 // 첫 번째 문제 모달
 // 문제 모달 중복 코드 많아서 추후 리팩토링 필요
-const FirstProblemModal = ({ onClose, fanalty, setFanalty }: ProblemProps) => {
+const FirstProblemModal = ({
+  onClose,
+  fanalty,
+  setFanalty,
+  setSubtitle,
+}: ProblemProps) => {
   const problem = "16+9 = 1, 8+6 = 2, 14+13 = 3, 4+11 = ?"
   const choices = ["1", "3", "5", "7"]
   // const { solved, setSolved } = useIngameSolvedStore()
@@ -15,6 +20,14 @@ const FirstProblemModal = ({ onClose, fanalty, setFanalty }: ProblemProps) => {
     // 정답이면
     // setSolved(solved + 1)
     // onClose()
+    setSubtitle("뭔가 단서가 될 만한 것을 찾아봐야겠어.")
+    setTimeout(() => {
+      setSubtitle("서랍장을 한번 뒤져볼까?")
+      setTimeout(() => {
+        setSubtitle("")
+      }, 10000)
+    }, 4000)
+
     // 오답이면
     // alert("오답입니다")
     // + 패널티 추가(시간 깎거나 무서운 연출)
@@ -106,11 +119,12 @@ const ProblemText = styled.div`
   font-size: 24px;
   word-break: keep-all;
 `
+
 const GuideText = styled.div`
   position: fixed;
-  bottom: 130px;
-  left: 180px;
-  font-size: 15px;
+  bottom: 115px;
+  left: 175px;
+  font-size: 13px;
 `
 
 const ChoiceBox = styled.div`

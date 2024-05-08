@@ -7,7 +7,12 @@ import { useEffect, useMemo, useState } from "react"
 // import useIngameSolvedStore from "@/stores/IngameSolved"
 
 // 세 번째 문제 모달
-const ThirdProblemModal = ({ onClose, fanalty, setFanalty }: ProblemProps) => {
+const ThirdProblemModal = ({
+  onClose,
+  fanalty,
+  setFanalty,
+  setSubtitle,
+}: ProblemProps) => {
   const problem = "16+9 = 1, 8+6 = 2, 14+13 = 3, 4+11 = ?"
   const choices = ["1", "3", "5", "7"]
   const [showExtraImage, setShowExtraImage] = useState(false)
@@ -42,6 +47,16 @@ const ThirdProblemModal = ({ onClose, fanalty, setFanalty }: ProblemProps) => {
     // 정답이면
     // setSolved(solved + 1)
     // onClose()
+    setSubtitle("...그러고 보니 처음부터 문고리가 없었던 것 같은데.")
+    setTimeout(() => {
+      setSubtitle("마지막 희망이야.")
+      setTimeout(() => {
+        setSubtitle("문고리...문고리를 찾아야 해.")
+        setTimeout(() => {
+          setSubtitle("")
+        }, 10000)
+      }, 10000)
+    }, 4000)
     // 오답이면
     // alert("오답입니다")
     // + 패널티 추가(시간 깎거나 무서운 연출)
