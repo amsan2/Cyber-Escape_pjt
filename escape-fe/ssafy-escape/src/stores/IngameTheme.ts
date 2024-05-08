@@ -9,7 +9,7 @@ interface ThemeState {
 const useIngameThemeStore = create<ThemeState>()(
   persist(
     (set): ThemeState => ({
-      selectedTheme: null,
+      selectedTheme: "4",
       setSelectedTheme: (selectedTheme) => set({ selectedTheme }),
     }),
     {
