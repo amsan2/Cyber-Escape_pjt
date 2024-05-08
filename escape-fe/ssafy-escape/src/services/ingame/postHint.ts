@@ -12,13 +12,13 @@ interface postQuizDataProps {
 interface postQuizResponseProps {
   status: number
   message: string
-  data: postQuizDataProps[]
+  data: postQuizDataProps
 }
 
 // 힌트 가져오기
 const postHint = async (
   data: postHintProps,
-): Promise<postQuizResponseProps> => {
+): Promise<postQuizDataProps> => {
   try {
     const response = await api.get<postQuizResponseProps>(
       API_PATH.INGAME.HINT,
@@ -29,7 +29,7 @@ const postHint = async (
     if (response.status === 400) {
       throw new Error(`오류: ${response.data}`)
     }
-    return response.data
+    return response.data.data
   } catch (error) {
     console.error(error)
     throw error
