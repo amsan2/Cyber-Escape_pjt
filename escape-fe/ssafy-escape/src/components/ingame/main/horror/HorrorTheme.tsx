@@ -24,6 +24,9 @@ import KnobObject from "../../elements/horror/KnobObject"
 import Start from "../../elements/horror/Start"
 import Subtitle from "../../elements/common/Subtitle"
 import PlaySound from "../../elements/horror/PlaySound"
+import { QueryClient } from "@tanstack/react-query"
+import useIngameThemeStore from "@/stores/IngameTheme"
+import getQuiz from "@/services/ingame/getQuiz"
 
 // const startPosition = { x: 8, y: 8, z: -2 }
 // const startTargetPosition = { x: 4, y: 3, z: -2 }
@@ -39,8 +42,19 @@ const HorrorTheme = ({ isGameStart, setIsModelLoaded }: IngameMainProps) => {
   const [showSecondProblem, setShowSecondProblem] = useState<boolean>(false)
   const [showThirdProblem, setShowThirdProblem] = useState<boolean>(false)
   const { solved } = useIngameSolvedStore()
+  const { selectedTheme } = useIngameThemeStore()
   const [subtitle, setSubtitle] = useState<string>("")
   const [soundNum, setSoundNum] = useState<number>(0)
+
+  const queryClient = new QueryClient()
+  useEffect(() => {
+    if (selectedTheme !== null) {
+      queryClient.prefetchQuery({
+        queryKey: ["quizList"],
+        queryFn: () => getQuiz(selectedTheme),
+      })
+    }
+  }, [])
 
   useEffect(() => {
     // 2분 경과 시
@@ -51,6 +65,7 @@ const HorrorTheme = ({ isGameStart, setIsModelLoaded }: IngameMainProps) => {
 
     // 5분 경과 시
     const fiveMintimer = setTimeout(() => {
+      setSoundNum(2)
       setFiveMinLater(true)
     }, 60000 * 5)
 
@@ -79,7 +94,7 @@ const HorrorTheme = ({ isGameStart, setIsModelLoaded }: IngameMainProps) => {
   // 문고리 클릭 시 이벤트
   const handleFinal = () => {
     // 탈출 성공 로직
-    console.log("탈출성공")
+    alert("탈출성공")
   }
 
   // 첫 번째 문제 모달
@@ -95,7 +110,7 @@ const HorrorTheme = ({ isGameStart, setIsModelLoaded }: IngameMainProps) => {
       setShowSecondProblem(!showSecondProblem)
     }
   }
-  
+
   // 세 번째 문제 모달
   const handleThirdProblem = () => {
     if (solved === 2) {
@@ -132,7 +147,7 @@ const HorrorTheme = ({ isGameStart, setIsModelLoaded }: IngameMainProps) => {
         />
       ) : null}
       <PlaySound soundNum={soundNum} fanalty={fanalty} />
-      <BasicScene>
+      <BasicScene interactNum={1}>
         <Lights fanalty={fanalty} solved={solved} />
         <Player position={[3, 50, 0]} speed={100} />
         <Floor

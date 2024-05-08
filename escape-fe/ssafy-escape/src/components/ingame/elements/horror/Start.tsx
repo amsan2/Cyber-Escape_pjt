@@ -84,9 +84,8 @@ const Start = ({ setSubtitle }: StartProps) => {
   }
 
   const dub4 = () => {
-    // // 비명소리 들어갈 곳
-    // const audio = new Audio("dubbing/space/start/start_5.mp3")
-    // audio.play()
+    const audio = new Audio("sound/man_scream.mp3")
+    audio.play()
     setTimeout(() => {
       setSubtitle("무슨 소리지?!")
       setTimeout(() => {

@@ -3,7 +3,10 @@ import { styled } from "styled-components"
 import CloseIcon from "@mui/icons-material/Close"
 import Button from "@/components/common/Button"
 import extractSubstring from "@/hooks/extractSubstring"
-// import useIngameSolvedStore from "@/stores/IngameSolved"
+import useIngameSolvedStore from "@/stores/IngameSolved"
+import { useQuery } from "@tanstack/react-query"
+import useIngameThemeStore from "@/stores/IngameTheme"
+import getQuiz from "@/services/ingame/getQuiz"
 
 // 첫 번째 문제 모달
 // 문제 모달 중복 코드 많아서 추후 리팩토링 필요
@@ -15,11 +18,19 @@ const FirstProblemModal = ({
 }: ProblemProps) => {
   const problem = "16+9 = 1, 8+6 = 2, 14+13 = 3, 4+11 = ?"
   const choices = ["1", "3", "5", "7"]
-  // const { solved, setSolved } = useIngameSolvedStore()
+  const { selectedTheme } = useIngameThemeStore()
+  
+  const { data: quizData } = useQuery({
+    queryKey: ["quizList"],
+    queryFn: () => getQuiz(selectedTheme),
+  })
+  
+  const { solved, setSolved } = useIngameSolvedStore()
   const handleAnswerCheck = (choice: string) => {
     // 정답이면
-    // setSolved(solved + 1)
-    // onClose()
+    if choice
+    setSolved(solved + 1)
+    onClose()
     setSubtitle("뭔가 단서가 될 만한 것을 찾아봐야겠어.")
     setTimeout(() => {
       setSubtitle("서랍장을 한번 뒤져볼까?")
