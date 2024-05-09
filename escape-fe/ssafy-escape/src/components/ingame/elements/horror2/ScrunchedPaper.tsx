@@ -3,7 +3,7 @@ import { useEffect, useMemo } from "react"
 
 // 두 번째 문제 오브젝트
 // 구겨서 뭉친 종이(랜덤 6곳, 시간 남으면 추가 예정)
-const ScrunchedPaper = ({ onClick, solved }: ScrunchedPaperProps) => {
+const ScrunchedPaper = ({ onClick, setInteractNum, solved }: FinalProps) => {
   const scrunchedPaper = useGLTF("/glb/horror2/scrunched_paper.glb", true)
   const scrunchedPaperPosition: [number, number, number][] = [
     [88, 10, -26],
@@ -32,7 +32,13 @@ const ScrunchedPaper = ({ onClick, solved }: ScrunchedPaperProps) => {
   }, [scrunchedPaper])
 
   return solved == 1 ? (
-    <primitive object={scrunchedPaper.scene} scale={0.3} onClick={onClick} />
+    <primitive
+      object={scrunchedPaper.scene}
+      scale={0.3}
+      onPointerOver={() => setInteractNum(2)}
+      onPointerOut={() => setInteractNum(1)}
+      onClick={() => onClick()}
+    />
   ) : null
 }
 

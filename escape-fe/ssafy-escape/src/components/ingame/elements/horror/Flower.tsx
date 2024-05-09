@@ -1,47 +1,22 @@
 import { useGLTF } from "@react-three/drei"
-// import { useThree } from "@react-three/fiber"
 import { useEffect } from "react"
-import { Mesh } from "three"
-// import * as THREE from "three"
 
-const Flower = ({ onClick }: ClickObjectProps) => {
+const Flower = ({ onClick, setInteractNum }: ClickObjectProps) => {
   const flower = useGLTF("/glb/horror/flower.glb", true)
-  // const { scene } = useThree()
 
-  useEffect(() => {
-    flower.scene.traverse((child) => {
-      if (child instanceof Mesh) {
-        child.castShadow = true
-        child.receiveShadow = true
-      }
-    })
-  }, [flower])
-
+  // 이부분 테스트 해보고 지울 예정
   useEffect(() => {
     if (flower.scene) {
       flower.scene.position.set(1.4582, 1, -5.3756)
-      //   flower.scene.rotation.set(
-      //     (50.352 * Math.PI) / 180,
-      //     (-30.85 * Math.PI) / 180,
-      //     (-35.131 * Math.PI) / 180,
-      //   )
     }
   }, [flower])
-
-  // useEffect(() => {
-  //   const light = new THREE.DirectionalLight(0xffffff, 1)
-  //   light.position.set(2, 3, -1)
-  //   scene.add(light)
-
-  //   return () => {
-  //     scene.remove(light)
-  //   }
-  // }, [scene])
 
   return (
     <primitive
       object={flower.scene}
       scale={35}
+      onPointerOver={() => setInteractNum(2)}
+      onPointerOut={() => setInteractNum(1)}
       onClick={onClick}
     />
   )
