@@ -4,7 +4,7 @@ import { Mesh } from "three"
 
 // 로딩 오래 걸리는 큰 모델들은 onLoaded 적용해서 나머지 요소들과 함께 출력되도록 처리
 const HorrorRoom2 = ({ onLoaded }: RoomProps) => {
-  const { scene } = useGLTF("/glb/horror2/horror_room2_final.glb", true)
+  const { scene } = useGLTF("/glb/horror2/horror_room2.glb", true)
 
   useEffect(() => {
     if (scene) {

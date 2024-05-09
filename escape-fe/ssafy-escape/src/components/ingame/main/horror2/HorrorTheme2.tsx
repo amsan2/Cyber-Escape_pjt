@@ -24,6 +24,8 @@ import KnobObject from "../../elements/horror/KnobObject"
 import Subtitle from "../../elements/common/Subtitle"
 import HorrorRoom2 from "../../elements/horror2/HorrorRoom2"
 import { Environment, Lightformer } from "@react-three/drei"
+import Paper from "../../elements/horror2/Paper"
+import Start from "../../elements/horror2/Start"
 // import PlaySound from "../../elements/horror/PlaySound"
 
 // const startPosition = { x: 8, y: 8, z: -2 }
@@ -32,7 +34,7 @@ import { Environment, Lightformer } from "@react-three/drei"
 
 const HorrorTheme2 = ({ isGameStart, setIsModelLoaded }: IngameMainProps) => {
   const [isFlowerClicked, setIsFlowerClicked] = useState<boolean>(false)
-  const [isKnobClicked, setIsKnobClicked] = useState<boolean>(false)
+  const [isEquipmentsClicked, setIsEquipmentsClicked] = useState<boolean>(false)
   const [twoMinLater, setTwoMinLater] = useState<boolean>(false)
   const [fiveMinLater, setFiveMinLater] = useState<boolean>(false)
   const [fanalty, setFanalty] = useState<number>(0)
@@ -60,24 +62,42 @@ const HorrorTheme2 = ({ isGameStart, setIsModelLoaded }: IngameMainProps) => {
     }
   }, [])
 
+  // 시간 경과에 따른 조명 연출
+  const getEnvironmentIntensity = (
+    twoMinLater: boolean,
+    fiveMinLater: boolean,
+  ): number => {
+    if (twoMinLater && !fiveMinLater) {
+      return 0.2
+    } else if (fiveMinLater) {
+      return 0.1
+    } else {
+      return 0.3
+    }
+  }
+  const environmentIntensity = getEnvironmentIntensity(
+    twoMinLater,
+    fiveMinLater,
+  )
+
   // 침대 위 꽃 클릭 시 이벤트
   const handleFlowerClick = () => {
     setIsFlowerClicked(true)
   }
 
-  // 숨겨진 문고리 찾아서 클릭 시 이벤트
-  const handleKnobClick = () => {
-    setIsKnobClicked(true)
-    setSubtitle("얼른, 얼른 밖으로 나가야 해.")
+  // 필요한 물품들을 다 챙겼을 시 이벤트
+  const handleEquipmentsClick = () => {
+    setIsEquipmentsClicked(true)
+    setSubtitle("이제 필요한 건 다 챙긴 것 같은데.")
     setTimeout(() => {
-      setSubtitle("제발 열려라, 제발...")
+      setSubtitle("슬슬 나가지 않으면 늦겠어.")
       setTimeout(() => {
         setSubtitle("")
       }, 4000)
     }, 4000)
   }
 
-  // 문고리 클릭 시 이벤트
+  // 마지막 문 클릭 시 이벤트
   const handleFinal = () => {
     // 탈출 성공 로직
     console.log("탈출성공")
@@ -106,7 +126,7 @@ const HorrorTheme2 = ({ isGameStart, setIsModelLoaded }: IngameMainProps) => {
 
   return (
     <>
-      {/* {isGameStart ? <Start setSubtitle={setSubtitle} /> : null} */}
+      {isGameStart ? <Start setSubtitle={setSubtitle} /> : null}
       <Subtitle text={subtitle} />
       {/* {showFirstProblem ? (
         <FirstProblemModal
@@ -142,11 +162,12 @@ const HorrorTheme2 = ({ isGameStart, setIsModelLoaded }: IngameMainProps) => {
         />
         <Environment
           files="/hdr/concrete_tunnel_02_1k.hdr"
-          environmentIntensity={0.3}
+          environmentIntensity={environmentIntensity}
           resolution={90}
         >
           <Lightformer intensity={0.5} scale={1} target={[0, 0, 0]} />
         </Environment>
+        <Paper twoMinLater={twoMinLater} />
         {/* <MeshObjects /> */}
         {/* <Lights fanalty={fanalty} solved={solved} />
         {!isFlowerClicked ? <Flower onClick={handleFlowerClick} /> : null}
