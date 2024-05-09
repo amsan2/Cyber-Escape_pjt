@@ -7,7 +7,7 @@ const SecondProblemObject = ({
   onClick,
   setInteractNum,
   solved,
-}: FinalProps) => {
+}: ClickObjectProps) => {
   const objectArr: [number, number, number][][] = [
     [
       [-45, 18, 48],
@@ -40,7 +40,7 @@ const SecondProblemObject = ({
     return { firstRandomIndex, secondRandomIndex }
   }, [])
 
-  return solved === 2 ? (
+  return solved === 1 ? (
     <>
       <Box
         position={objectArr[firstRandomIndex][secondRandomIndex]}

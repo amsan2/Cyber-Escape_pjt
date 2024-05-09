@@ -1,6 +1,6 @@
 import { useGLTF } from "@react-three/drei"
 
-const FinalDoor = ({ onClick, setInteractNum, solved }: FinalProps) => {
+const FinalDoor = ({ onClick, setInteractNum, solved }: ClickObjectProps) => {
   const finalDoor = useGLTF("/glb/horror2/final_door.glb", true)
   const handlePointerOver = () => {
     if (solved === 3) {

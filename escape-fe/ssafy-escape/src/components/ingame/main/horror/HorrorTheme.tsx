@@ -48,6 +48,7 @@ const HorrorTheme = ({ isGameStart, setIsModelLoaded }: IngameMainProps) => {
   const [subtitle, setSubtitle] = useState<string>("")
   const [soundNum, setSoundNum] = useState<number>(0)
   const setQuizData = useIngameQuizStore((state) => state.setQuizData)
+  const [interactNum, setInteractNum] = useState<number>(1)
 
   const { data: quizData } = useQuery({
     queryKey: ["quizList"],
@@ -71,6 +72,7 @@ const HorrorTheme = ({ isGameStart, setIsModelLoaded }: IngameMainProps) => {
       setQuizData(quizData)
     }
   }, [quizData, setQuizData])
+  console.log(quizData)
 
   useEffect(() => {
     // 2분 경과 시
@@ -93,6 +95,7 @@ const HorrorTheme = ({ isGameStart, setIsModelLoaded }: IngameMainProps) => {
   // 침대 위 꽃 클릭 시 이벤트
   const handleFlowerClick = () => {
     setIsFlowerClicked(true)
+    setInteractNum(1)
   }
 
   // 숨겨진 문고리 찾아서 클릭 시 이벤트
@@ -171,7 +174,7 @@ const HorrorTheme = ({ isGameStart, setIsModelLoaded }: IngameMainProps) => {
         />
       ) : null}
       <PlaySound soundNum={soundNum} penalty={penalty} />
-      <BasicScene interactNum={1}>
+      <BasicScene interactNum={interactNum}>
         <Lights penalty={penalty} solved={solved} />
         <Player position={[3, 50, 0]} speed={100} />
         <Floor
@@ -180,9 +183,15 @@ const HorrorTheme = ({ isGameStart, setIsModelLoaded }: IngameMainProps) => {
           position={[0, -0.5, 0]}
         />
         <MeshObjects />
-        {!isFlowerClicked ? <Flower onClick={handleFlowerClick} /> : null}
+        {!isFlowerClicked ? (
+          <Flower onClick={handleFlowerClick} setInteractNum={setInteractNum} />
+        ) : null}
         <BloodPool solved={solved} isFlowerClicked={isFlowerClicked} />
-        <Skull onClick={handleFirstProblem} />
+        <Skull
+          onClick={handleFirstProblem}
+          solved={solved}
+          setInteractNum={setInteractNum}
+        />
         <Wall />
         <Art twoMinLater={twoMinLater} />
         <Portrait twoMinLater={twoMinLater} fiveMinLater={fiveMinLater} />
@@ -192,17 +201,27 @@ const HorrorTheme = ({ isGameStart, setIsModelLoaded }: IngameMainProps) => {
           onClick={handleKnobClick}
           isFind={isKnobClicked}
           solved={solved}
+          setInteractNum={setInteractNum}
         />
         <KnobObject
           onClick={handleFinal}
           isFind={isKnobClicked}
           solved={solved}
+          setInteractNum={setInteractNum}
         />
 
         <Blood penalty={penalty} />
         <HorrorRoom onLoaded={setIsModelLoaded} />
-        <SecondProblemObject onClick={handleSecondProblem} />
-        <ThirdProblemObject onClick={handleThirdProblem} />
+        <SecondProblemObject
+          onClick={handleSecondProblem}
+          solved={solved}
+          setInteractNum={setInteractNum}
+        />
+        <ThirdProblemObject
+          onClick={handleThirdProblem}
+          solved={solved}
+          setInteractNum={setInteractNum}
+        />
       </BasicScene>
     </>
   )

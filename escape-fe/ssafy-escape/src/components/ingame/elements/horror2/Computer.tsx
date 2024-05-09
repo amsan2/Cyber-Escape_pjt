@@ -1,6 +1,6 @@
 import { useGLTF } from "@react-three/drei"
 
-const Computer = ({ onClick, setInteractNum, solved }: FinalProps) => {
+const Computer = ({ onClick, setInteractNum, solved }: ClickObjectProps) => {
   const computer = useGLTF("/glb/horror2/computer.glb", true)
   const handlePointerOver = () => {
     if (solved === 0) {

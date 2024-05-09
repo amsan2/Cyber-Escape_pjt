@@ -1,9 +1,5 @@
 import { useEffect, useState } from "react"
 
-interface StartProps {
-  setSubtitle: (subtitle: string) => void
-}
-
 const Start = ({ setSubtitle }: StartProps) => {
   const [sequence, setSequence] = useState(1)
 
