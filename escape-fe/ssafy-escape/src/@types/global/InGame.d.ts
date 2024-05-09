@@ -19,17 +19,7 @@ interface ProblemProps {
 
 interface ClickObjectProps {
   onClick: () => void
-}
-
-interface KnobProps {
-  onClick: () => void
-  isFind: boolean
-  solved: number
-}
-
-interface ScrunchedPaperProps {
-  onClick: () => void
-  solved: number
+  setInteractNum: (interactNum: number) => void
 }
 
 interface QuizDataProps {
@@ -39,9 +29,9 @@ interface QuizDataProps {
   difficulty: number
 }
 
-// 위위 위위위랑 합칠 수 있을 듯
 interface FinalProps {
   onClick: () => void
+  isFind?: boolean
   solved: number
   setInteractNum: (interactNum: number) => void
 }
