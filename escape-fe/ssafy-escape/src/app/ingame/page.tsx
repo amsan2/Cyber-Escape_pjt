@@ -1,7 +1,6 @@
 "use client"
 
 import { useEffect, useState } from "react"
-import CountdownTimer from "@/components/ingame/CountdownTimer"
 import Chat from "@/components/ingame/Chat"
 import ExitGame from "@/components/ingame/ExitGame"
 import ProgressBar from "@/components/ingame/ProgressBar"
@@ -38,17 +37,17 @@ const Page = () => {
   return (
     <S.Container>
       {/* 멀티인지 확인 후 수정*/}
-      {selectedTheme === "3" ? (
+      {selectedTheme === 3 ? (
         <SpaceTheme
           setIsModelLoaded={setIsModelLoaded}
           isGameStart={isGameStart}
         />
-      ) : selectedTheme === "1" ? (
+      ) : selectedTheme === 1 ? (
         <HorrorTheme
           setIsModelLoaded={setIsModelLoaded}
           isGameStart={isGameStart}
         />
-      ) : selectedTheme === "2" ? (
+      ) : selectedTheme === 2 ? (
         <SsafyTheme
           setIsModelLoaded={setIsModelLoaded}
           isGameStart={isGameStart}
@@ -88,11 +87,6 @@ const Page = () => {
       ) : (
         <S.LoadingText>로딩 중...</S.LoadingText>
       )}
-      {isGameStart ? (
-        <div>
-          <CountdownTimer />
-        </div>
-      ) : null}
     </S.Container>
   )
 }
