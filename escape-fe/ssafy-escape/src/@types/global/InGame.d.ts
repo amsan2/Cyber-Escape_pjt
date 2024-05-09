@@ -27,9 +27,21 @@ interface KnobProps {
   solved: number
 }
 
+interface ScrunchedPaperProps {
+  onClick: () => void
+  solved: number
+}
+
 interface QuizDataProps {
   quizUuid: string
   content: string
   url: string
   difficulty: number
+}
+
+// 위위 위위위랑 합칠 수 있을 듯
+interface FinalProps {
+  onClick: () => void
+  solved: number
+  setInteractNum: (interactNum: number) => void
 }

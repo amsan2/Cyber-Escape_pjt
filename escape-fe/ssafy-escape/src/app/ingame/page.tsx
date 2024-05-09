@@ -52,7 +52,7 @@ const Page = () => {
           setIsModelLoaded={setIsModelLoaded}
           isGameStart={isGameStart}
         />
-      ) : selectedTheme === "4" ? (
+      ) : selectedTheme === 4 ? (
         <HorrorTheme2
           setIsModelLoaded={setIsModelLoaded}
           isGameStart={isGameStart}
@@ -73,8 +73,8 @@ const Page = () => {
             isModelLoaded={isModelLoaded}
             onFinish={handleGameStart}
           /> */}
-          <Chat />
-          <ProgressBar id1={"오희주"} id2={"김병주"} value1={30} value2={40} />
+          {/* <Chat />
+          <ProgressBar id1={"오희주"} id2={"김병주"} value1={30} value2={40} /> */}
           <ExitGame>
             <Image
               src="/image/exitbutton.png"
