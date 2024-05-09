@@ -7,7 +7,7 @@ const ThirdProblemObject = ({
   onClick,
   setInteractNum,
   solved,
-}: FinalProps) => {
+}: ClickObjectProps) => {
   const objectArr: [number, number, number][][] = [
     [
       [53, 23, -58],

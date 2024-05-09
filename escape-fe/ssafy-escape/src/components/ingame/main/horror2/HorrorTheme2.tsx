@@ -210,7 +210,11 @@ const HorrorTheme2 = ({ isGameStart, setIsModelLoaded }: IngameMainProps) => {
           <Lightformer intensity={0.5} scale={1} target={[0, 0, 0]} />
         </Environment>
         <Paper twoMinLater={twoMinLater} />
-        <Computer onClick={handleFirstProblem} />
+        <Computer
+          onClick={handleFirstProblem}
+          solved={solved}
+          setInteractNum={setInteractNum}
+        />
         {/* <MeshObjects /> */}
         {/* <Lights fanalty={fanalty} solved={solved} />
         {!isFlowerClicked ? <Flower onClick={handleFlowerClick} /> : null}
@@ -238,8 +242,16 @@ const HorrorTheme2 = ({ isGameStart, setIsModelLoaded }: IngameMainProps) => {
           setInteractNum={setInteractNum}
           solved={solved}
         />
-        <ScrunchedPaper onClick={handleSecondProblem} solved={solved} />
-        <ThirdProblemObject onClick={handleThirdProblem} />
+        <ScrunchedPaper
+          onClick={handleSecondProblem}
+          solved={solved}
+          setInteractNum={setInteractNum}
+        />
+        <ThirdProblemObject
+          onClick={handleThirdProblem}
+          solved={solved}
+          setInteractNum={setInteractNum}
+        />
         <HorrorRoom2 onLoaded={setIsModelLoaded} />
       </BasicScene>
     </>

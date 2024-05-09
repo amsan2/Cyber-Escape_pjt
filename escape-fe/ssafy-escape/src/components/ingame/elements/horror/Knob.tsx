@@ -2,7 +2,7 @@ import { useGLTF } from "@react-three/drei"
 import { useEffect, useMemo } from "react"
 
 // 마지막 탈출 키인 문고리 오브젝트(랜덤, 시간 남으면 추가 예정)
-const Knob = ({ onClick, isFind, solved, setInteractNum }: FinalProps) => {
+const Knob = ({ onClick, isFind, solved, setInteractNum }: ClickObjectProps) => {
   const knob = useGLTF("/glb/horror/knob.glb", true)
   const knobPosition: [number, number, number][] = [
     [-60, -30, 20],
