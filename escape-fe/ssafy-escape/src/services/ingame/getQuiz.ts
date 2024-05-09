@@ -1,21 +1,15 @@
 import API_PATH from "@/constants/path"
 import api from "@/services/api"
 
-interface getQuizDataProps {
-  quizUuid: string
-  content: string
-  url: string
-  difficulty: number
-}
 
 interface getQuizResponseProps {
   status: number
   message: string
-  data: getQuizDataProps[]
+  data: QuizDataProps[]
 }
 
 // 퀴즈 가져오기
-const getQuiz = async ( themaId : number ): Promise<getQuizDataProps[]> => {
+const getQuiz = async (themaId: number): Promise<QuizDataProps[]> => {
   try {
     const response = await api.get<getQuizResponseProps>(
       `${API_PATH.INGAME.QUIZ}/${themaId}`,
