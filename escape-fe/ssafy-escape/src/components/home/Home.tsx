@@ -9,16 +9,12 @@ import CameraMoveToPosition, {
   CameraMoveToPositionRef,
 } from "./CameraMoveToPosition"
 import HeaderNav from "../common/HeaderNav"
-import { Titan_One } from "next/font/google"
 // import useUserStore from "@/stores/UserStore"
 
 interface HomeProps {
   showText?: boolean
 }
-const notoSansKr = Titan_One({
-  subsets: ["latin"],
-  weight: "400",
-})
+
 const Home = ({ showText = true }: HomeProps) => {
   // const { isLogin } = useUserStore()
   const isLogin = false
@@ -61,18 +57,21 @@ const Home = ({ showText = true }: HomeProps) => {
       </Canvas>
       {!showText ? <HeaderNav /> : null}
       {isModelLoaded ? (
-        <>
+        <div>
           {!isStartClicked && showText ? (
             <>
-              <S.TitleText>Cyber Escape</S.TitleText>
-              <S.StartButtton onClick={() => onMoveClick()}>
+              <S.TitleText className="paytone-one">Cyber Escape</S.TitleText>
+              <S.StartButtton
+                className="paytone-one"
+                onClick={() => onMoveClick()}
+              >
                 START
               </S.StartButtton>
             </>
           ) : isStartClicked && showText ? (
             <Login handleLoginback={onBackClick} />
           ) : null}
-        </>
+        </div>
       ) : (
         <div>로딩 중...</div>
       )}
