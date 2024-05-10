@@ -9,11 +9,16 @@ import CameraMoveToPosition, {
   CameraMoveToPositionRef,
 } from "./CameraMoveToPosition"
 import HeaderNav from "../common/HeaderNav"
+import { Titan_One } from "next/font/google"
 // import useUserStore from "@/stores/UserStore"
 
 interface HomeProps {
   showText?: boolean
 }
+const notoSansKr = Titan_One({
+  subsets: ["latin"],
+  weight: "400",
+})
 const Home = ({ showText = true }: HomeProps) => {
   // const { isLogin } = useUserStore()
   const isLogin = false
