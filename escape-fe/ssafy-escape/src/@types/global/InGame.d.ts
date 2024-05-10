@@ -12,9 +12,10 @@ interface RoomProps {
 interface ProblemProps {
   onClose: () => void
   penalty: number
-  timePenalty : () => void
+  timePenalty: () => void
   setPenalty: (penalty: number) => void
   setSubtitle: (subtitle: string) => void
+  setShowSpider?: (showSpider: boolean) => void
 }
 
 interface QuizDataProps {
@@ -33,4 +34,12 @@ interface ClickObjectProps {
 
 interface StartProps {
   setSubtitle: (subtitle: string) => void
+}
+
+interface PlaySoundProps {
+  penalty: number
+}
+
+interface SolvedObjectProps {
+  solved: number
 }
