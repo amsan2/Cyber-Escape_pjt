@@ -29,10 +29,9 @@ import Glasses from "../../elements/horror2/Glasses"
 import ScissorDoll from "../../elements/horror2/ScissorDoll"
 import Spider from "../../elements/horror2/Spider"
 import CreepyDoll from "../../elements/horror2/CreepyDoll"
-import PlaySound from "../../elements/horror2/PlaySound"
 import VoodooDoll from "../../elements/horror2/VoodooDoll"
 import BloodText from "../../elements/horror2/BloodText"
-import BaseBox from "../../elements/common/BaseBox"
+import PlaySound from "../../PlaySound"
 
 // const startPosition = { x: 8, y: 8, z: -2 }
 // const startTargetPosition = { x: 4, y: 3, z: -2 }
@@ -228,7 +227,7 @@ const HorrorTheme2 = ({ isGameStart, setIsModelLoaded }: IngameMainProps) => {
       ) : null}
       {showBloodText ? <BloodText role="scientist" penalty={penalty} /> : null}
       {showBlackOut ? <BlackBackground></BlackBackground> : null}
-      <PlaySound penalty={penalty} />
+      <PlaySound penalty={penalty} role="scientist"/>
       <BasicScene interactNum={interactNum}>
         <Player position={[3, 40, 0]} speed={100} />
         <Floor
