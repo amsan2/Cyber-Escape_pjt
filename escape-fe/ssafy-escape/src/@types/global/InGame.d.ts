@@ -38,6 +38,7 @@ interface StartProps {
 
 interface PlaySoundProps {
   penalty: number
+  role: "experiment" | "scientist"
 }
 
 interface SolvedObjectProps {

@@ -3,53 +3,60 @@ import BaseBox from "../common/BaseBox"
 const MeshObjects = () => {
   const boxes = [
     {
-      position: [-40, 40, 5],
+      position: [-70, 40, 5],
       rotation: [0, 0, 0],
-      args: [5, 60, 70],
+      args: [50, 180, 70],
     },
     {
-      position: [-30, 40, 37],
+      position: [-25, 40, 50],
       rotation: [0, 33, 0],
-      args: [5, 60, 50],
+      args: [30, 180, 42],
     },
     {
-      position: [-5, 40, 50],
+      position: [40, 40, 70],
       rotation: [0, 0, 0],
-      args: [5, 60, 30],
+      args: [120, 180, 30],
+    },
+    {
+      position: [90, 40, 0],
+      rotation: [0, 0, 0],
+      args: [30, 180, 120],
+    },
+    {
+      position: [60, 40, -75],
+      rotation: [0, 33, 0],
+      args: [60, 180, 70],
+    },
+    {
+      position: [-20, 40, -95],
+      rotation: [0, 33, 0],
+      args: [80, 180, 180],
+    },
+    {
+      position: [-100, 40, -30],
+      rotation: [0, 0, 0],
+      args: [50, 180, 50],
+    },
+    {
+      position: [45, 40, 45],
+      rotation: [0, 0, 0],
+      args: [50, 180, 20],
     },
   ]
 
   return (
     <>
-      {/* {boxes.map((box, index) => (
+      {boxes.map((box, index) => (
         <BaseBox
           key={index}
           position={box.position}
           rotation={box.rotation}
           args={box.args}
           color="red"
-          opacity={1}
+          opacity={0}
           renderOrder={1}
         />
-      ))} */}
-      <BaseBox
-        position={[-40, 40, 5]}
-        rotation={[0, 0, 0]}
-        args={[50, 150, 70]}
-        color="red"
-      />
-      <BaseBox
-        position={[-30, 40, 37]}
-        rotation={[0, 33, 0]}
-        args={[50, 150, 50]}
-        color="red"
-      />
-      <BaseBox
-        position={[-5, 40, 50]}
-        rotation={[0, 0, 0]}
-        args={[50, 150, 30]}
-        color="red"
-      />
+      ))}
     </>
   )
 }

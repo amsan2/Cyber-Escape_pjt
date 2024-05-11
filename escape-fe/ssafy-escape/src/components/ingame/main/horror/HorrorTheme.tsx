@@ -23,7 +23,7 @@ import Knob from "../../elements/horror/Knob"
 import KnobObject from "../../elements/horror/KnobObject"
 import Start from "../../elements/horror/Start"
 import Subtitle from "../../elements/common/Subtitle"
-import PlaySound from "../../elements/horror/PlaySound"
+import PlaySound from "../../PlaySound"
 import { useQuery } from "@tanstack/react-query"
 import useIngameThemeStore from "@/stores/IngameTheme"
 import getQuiz from "@/services/ingame/getQuiz"
@@ -186,7 +186,7 @@ const HorrorTheme = ({ isGameStart, setIsModelLoaded }: IngameMainProps) => {
           timePenalty={timePenalty}
         />
       ) : null}
-      <PlaySound penalty={penalty} />
+      <PlaySound penalty={penalty} role="experiment" />
       <BasicScene interactNum={interactNum}>
         <Lights penalty={penalty} solved={solved} />
         <Player position={[3, 50, 0]} speed={100} />
