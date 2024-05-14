@@ -52,17 +52,11 @@ const FirstProblemModal = ({
   }
   return (
     <MainContainer>
-      <Image
-        src={process.env.NEXT_PUBLIC_IMAGE_URL + "/image/paper.png"}
-        alt="쪽지 이미지"
-        width={600}
-        height={550}
-      />
-      <IconBox onClick={onClose}>
-        <CloseIcon sx={{ fontSize: 40 }} />
-      </IconBox>
       <SubContainer>
-        <img src={quizData[0].url} alt="첫번째 문제" />
+        <img src={quizData[0].url} width={600} height={550} alt="첫번째 문제" />
+        <IconBox onClick={onClose}>
+          <CloseIcon sx={{ fontSize: 40 }} />
+        </IconBox>
 
         <ChoiceBox>
           <Button
@@ -97,9 +91,9 @@ const FirstProblemModal = ({
           />
         </ChoiceBox>
       </SubContainer>
-      <GuideText>
+      {/* <GuideText>
         ※ ALT 또는 ESC 버튼을 누르면 마우스 커서가 나타납니다.
-      </GuideText>
+      </GuideText> */}
       <HintIconBox onClick={handleOpenModal}>
         <Image
           src={process.env.NEXT_PUBLIC_IMAGE_URL + "/image/hint.png"}

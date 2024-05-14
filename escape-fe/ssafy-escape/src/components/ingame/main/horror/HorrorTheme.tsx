@@ -58,7 +58,7 @@ const HorrorTheme = ({ isGameStart, setIsModelLoaded }: IngameMainProps) => {
   const [isTimeOut, setIsTimeOut] = useState<boolean>(false)
 
   const { data: quizData } = useQuery({
-    queryKey: ["quizList"],
+    queryKey: ["quizList", 2],
     queryFn: () => getQuiz(2),
   })
   const timerRef = useRef<CountdownTimerHandle | null>(null)
@@ -69,7 +69,7 @@ const HorrorTheme = ({ isGameStart, setIsModelLoaded }: IngameMainProps) => {
       timerRef.current.applyPenalty()
     }
   }
-  
+
   // 시간 끝났을 시 이벤트 함수
   const handleTimeOut = () => {
     setIsTimeOut(true)
@@ -99,7 +99,7 @@ const HorrorTheme = ({ isGameStart, setIsModelLoaded }: IngameMainProps) => {
   useEffect(() => {
     // 2분 경과 시
     const twoMintimer = setTimeout(() => {
-      setPenalty(penalty + 1)
+      // setPenalty(penalty + 1)
       setTwoMinLater(true)
     }, 60000 * 2)
 
