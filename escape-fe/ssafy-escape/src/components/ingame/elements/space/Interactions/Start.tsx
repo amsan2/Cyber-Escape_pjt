@@ -1,4 +1,5 @@
-import React, { useEffect, useState } from "react"
+import useIngameThemeStore from "@/stores/IngameTheme"
+import React, { useEffect, useRef, useState } from "react"
 import styled from "styled-components"
 
 interface ContainerProps {
@@ -31,6 +32,20 @@ const Start = ({ onAir, setOnAir, setSubtitle }: any) => {
   const [sequence, setSequence] = useState(1)
   const [containerOpacity, setContainerOpacity] = useState(1)
 
+  // const audioRef = useRef<HTMLAudioElement | null>(null)
+
+  const onMusicStart = () => {
+    const audio = new Audio(
+      process.env.NEXT_PUBLIC_IMAGE_URL + `/music/SpeckInTime.mp3`,
+    )
+    audio.play()
+    audio.loop = true
+    // audioRef.current = audio
+    // if (audioRef.current) {
+    //   audioRef.current.play()
+    // }
+  }
+
   useEffect(() => {
     if (sequence === 2) {
       dub2()
@@ -45,6 +60,7 @@ const Start = ({ onAir, setOnAir, setSubtitle }: any) => {
 
   const handleClick = () => {
     if (sequence === 1 && !onAir) {
+      onMusicStart()
       setOnAir(true)
       dub1()
       setShowInstruction(false)
@@ -119,7 +135,7 @@ const Start = ({ onAir, setOnAir, setSubtitle }: any) => {
       setSubtitle(null)
     }, 9000)
     setOnAir(false)
-    setIsNull(true)
+    // setIsNull(true)
   }
 
   return !isNull ? (
