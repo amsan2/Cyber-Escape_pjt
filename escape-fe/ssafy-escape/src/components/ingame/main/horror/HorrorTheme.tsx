@@ -133,16 +133,18 @@ const HorrorTheme = ({ isGameStart, setIsModelLoaded }: IngameMainProps) => {
     }, 4000)
   }
 
-  // 문고리 클릭 시 이벤트
+  // 문고리 클릭 시 이벤트(싱글이면 시간 갱신, 멀티면 승리 로직만)
   const handleFinal = () => {
-    if (timerRef.current) {
-      const currentTime = timerRef.current.getTime()
-      const clearTime = RequestFormatTime(
-        currentTime.minutes,
-        currentTime.seconds,
-      )
-      setClearTime(clearTime)
-      postUpdateRank(clearTime, userUuid as string, 1)
+    if (selectedThemeType === "single") {
+      if (timerRef.current) {
+        const currentTime = timerRef.current.getTime()
+        const clearTime = RequestFormatTime(
+          currentTime.minutes,
+          currentTime.seconds,
+        )
+        setClearTime(clearTime)
+        postUpdateRank(clearTime, userUuid as string, 1)
+      }
     }
     setResult("victory")
     setIsGameFinished(true)
