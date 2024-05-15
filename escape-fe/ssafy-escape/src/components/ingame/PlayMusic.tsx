@@ -13,7 +13,7 @@ const PlayMusic = () => {
         )
         audio.play()
         audio.loop = true
-      } else if (selectedTheme === 1) {
+      } else if (selectedTheme === 1 || selectedTheme === 2) {
         const audio = new Audio(
           process.env.NEXT_PUBLIC_IMAGE_URL + "/music/HorrorBgm.mp3",
         )
