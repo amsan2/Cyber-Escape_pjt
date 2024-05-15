@@ -6,9 +6,10 @@ const PlayMusic = () => {
   const [musicStarted, setMusicStarted] = useState(false)
   const { selectedTheme } = useIngameThemeStore()
   useEffect(() => {
+    let audio: any
     const startMusic = () => {
       if (selectedTheme === 7) {
-        const audio = new Audio(
+        audio = new Audio(
           process.env.NEXT_PUBLIC_IMAGE_URL + "/music/SpeckInTime.mp3",
         )
         audio.play()
@@ -20,7 +21,7 @@ const PlayMusic = () => {
         audio.play()
         audio.loop = true
       } else if (selectedTheme === 3) {
-        const audio = new Audio(
+        audio = new Audio(
           process.env.NEXT_PUBLIC_IMAGE_URL + "/music/HorrorBgm2.mp3",
         )
         audio.play()
@@ -40,6 +41,10 @@ const PlayMusic = () => {
 
     return () => {
       document.removeEventListener("click", handleClick)
+      if (audio) {
+        audio.pause()
+        audio = null
+      }
     }
   }, [musicStarted])
 
