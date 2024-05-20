@@ -100,7 +100,7 @@
 
 ## 🌐 System Architecture
 
-![아키텍처5-removebg-preview](/uploads/4392516a24d986e94decb026ac8f8e85/아키텍처5-removebg-preview.png)
+![아키텍처5-removebg-preview](https://github.com/amsan2/Cyber-Escape_pjt/assets/88939170/3828cb9a-3e42-4bbc-86a1-76d05af5c8ae)
 
 <br>
 
@@ -108,7 +108,8 @@
 
 ## 💾 ERD
 
-![erd](/uploads/9beb06a336a9f53906ee193db6c7039b/erd.PNG)
+![erd](https://github.com/amsan2/Cyber-Escape_pjt/assets/88939170/0fea0c03-238a-4e0e-a0cb-c5afbde8e6fb)
+
 
 <br>
 
@@ -124,42 +125,85 @@
 
 ### Site Layout
 
+- #### 첫 화면 / 로그인 / 회원가입 페이지
+  
+![로그인](https://github.com/amsan2/Cyber-Escape_pjt/assets/88939170/bbd5d36f-ab49-4818-9b39-8d11cf1247c0)
+
+- #### 닉네임 랜덤생성 및 변경 / 프로필 이미지 변경 / 내 랭킹 보기
+
+  ![마이홈](https://github.com/amsan2/Cyber-Escape_pjt/assets/88939170/f9062591-e66f-4c2d-8fd9-05f3be139a08)
+
+- #### 친구 기능
+
+![친구](https://github.com/amsan2/Cyber-Escape_pjt/assets/88939170/03e07305-6d99-4cc2-a9b6-b11b8560ad35)
+![친구2](https://github.com/amsan2/Cyber-Escape_pjt/assets/88939170/67021577-e522-409c-ad8c-62a9d10328b4)
+
+
+
 - #### 메인 페이지
 
-  ![메인](/uploads/5145c6b473d93eb011807604ba753a17/메인.PNG)
+![1](https://github.com/amsan2/Cyber-Escape_pjt/assets/88939170/3b0a14df-72f3-4a66-8d3f-57d1b533b888)
+
 
 - #### 테마 선택 페이지
 
-  ![테마선택](/uploads/2adef02733af322f3237c0be4e02b21b/테마선택.PNG)
+![테마선택](https://github.com/amsan2/Cyber-Escape_pjt/assets/88939170/22a5d981-a6e0-4a9c-a7bd-74270687001d)
+
 
 - #### 멀티 모드 시 게임 참여 선택지
 
-  ![멀티_모드](/uploads/891bf2b51ed97b2b0d061600c119a0a6/멀티_모드.PNG)
+![멀티](https://github.com/amsan2/Cyber-Escape_pjt/assets/88939170/fc0cd465-695b-4f61-89a9-ad528ffbc0a3)
+
 
 - #### 게임방 생성
 
-  ![방_생성](/uploads/dd7adce2ed9a7530e17524ff5ffe92d5/방_생성.PNG)
+![게임방](https://github.com/amsan2/Cyber-Escape_pjt/assets/88939170/7bf1a58b-922d-4a73-838a-2fba1e751406)
+
 
 - #### 게임방 리스트
 
-  ![방리스트](/uploads/6221c59962161c16f0d17a7ac378f773/방리스트.PNG)
+![게임방리스트](https://github.com/amsan2/Cyber-Escape_pjt/assets/88939170/75971a55-c97e-4fa7-baba-cbd7fd0f9a58)
+
 
 - #### 게임 대기방 페이지
 
-  ![게임대기방](/uploads/62ec194fee17351cc1dbce5266d378e6/게임대기방.PNG)
+![multi_ready](https://github.com/amsan2/Cyber-Escape_pjt/assets/88939170/305a50b5-fb7a-4ee1-9ee2-13475ba3acb1)
+
+- #### 게임 대기방 친구 초대
+  
+  ![초대](https://github.com/amsan2/Cyber-Escape_pjt/assets/88939170/921558de-4bfe-4a08-be7b-f4b365fb3ccf)
+
 
 - #### 랭킹 페이지
 
-  ![랭킹_페이지](/uploads/22f9cd8fbee3966fae622667d76f1452/랭킹_페이지.PNG)
+![랭킹](https://github.com/amsan2/Cyber-Escape_pjt/assets/88939170/bb2fe088-f142-40e2-8c15-5a826b7dd6fd)
+
 
 - #### 게임 방법 설명 페이지
 
-  ![게임설명](/uploads/5e6c7510dce3255a68d3fb95bca89970/게임설명.PNG)
+![설명](https://github.com/amsan2/Cyber-Escape_pjt/assets/88939170/1c031fe2-0ab3-4727-a6e9-5bc41882220a)
 
-- #### 로그인 / 회원가입 페이지
 
-  ![로그인](/uploads/6b6901ba628eda6e1dc33513500f10de/로그인.PNG)
-  ![회원가입](/uploads/8bc198a242e9acb35be95875a9a7cf24/회원가입.PNG)
+- #### 인게임(공포테마)
+
+![인겜9](https://github.com/amsan2/Cyber-Escape_pjt/assets/88939170/10d10717-dd5e-44b6-a48c-c64503de60a0)
+![인겜3](https://github.com/amsan2/Cyber-Escape_pjt/assets/88939170/29d0fd0c-5d37-4e4d-9936-6dd54e848858)
+
+- #### 인게임(싸피테마)
+
+![싸피1](https://github.com/amsan2/Cyber-Escape_pjt/assets/88939170/0b94d58b-015b-409f-a861-47b20236b959)
+![싸피2](https://github.com/amsan2/Cyber-Escape_pjt/assets/88939170/1e5ec963-267f-49b6-bdec-8a970b981c0e)
+
+- #### 인게임(우주테마)
+
+![우주3](https://github.com/amsan2/Cyber-Escape_pjt/assets/88939170/664baa6d-62de-41a2-b698-68b4fca02172)
+![우주4](https://github.com/amsan2/Cyber-Escape_pjt/assets/88939170/844ac11f-1cf5-4212-be19-cb976377a58b)
+
+
+- #### 게임 결과
+
+![성공](https://github.com/amsan2/Cyber-Escape_pjt/assets/88939170/73600328-ca46-4db3-8249-2cb047c000e9)
+
 
 <br>
 
