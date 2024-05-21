@@ -5,7 +5,7 @@ import Container from "@/components/common/Container"
 import ThemeCarousel from "@/components/common/ThemeCarousel"
 import Button from "@/components/common/Button"
 import Swal from "sweetalert2"
-import useIngameThemeStore from "@/stores/IngameTheme"
+import useIngameThemeStore from "@/stores/IngameThemeStore"
 
 const Theme = () => {
   const router = useRouter()

@@ -7,7 +7,7 @@ import InviteModal from "@/components/game/multi/gameroom/InviteModal"
 import HeaderNav from "@/components/common/HeaderNav"
 import Button from "@/components/common/Button"
 import useUserStore from "@/stores/UserStore"
-import useIngameThemeStore from "@/stores/IngameTheme"
+import useIngameThemeStore from "@/stores/IngameThemeStore"
 import HomeRoom from "@/components/home/HomeRoom"
 import { Canvas } from "@react-three/fiber"
 import CameraMoveToPosition, {

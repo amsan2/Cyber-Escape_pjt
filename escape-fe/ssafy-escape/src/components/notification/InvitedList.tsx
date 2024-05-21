@@ -9,7 +9,7 @@ import Swal from "sweetalert2"
 import postReadNotification from "@/services/notification/postReadNotification"
 import postAcceptance from "@/services/game/room/postAcceptance"
 import { useRouter } from "next/navigation"
-import useIngameThemeStore from "@/stores/IngameTheme"
+import useIngameThemeStore from "@/stores/IngameThemeStore"
 import useUserStore from "@/stores/UserStore"
 import { useEffect } from "react"
 // 게임 초대 요청 리스트
@@ -18,7 +18,7 @@ const InvitedList = () => {
     queryKey: ["notificationList"],
     queryFn: () => getNotificationList(),
   })
-  
+
   useEffect(() => {
     refetch()
   }, [])

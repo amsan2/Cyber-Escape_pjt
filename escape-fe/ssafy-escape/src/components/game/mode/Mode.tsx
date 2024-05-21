@@ -4,7 +4,7 @@ import Container from "@/components/common/Container"
 import { useRouter } from "next/navigation"
 import * as S from "@/app/@modal/main/mode/modeStyle"
 import Image from "next/image"
-import useIngameThemeStore from "@/stores/IngameTheme"
+import useIngameThemeStore from "@/stores/IngameThemeStore"
 const Mode = () => {
   const router = useRouter()
   const { setSelectedThemeType } = useIngameThemeStore()

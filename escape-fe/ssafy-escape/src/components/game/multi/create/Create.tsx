@@ -8,7 +8,7 @@ import Button from "@/components/common/Button"
 import Checkbox from "@mui/material/Checkbox"
 import * as S from "@/app/@modal/main/multi/create/createStyle"
 import { useState, useEffect } from "react"
-import useIngameThemeStore from "@/stores/IngameTheme"
+import useIngameThemeStore from "@/stores/IngameThemeStore"
 import useUserStore from "@/stores/UserStore"
 import postCreateRoom from "@/services/game/room/postCreateRoom"
 interface postCreateRoomRequestProps {

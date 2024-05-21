@@ -1,8 +1,7 @@
 import { create } from "zustand"
 import { persist } from "zustand/middleware"
-import postLogout from "../services/user/postLogout"
 import postLogin from "../services/user/postLogin"
-import getNotificationSubscribe from "../services/notification/getNotificationSubscribe"
+import postLogout from "../services/user/postLogout"
 
 interface UserState {
   isLogin: boolean
@@ -11,31 +10,40 @@ interface UserState {
   nickname: string | null
   profileUrl: string | undefined
   accessToken: string | null
-  setIsHost: (value: boolean) => void
-  setNickname: (name: string) => void
+}
+
+interface UserAction {
+  setIsHost: (isHost: boolean) => void
+  setNickname: (nickname: string) => void
   setProfileUrl: (profileUrl: string) => void
-  setAccessToken: (token: string | null) => void
-  login: (loginId: string, password: string) => void
+  setAccessToken: (accessToken: string | null) => void
+  login: (loginId: string, password: string) => Promise<void>
   logout: () => Promise<void>
 }
-const useUserStore = create<UserState>()(
-  persist(
-    (set): UserState => ({
-      isLogin: false,
-      isHost: false,
-      setIsHost: (value) => set({ isHost: value }),
 
-      userUuid: null,
-      nickname: null,
-      setNickname: (name) => set({ nickname: name }),
+const initialState: UserState = {
+  isLogin: false,
+  isHost: false,
+  userUuid: null,
+  nickname: null,
+  profileUrl: undefined,
+  accessToken: null,
+}
+
+const useUserStore = create<UserAction & UserState>()(
+  persist(
+    (set) => ({
+      ...initialState,
+      setIsHost: (isHost) => set({ isHost }),
+      setNickname: (nickname) => set({ nickname }),
       setProfileUrl: (profileUrl) => set({ profileUrl }),
-      profileUrl: undefined,
-      accessToken: null,
-      setAccessToken: (token) => set({ accessToken: token }),
+      setAccessToken: (accessToken) => set({ accessToken }),
+
       login: async (loginId: string, password: string) => {
         try {
           const response = await postLogin(loginId, password)
-          //로그인 성공
+
+          // 로그인 성공 시 accessToken을 반환
           if (response.accessToken) {
             set({
               isLogin: true,
@@ -44,10 +52,6 @@ const useUserStore = create<UserState>()(
               profileUrl: response.profileUrl,
               accessToken: response.accessToken,
             })
-            
-            const notifyResponse = getNotificationSubscribe();
-            console.log("NOTIFY : ");
-            console.log(notifyResponse)
           } else {
             throw new Error("로그인 실패")
           }
@@ -60,14 +64,7 @@ const useUserStore = create<UserState>()(
       logout: async () => {
         try {
           await postLogout()
-          set({
-            isLogin: false,
-            isHost: false,
-            userUuid: null,
-            nickname: null,
-            profileUrl: undefined,
-            accessToken: null,
-          })
+          set(initialState)
         } catch (error) {
           console.error(error)
           throw error

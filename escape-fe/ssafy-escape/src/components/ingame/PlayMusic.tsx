@@ -1,4 +1,4 @@
-import useIngameThemeStore from "@/stores/IngameTheme"
+import useIngameThemeStore from "@/stores/IngameThemeStore"
 import { useEffect, useState } from "react"
 
 // 유저의 화면 클릭 이후 음악이 재생됩니다.

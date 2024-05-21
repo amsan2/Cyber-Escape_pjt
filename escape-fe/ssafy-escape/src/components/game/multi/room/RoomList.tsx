@@ -4,7 +4,7 @@ import { useRouter } from "next/navigation"
 import * as S from "@/app/@modal/main/multi/room/roomStyle"
 import Image from "next/image"
 import RoomPasswordModal from "./RoomPasswordModal"
-import useIngameThemeStore from "@/stores/IngameTheme"
+import useIngameThemeStore from "@/stores/IngameThemeStore"
 import useUserStore from "@/stores/UserStore"
 import patchJoin from "@/services/game/room/patchJoin"
 

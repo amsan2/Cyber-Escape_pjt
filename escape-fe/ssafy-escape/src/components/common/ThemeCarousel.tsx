@@ -3,7 +3,7 @@ import React, { useState, useEffect } from "react"
 import { Navigation, Pagination } from "swiper/modules"
 import { Swiper, SwiperSlide } from "swiper/react"
 import ThemeCard from "./ThemeCard"
-import useIngameThemeStore from "@/stores/IngameTheme"
+import useIngameThemeStore from "@/stores/IngameThemeStore"
 
 import styled from "styled-components"
 import "swiper/css"

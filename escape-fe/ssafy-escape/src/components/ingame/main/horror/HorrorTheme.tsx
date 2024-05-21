@@ -23,7 +23,7 @@ import Start from "../../elements/horror/Start"
 import Subtitle from "../../elements/common/Subtitle"
 import PlaySound from "../../PlaySound"
 import { QueryClient } from "@tanstack/react-query"
-import useIngameThemeStore from "@/stores/IngameTheme"
+import useIngameThemeStore from "@/stores/IngameThemeStore"
 import getQuiz from "@/services/ingame/getQuiz"
 import CountdownTimer, { CountdownTimerHandle } from "../../CountdownTimer"
 import BloodText from "../../elements/horror2/BloodText"
@@ -62,7 +62,7 @@ const HorrorTheme = ({
   const [clearTime, setClearTime] = useState<string>("")
   const [isGameFinished, setIsGameFinished] = useState<boolean>(false)
   const { userUuid, isHost } = useUserStore()
-  const { solved, reset } = useIngameQuizStore()
+  const { solved, resetQuizState } = useIngameQuizStore()
   const [showExtraImage, setShowExtraImage] = useState(false)
   const [index, setIndex] = useState(0)
   const [showBlackOut, setShowBlackOut] = useState<boolean>(false)
@@ -221,7 +221,7 @@ const HorrorTheme = ({
 
       // 게임 종료 후, 5초 뒤 게임 종료 처리 해제
       setTimeout(() => {
-        reset()
+        resetQuizState()
         setIsGameFinished(false)
       }, 5000)
     }

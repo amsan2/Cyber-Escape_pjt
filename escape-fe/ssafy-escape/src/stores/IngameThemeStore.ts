@@ -2,31 +2,38 @@ import { create } from "zustand"
 import { persist } from "zustand/middleware"
 
 interface ThemeState {
-  selectedTheme: number
-  setSelectedTheme: (theme: number) => void
+  selectedTheme: number | null
   selectedThemeType: "multi" | "single" | null
-  setSelectedThemeType: (theme: "multi" | "single" | null) => void
   roomTitle: string | null
-  setRoomTitle: (roomTitle: string) => void
   roomUuid: string | null
+}
+
+interface ThemeAction {
+  setSelectedTheme: (theme: number) => void
+  setSelectedThemeType: (theme: "multi" | "single" | null) => void
+  setRoomTitle: (roomTitle: string) => void
   setRoomUuid: (roomUuid: string) => void
 }
 
-const useIngameThemeStore = create<ThemeState>()(
+const initialState: ThemeState = {
+  selectedTheme: null,
+  selectedThemeType: null,
+  roomTitle: null,
+  roomUuid: null,
+}
+
+const useIngameThemeStore = create<ThemeAction & ThemeState>()(
   persist(
-    (set): ThemeState => ({
-      selectedThemeType: null,
+    (set) => ({
+      ...initialState,
       setSelectedThemeType: (selectedThemeType: "multi" | "single" | null) =>
         set({ selectedThemeType }),
-      selectedTheme: 1,
       setSelectedTheme: (selectedTheme: number) => set({ selectedTheme }),
-      roomTitle: null,
       setRoomTitle: (roomTitle: string) => set({ roomTitle }),
-      roomUuid: null,
       setRoomUuid: (roomUuid: string) => set({ roomUuid }),
     }),
     {
-      name: "theme-storage",
+      name: "ingameTheme-storage",
     },
   ),
 )

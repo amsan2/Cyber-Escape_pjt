@@ -6,7 +6,7 @@ import Input from "@/components/common/Input"
 import Button from "@/components/common/Button"
 import patchJoin from "@/services/game/room/patchJoin"
 import useUserStore from "@/stores/UserStore"
-import useIngameThemeStore from "@/stores/IngameTheme"
+import useIngameThemeStore from "@/stores/IngameThemeStore"
 import Swal from "sweetalert2"
 interface RoomMainModalProps {
   open: boolean

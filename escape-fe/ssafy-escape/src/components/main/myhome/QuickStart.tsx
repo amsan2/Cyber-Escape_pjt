@@ -4,7 +4,7 @@ import { useRouter } from "next/navigation"
 import Image from "next/image"
 import { styled } from "styled-components"
 import { MainColor } from "@/styles/palette"
-import useIngameThemeStore from "@/stores/IngameTheme"
+import useIngameThemeStore from "@/stores/IngameThemeStore"
 import { Paytone_One } from "next/font/google"
 
 const paytoneOne = Paytone_One({
