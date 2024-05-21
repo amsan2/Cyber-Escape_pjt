@@ -111,6 +111,11 @@
 ![erd](https://github.com/amsan2/Cyber-Escape_pjt/assets/88939170/0fea0c03-238a-4e0e-a0cb-c5afbde8e6fb)
 
 
+## 🎨 Figma
+
+![Section 1 (1) (2)](https://github.com/amsan2/Cyber-Escape_pjt/assets/88939170/69f20043-e213-44ae-aa9f-1c7510e03fe9)
+
+
 <br>
 
 <a name="intro"></a>
@@ -122,6 +127,7 @@
 - 다양한 테마의 방탈출 게임을 수행할 수 있다.
 - 싱글 모드와 멀티 모드 두 가지를 제공하여, 친구와 함께 게임을 수행할 수 있다.
 - 방탈출 시간을 토대로 한 랭킹 시스템으로 방탈출 실력을 점검할 수 있다.
+- 랜덤 문제, 오브젝트 랜덤 배치로 게임을 여러번 즐길 수 있다.
 
 ### Site Layout
 
@@ -188,11 +194,15 @@
 
 ![인겜9](https://github.com/amsan2/Cyber-Escape_pjt/assets/88939170/10d10717-dd5e-44b6-a48c-c64503de60a0)
 ![인겜3](https://github.com/amsan2/Cyber-Escape_pjt/assets/88939170/29d0fd0c-5d37-4e4d-9936-6dd54e848858)
+![인겜14](https://github.com/amsan2/Cyber-Escape_pjt/assets/88939170/560becbc-9121-449b-9901-6d05e046cd17)
+![인겜17](https://github.com/amsan2/Cyber-Escape_pjt/assets/88939170/ee85c2d0-fc07-46be-bf0c-bbd6e9f85367)
+
 
 - #### 인게임(싸피테마)
 
 ![싸피1](https://github.com/amsan2/Cyber-Escape_pjt/assets/88939170/0b94d58b-015b-409f-a861-47b20236b959)
 ![싸피2](https://github.com/amsan2/Cyber-Escape_pjt/assets/88939170/1e5ec963-267f-49b6-bdec-8a970b981c0e)
+![인겜15](https://github.com/amsan2/Cyber-Escape_pjt/assets/88939170/57b85d63-3917-40ca-bf7f-bb295ebe9954)
 
 - #### 인게임(우주테마)
 
