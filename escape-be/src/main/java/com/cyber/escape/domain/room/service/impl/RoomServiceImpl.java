@@ -43,7 +43,7 @@ import lombok.extern.slf4j.Slf4j;
 @RequiredArgsConstructor
 @Slf4j
 public class RoomServiceImpl implements RoomService {
-	private static final Long[] themaIds = {1L, 2L, 3L};	// Todo : 값 변경
+	private static final int[] categories = {1, 4};
 
 	private final UserRepository userRepository;
 	private final RoomRepository roomRepository;
@@ -70,7 +70,7 @@ public class RoomServiceImpl implements RoomService {
 		// listOperations.rightPush(MATCHING_QUEUE_KEY, new MatchUser(principalUuid, userUtil.getLoginUserUuid()));
 		listOperations.rightPush(MATCHING_QUEUE_KEY, new MatchUser(principalUuid, userUuid));
 
-		log.info("listOperations size : {}", listOperations.size(MATCHING_QUEUE_KEY));
+		log.info("After Matching Queue size : {}", listOperations.size(MATCHING_QUEUE_KEY));
 	}
 
 	@Scheduled(fixedDelay = 1000) // 1초마다 실행
@@ -79,6 +79,9 @@ public class RoomServiceImpl implements RoomService {
 		ListOperations<String, MatchUser> listOperations = redisTemplate.opsForList();
 
 		if(listOperations.size(MATCHING_QUEUE_KEY) >= 2) {
+			log.info("매칭 성공 !!");
+			log.info("listOperations size before matching : {}", listOperations.size(MATCHING_QUEUE_KEY));
+
 			MatchUser user1 = listOperations.leftPop(MATCHING_QUEUE_KEY);
 			MatchUser user2 = listOperations.leftPop(MATCHING_QUEUE_KEY);
 
@@ -88,12 +91,12 @@ public class RoomServiceImpl implements RoomService {
 
 			User host = userRepository.findUserByUuid(user1.getUserUuid())
 				.orElseThrow(() -> new UserException(ExceptionCodeSet.USER_NOT_FOUND));
-			int randomIndex = (int) (Math.random() * (themaIds.length - 1));
-			Long themaId = themaIds[randomIndex];
+			int randomIndex = (int) (Math.random() * (categories.length - 1));
+			int category = categories[randomIndex];
 
 			RoomDto.PostRequest postRequest = RoomDto.PostRequest.builder()
 				.title(host.getNickname() + "의 대기실")
-				.themaId(themaId)
+				.category(category)
 				.password("")
 				.hostUuid(user1.getUserUuid())
 				.build();
@@ -123,8 +126,8 @@ public class RoomServiceImpl implements RoomService {
 	public void sendMatchResultToUser(MatchUser matchUser, RoomDto.PostResponse createdRoom) {
 		try {
 			log.info("매칭 정보 전송 쓰레드 : {}", Thread.currentThread().getName());
-			messagingTemplate.convertAndSendToUser(matchUser.getPrincipalUuid(), "/queue/match", createdRoom);
 			log.info("매칭 정보 전송 할 Client의 session Uuid: {}", matchUser.getPrincipalUuid());
+			messagingTemplate.convertAndSendToUser(matchUser.getPrincipalUuid(), "/queue/match", createdRoom);
 		} catch (Exception e) {
 			log.error("Failed to send match result to user: {}", matchUser.getPrincipalUuid(), e);
 			// 실패한 경우 재시도 로직 추가
@@ -182,12 +185,12 @@ public class RoomServiceImpl implements RoomService {
 				.orElseThrow(() -> new UserException(ExceptionCodeSet.USER_NOT_FOUND));
 		}
 
-		log.info("hostUuid : {}", host.getUuid());
+		log.info("hostUuid : {}, category : {}", host.getUuid(), postRequest.getCategory());
 
-		Thema thema = themaRepository.findById(postRequest.getThemaId())
+		Thema thema = themaRepository.findByCategory(postRequest.getCategory())
 			.orElseThrow(() -> new EntityNotFoundException("일치하는 테마가 없습니다."));
-
-		Room newRoom = Room.of(postRequest.getTitle(), capacity, host, thema);
+		
+		Room newRoom = Room.of(postRequest.getTitle(), 1, host, thema);
 		log.info("req room raw password : {}", postRequest.getPassword());
 
 		if(!postRequest.getPassword().isEmpty()) {
@@ -197,11 +200,11 @@ public class RoomServiceImpl implements RoomService {
 		}
 
 		newRoom = roomRepository.save(newRoom);
+		log.info("new room uuid : {}", newRoom.getUuid());
 		log.info("new room password : {}", newRoom.getPassword());
-
 		log.info("created room title : {}, hasPassword : {}", newRoom.getTitle(), newRoom.isHasPassword());
 
-		return RoomDto.PostResponse.of(newRoom.getUuid(), newRoom.getHostUuid(), thema.getId());
+		return RoomDto.PostResponse.of(newRoom.getTitle(), newRoom.getUuid(), newRoom.getHostUuid(), thema.getCategory());
 	}
 
 	@Transactional
@@ -221,9 +224,6 @@ public class RoomServiceImpl implements RoomService {
 
 		if(checkHost(findUser.getId(), findRoom.getHostId())){
 			roomRepository.delete(findRoom);
-			// Todo : 연결된 채팅방까지 삭제 ???
-			// Todo : 방에 남아있는 Guest는 추방 조치
-
 		} else {
 			throw new RuntimeException("방장이 아닙니다.");
 		}
@@ -234,39 +234,47 @@ public class RoomServiceImpl implements RoomService {
 	public String inviteUserToRoom(final RoomDto.Request request) {
 		// 알림 전송 및 MongoDB에 저장
 		// 이 부분에 알림 send 메소드 넣으면 끝
+		log.info("request userUuid : {}, roomUuid : {}", request.getUserUuid(), request.getRoomUuid());
 		notificationService.send(request.getUserUuid(), request.getRoomUuid(), Notify.NotificationType.GAME, "게임 요청입니다.");
 		return "";
 	}
 
-	public void acceptInvitation(final RoomDto.Request request) {
-		// Todo : broadcasting 공부 후 개발
-		// 비밀번호 check 필요
-		
-		// 이것도 필요 없을 것 같은데? joinRoom()으로 퉁치면 되잖아
-		// Todo : capacity 변경
+	@Transactional
+	public RoomDto.AcceptResponse acceptInvitation(final RoomDto.Request acceptRequest) {
+		Room findRoom = RoomServiceUtils.findByUuid(roomRepository, acceptRequest.getRoomUuid());
+
+		checkJoinRoomValidation(findRoom, "", true);
+		findRoom.setCapacity(2);
+
+		return RoomDto.AcceptResponse.from(findRoom);
 	}
 
 	@Transactional
 	public String joinRoom(final RoomDto.JoinRequest joinRequest) {
 		Room findRoom = RoomServiceUtils.findByUuid(roomRepository, joinRequest.getRoomUuid());
 
-		checkJoinRoomValidation(findRoom, joinRequest.getPassword());
+		checkJoinRoomValidation(findRoom, joinRequest.getPassword(), false);
 		findRoom.setCapacity(2);
 
 		return findRoom.getUuid();
 	}
 
-	private void checkJoinRoomValidation(Room findRoom, String password) {
+	private void checkJoinRoomValidation(Room findRoom, String password, Boolean isInvited) {
 		// 비밀번호 불일치
+		if(findRoom.getCapacity() >= 2) {
+			throw new RoomException(ExceptionCodeSet.ROOM_CAPACITY_OVER);
+		}
+
+		// 초대로 받은 거면 패스워드 검사는 따로 하지 않는다.
+		if(isInvited) return;
+
 		if(findRoom.getPassword() != null) {
 			if(!bCryptPasswordEncoder.matches(password, findRoom.getPassword())){
 				throw new RoomException(ExceptionCodeSet.ROOM_PASSWORD_MISMATCH);
 			}
 		}
 		// 정원 초과
-		if(findRoom.getCapacity() >= 2) {
-			throw new RoomException(ExceptionCodeSet.ROOM_CAPACITY_OVER);
-		}
+
 	}
 
 	@Transactional

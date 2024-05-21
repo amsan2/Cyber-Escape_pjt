@@ -2,6 +2,7 @@ package com.cyber.escape.domain.auth.jwt;
 
 import java.io.IOException;
 import java.util.Arrays;
+import java.util.Enumeration;
 import java.util.List;
 
 import org.springframework.security.core.Authentication;
@@ -10,6 +11,7 @@ import org.springframework.util.StringUtils;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import com.cyber.escape.global.exception.ExceptionCodeSet;
+import com.cyber.escape.global.exception.FilterExceptionHandler;
 import com.cyber.escape.global.exception.TokenException;
 
 import jakarta.servlet.FilterChain;
@@ -24,6 +26,7 @@ import lombok.extern.slf4j.Slf4j;
 public class JwtFilter extends OncePerRequestFilter {
 	private static final String AUTHORIZATION_HEADER = "Authorization";
 	private final TokenProvider tokenProvider;
+	private final FilterExceptionHandler filterExceptionHandler;
 
 	@Override
 	protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response,
@@ -53,7 +56,9 @@ public class JwtFilter extends OncePerRequestFilter {
 			isValidate = tokenProvider.validateToken(token);
 		} catch (TokenException e) {
 			if(! request.getRequestURI().equals("/auth/refresh")){
-				throw new TokenException(ExceptionCodeSet.TOKEN_EXPIRED);
+				// throw new TokenException(ExceptionCodeSet.TOKEN_EXPIRED);
+				filterExceptionHandler.handleJwtFilterTokenException(response, e);
+				return;	// 이거 박으니까 getWriter() 에러가 안 뜬다.
 			} else {
 				isRefresh = true;
 			}

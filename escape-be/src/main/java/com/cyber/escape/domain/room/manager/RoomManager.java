@@ -38,8 +38,9 @@ public class RoomManager {
 	public RoomDto.StompResponse joinRoom(String roomUuid, String userUuid, String guestSessionId) {
 		RoomDto.StompResponse room = getRoom(roomUuid);
 
-		if (isGuestInRoom(room)) {
-			UserDto.StompResponse guest = UserDto.StompResponse.from(userRepository.findUserByUuid(userUuid)
+		if (isRoomAvailableForGuest(room)) {
+			UserDto.StompResponse guest = UserDto.StompResponse.from(
+				userRepository.findUserByUuid(userUuid)
 				.orElseThrow(() -> new UserException(ExceptionCodeSet.USER_NOT_FOUND)));
 
 			room.joinGuest(guestSessionId, guest);
@@ -95,6 +96,13 @@ public class RoomManager {
 		return room;
 	}
 
+	public RoomDto.StompResponse resetStatus(String roomUuid) {
+		RoomDto.StompResponse room = getRoom(roomUuid);
+		room.resetStatus();
+
+		return room;
+	}
+
 	private RoomDto.StompResponse getRoom(String roomUuid) {
 		log.info("찾으려는 대기방 UUID : {}", roomUuid);
 		log.info("map size : {}", roomMap.size());
@@ -114,7 +122,7 @@ public class RoomManager {
 		}
 	}
 
-	private boolean isGuestInRoom(RoomDto.StompResponse room) {
+	private boolean isRoomAvailableForGuest(RoomDto.StompResponse room) {
 		if(room.getGuestSessionUuid() == null){
 			return true;
 		}

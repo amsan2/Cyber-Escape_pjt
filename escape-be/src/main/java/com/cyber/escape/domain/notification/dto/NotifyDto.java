@@ -45,6 +45,7 @@ public class NotifyDto {
         String nickname;
         String content;
         String type;
+        String profileUrl;
         char isRead;
         LocalDateTime createdAt;
 
@@ -54,6 +55,7 @@ public class NotifyDto {
                     .senderUuid(notify.getSenderUuid())
                     .content(notify.getContent())
                     .nickname(notify.getNickname())
+                    .profileUrl(notify.getProfileUrl())
                     .type(notify.getNotificationType().name())
                     .isRead(notify.getIsRead())
                     .createdAt(notify.getCreatedAt())
@@ -65,10 +67,11 @@ public class NotifyDto {
     @Builder
     public static class GameResponse {
         String id;
-        String gameUuid;
+        String roomUuid;
         String nickname;
         String content;
         String type;
+        String profileUrl;
         char isRead;
         LocalDateTime createdAt;
 
@@ -76,8 +79,11 @@ public class NotifyDto {
             return GameResponse.builder()
                     .id(notify.getId().toString())
                     .content(notify.getContent())
+                    .nickname(notify.getNickname())
+                    .roomUuid(notify.getRoomUuid())
                     .type(notify.getNotificationType().name())
                     .isRead(notify.getIsRead())
+                    .profileUrl(notify.getProfileUrl())
                     .createdAt(notify.getCreatedAt())
                     .build();
         }
