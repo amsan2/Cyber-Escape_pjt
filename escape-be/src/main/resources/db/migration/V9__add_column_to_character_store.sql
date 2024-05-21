@@ -1,3 +1,0 @@
-
-
-ALTER TABLE character_store ADD COLUMN asset_url VARCHAR(512) NOT NULL DEFAULT "";

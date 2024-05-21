@@ -1,1 +1,0 @@
-ALTER TABLE room ADD COLUMN has_password tinyint NOT NULL DEFAULT 0;

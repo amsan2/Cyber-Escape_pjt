@@ -1,1 +1,0 @@
-ALTER TABLE user ADD COLUMN saved_file_name varchar(100) NULL;
