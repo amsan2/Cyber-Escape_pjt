@@ -5,7 +5,7 @@ import { useInfiniteQuery } from "@tanstack/react-query"
 import EmojiEventsIcon from "@mui/icons-material/EmojiEvents"
 import FlagIcon from "@mui/icons-material/Flag"
 import postRankingList from "@/services/main/ranking/postRankingList"
-import formatTime from "@/hooks/FormatTime"
+import formatTime from "@/utils/FormatTime"
 import * as S from "@/app/@modal/main/ranking/rankingStyle"
 
 const Ranking = () => {

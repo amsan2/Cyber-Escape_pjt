@@ -1,5 +1,5 @@
 import api from "@/services/api"
-import { removeSessionTokens } from "@/hooks/SessionToken"
+import { removeSessionTokens } from "@/utils/SessionToken"
 import API_PATH from "@/constants/path"
 import ERROR_MESSAGES from "@/constants/errorMessages"
 

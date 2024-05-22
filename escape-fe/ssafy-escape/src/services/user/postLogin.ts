@@ -1,5 +1,5 @@
 import api from "@/services/api"
-import { setSessionTokens } from "@/hooks/SessionToken"
+import { setSessionTokens } from "@/utils/SessionToken"
 import API_PATH from "@/constants/path"
 import ERROR_MESSAGES from "@/constants/errorMessages"
 
@@ -9,10 +9,13 @@ const postLogin = async (
   password: string,
 ): Promise<UserInfoProps> => {
   try {
-    const response = await api.post<PostLoginResponseProps>(API_PATH.AUTH.LOGIN, {
-      loginId,
-      password,
-    })
+    const response = await api.post<PostLoginResponseProps>(
+      API_PATH.AUTH.LOGIN,
+      {
+        loginId,
+        password,
+      },
+    )
 
     switch (response.data.status) {
       case 400: // 잘못된 요청

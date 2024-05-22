@@ -1,4 +1,5 @@
+// 모달 관련 인터페이스
 interface ModalProps {
-  open: boolean
+  isOpen: boolean
   onClose: () => void
 }

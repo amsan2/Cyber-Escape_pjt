@@ -54,7 +54,6 @@ const API_PATH = {
     QUIZ: "/game/quiz",
     HINT: "/game/quiz/hint",
     ANSWER: "/game/quiz/answer",
-    FINAL_ANSWER: "/game/quiz/final/answer",
   },
 }
 
