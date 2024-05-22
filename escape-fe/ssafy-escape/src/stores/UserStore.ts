@@ -6,9 +6,9 @@ import postLogout from "../services/user/postLogout"
 interface UserState {
   isLogin: boolean
   isHost: boolean
-  userUuid: string | null
-  nickname: string | null
-  profileUrl: string | undefined
+  userUuid: string
+  nickname: string
+  profileUrl: string
   accessToken: string | null
 }
 

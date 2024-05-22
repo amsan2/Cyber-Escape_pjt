@@ -5,7 +5,7 @@ import ERROR_MESSAGES from "@/constants/errorMessages"
 // 닉네임 중복 확인
 const postIsDuplicationNickname = async (
   nickname: string,
-): Promise<null> => {
+): Promise<boolean> => {
   try {
     const response = await api.post<NullResponseProps>(
       API_PATH.MAIN.NICKNAME.DUPLICATION,
@@ -18,7 +18,7 @@ const postIsDuplicationNickname = async (
         response.data.message || ERROR_MESSAGES.INVALID_CREDENTIALS,
       )
     }
-    return null
+    return true
   } catch (error: any) {
     // 디버깅용
     console.error("닉네임 중복 확인 에러:", error)

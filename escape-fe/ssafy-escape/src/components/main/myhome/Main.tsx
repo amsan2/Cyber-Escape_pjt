@@ -1,9 +1,8 @@
-"use client"
-
-import * as S from "@/app/@modal/main/mainStyle"
 import MyProfile from "./MyProfile"
 import QuickStart from "./QuickStart"
+import * as S from "@/app/@modal/main/mainStyle"
 
+// 메인홈
 const Main = () => {
   return (
     <S.MainContainer>
