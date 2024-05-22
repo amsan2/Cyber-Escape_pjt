@@ -1,7 +1,7 @@
 "use client"
 import { Noto_Sans_KR } from "next/font/google"
 import StyledComponentsRegistry from "../lib/registry"
-import QueryProvider from "../hooks/QueryClientProvider"
+import QueryProvider from "../hooks/QueryProvider"
 import "./globals.css"
 import { usePathname } from "next/navigation"
 import useUserStore from "@/stores/UserStore"
