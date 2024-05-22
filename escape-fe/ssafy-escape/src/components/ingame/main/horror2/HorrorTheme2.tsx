@@ -17,7 +17,7 @@ import Start from "../../elements/horror2/Start"
 import Computer from "../../elements/horror2/Computer"
 import CountdownTimer, { CountdownTimerHandle } from "../../CountdownTimer"
 import { QueryClient, useQuery } from "@tanstack/react-query"
-import useIngameThemeStore from "@/stores/IngameTheme"
+import useIngameThemeStore from "@/stores/IngameThemeStore"
 import getQuiz from "@/services/ingame/getQuiz"
 import ScrunchedPaper from "../../elements/horror2/ScrunchedPaper"
 import FinalDoor from "../../elements/horror2/FinalDoor"
@@ -54,7 +54,7 @@ const HorrorTheme2 = ({
   const [showFirstProblem, setShowFirstProblem] = useState<boolean>(false)
   const [showSecondProblem, setShowSecondProblem] = useState<boolean>(false)
   const [showThirdProblem, setShowThirdProblem] = useState<boolean>(false)
-  const { solved, reset } = useIngameQuizStore()
+  const { solved, resetQuizState } = useIngameQuizStore()
   const { selectedThemeType } = useIngameThemeStore()
   const [subtitle, setSubtitle] = useState<string>("")
   const [interactNum, setInteractNum] = useState<number>(1)
@@ -210,9 +210,12 @@ const HorrorTheme2 = ({
           setResult("defeat")
         }
       }
+      if (progressReset) {
+        progressReset()
+      }
       setIsGameFinished(true)
       setTimeout(() => {
-        reset()
+        resetQuizState()
         setIsGameFinished(false)
       }, 5000)
     }

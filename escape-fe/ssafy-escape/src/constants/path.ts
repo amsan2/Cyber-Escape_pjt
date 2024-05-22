@@ -14,10 +14,11 @@ const API_PATH = {
       ADDITION: "/friend/acceptance",
       SEARCH: "/user/search",
     },
-    NOTIFICATION:{
+    NOTIFICATION: {
       SUBSCRIBE: "/notify/subscribe",
-      READ: "notify/read",
-      LIST: "/notify/list"
+      READ: "/notify/read",
+      LIST: "/notify/list",
+      ACCEPT: "/room/acceptance",
     },
     RANKING: {
       LIST: "/rankings",
@@ -36,7 +37,6 @@ const API_PATH = {
       ROOM: {
         LIST: "/room",
         INVITE: "/room/invitation",
-        ACCEPT: "/room/acceptance",
         JOIN: "/room/join",
         EXIT: "/room/exit",
         KICK: "/room/kick",
@@ -50,15 +50,10 @@ const API_PATH = {
       },
     },
   },
-  // INVITE: {
-  //   INVITED_LIST: "/notification/game",
-  //   INVITED_ACCEPT: "/room/acceptance",
-  // },
   INGAME: {
     QUIZ: "/game/quiz",
     HINT: "/game/quiz/hint",
     ANSWER: "/game/quiz/answer",
-    FINAL_ANSWER: "/game/quiz/final/answer",
   },
 }
 

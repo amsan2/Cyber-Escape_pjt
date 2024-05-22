@@ -1,20 +1,27 @@
 import { create } from "zustand"
 
-interface ModalProps {
+interface ModalState {
   isRequestModalOpen: boolean
   isDeleteMode: boolean
-  setIsRequestModalOpen: (isOpen: boolean) => void
-  setIsDeleteMode: (isDeleting: boolean) => void
-  resetModal: () => void
 }
 
-const useModalStore = create<ModalProps>((set) => ({
+interface ModalAction {
+  setIsRequestModalOpen: (isRequestModalOpen: boolean) => void
+  setIsDeleteMode: (isDeleteMode: boolean) => void
+  resetModalState: () => void
+}
+
+const initialState: ModalState = {
   isRequestModalOpen: false,
   isDeleteMode: false,
-  setIsRequestModalOpen: (isOpen: boolean) =>
-    set({ isRequestModalOpen: isOpen }),
-  setIsDeleteMode: (isDeleting: boolean) => set({ isDeleteMode: isDeleting }),
-  resetModal: () => set({ isRequestModalOpen: false, isDeleteMode: false }),
+}
+
+const useModalStore = create<ModalAction & ModalState>((set) => ({
+  ...initialState,
+  setIsRequestModalOpen: (isRequestModalOpen: boolean) =>
+    set({ isRequestModalOpen }),
+  setIsDeleteMode: (isDeleteMode: boolean) => set({ isDeleteMode }),
+  resetModalState: () => set(initialState),
 }))
 
 export default useModalStore

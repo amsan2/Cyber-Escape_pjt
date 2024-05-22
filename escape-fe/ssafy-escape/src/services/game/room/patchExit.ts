@@ -9,9 +9,9 @@ interface PatchExitRequestProps {
 // 게임방 나가기
 const patchExit = async (
   data: PatchExitRequestProps,
-): Promise<NullBodyProps> => {
+): Promise<NullResponseProps> => {
   try {
-    const response = await api.patch<NullBodyProps>(
+    const response = await api.patch<NullResponseProps>(
       API_PATH.GAME.MULTI.ROOM.EXIT,
       data,
     )

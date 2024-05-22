@@ -1,5 +1,6 @@
-import API_PATH from "@/constants/path"
 import api from "@/services/api"
+import API_PATH from "@/constants/path"
+import ERROR_MESSAGES from "@/constants/errorMessages"
 
 // 나의 최고 기록 갱신
 const postUpdateRank = async (
@@ -8,7 +9,7 @@ const postUpdateRank = async (
   themaCategory: number,
 ): Promise<null> => {
   try {
-    const response = await api.post<NullBodyProps>(
+    const response = await api.post<NullResponseProps>(
       API_PATH.MAIN.RANKING.UPDATE_RANK,
       {
         clearTime,
@@ -16,13 +17,19 @@ const postUpdateRank = async (
         themaCategory,
       },
     )
-    if (response.status === 400) {
-      throw new Error(`오류: ${response.data.message}`)
+    
+    // 잘못된 요청
+    if (response.data.status === 400) {
+      throw new Error(
+        response.data.message || ERROR_MESSAGES.INVALID_CREDENTIALS,
+      )
     }
     return null
-  } catch (error) {
-    console.error(error)
-    throw error
+  } catch (error: any) {
+    // 디버깅용
+    console.error("나의 최고 기록 갱신 에러:", error)
+
+    throw new Error(error.response.data.message || ERROR_MESSAGES.GENERIC_ERROR)
   }
 }
 

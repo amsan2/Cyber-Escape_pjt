@@ -2,7 +2,8 @@
 
 import { useState } from "react"
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query"
-export default function QueryProvider({
+
+function QueryProvider({
   children,
 }: {
   children: React.ReactNode
@@ -12,7 +13,7 @@ export default function QueryProvider({
       new QueryClient({
         defaultOptions: {
           queries: {
-            staleTime: 60 * 1000,
+            staleTime: 60 * 1000, // 1분 동안 데이터의 fresh 유지 -> 재요청 x
           },
         },
       }),
@@ -21,3 +22,5 @@ export default function QueryProvider({
     <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>
   )
 }
+
+export default QueryProvider

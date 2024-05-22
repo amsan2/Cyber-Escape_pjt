@@ -1,47 +1,51 @@
 "use client"
 
-import { useQuery } from "@tanstack/react-query"
-import { styled } from "styled-components"
-import Button from "../common/Button"
-// import postInvitedAccept from "@/services/notification/postInvitedAccept"
-import getNotificationList from "@/services/notification/getNotificationList"
-import Swal from "sweetalert2"
-import postReadNotification from "@/services/notification/postReadNotification"
-import postAcceptance from "@/services/game/room/postAcceptance"
-import { useRouter } from "next/navigation"
-import useIngameThemeStore from "@/stores/IngameTheme"
-import useUserStore from "@/stores/UserStore"
 import { useEffect } from "react"
-// 게임 초대 요청 리스트
+import { useQuery } from "@tanstack/react-query"
+import { useRouter } from "next/navigation"
+import Swal from "sweetalert2"
+import getNotificationList from "@/services/notification/getNotificationList"
+import postReadNotification from "@/services/notification/postReadNotification"
+import postInviteAcceptance from "@/services/notification/postInviteAcceptance"
+import useIngameThemeStore from "@/stores/IngameThemeStore"
+import useUserStore from "@/stores/UserStore"
+import ERROR_MESSAGES from "@/constants/errorMessages"
+import ALERT_MESSAGES from "@/constants/alertMessages"
+import FilterGameInvitations from "@/utils/FilterGameInvitations"
+import InvitationItem from "./InvitedItem"
+import { NoText } from "@/styles/UserItemStyles"
+
+// 받은 초대 목록
 const InvitedList = () => {
-  const { data: notificationList, refetch } = useQuery({
+  const router = useRouter()
+  const { setSelectedTheme, setRoomTitle } = useIngameThemeStore()
+  const { setIsHost } = useUserStore()
+
+  // 알림 목록 데이터를 불러옴
+  const { data: notificationList, refetch: refetchRequest } = useQuery({
     queryKey: ["notificationList"],
     queryFn: () => getNotificationList(),
   })
-  
+
+  // 컴포넌트가 마운트 될 때 데이터 갱신
   useEffect(() => {
-    refetch()
+    refetchRequest()
   }, [])
 
-  const { setSelectedTheme, setRoomTitle } = useIngameThemeStore()
-  const { setIsHost } = useUserStore()
-  const router = useRouter()
   // 초대 요청 수락 시
-  const handleAccept = async (roomUuid: string, notificationId: string) => {
+  const handleAccept = async (roomUuid: string, objectId: string) => {
     try {
-      const response = await postAcceptance({ roomUuid: roomUuid })
-      setSelectedTheme(response.data.themaCategory)
-      setRoomTitle(response.data.title)
-      setIsHost(false)
-      // 알림 읽음 처리
-      await postReadNotification(notificationId)
-      router.push(`/gameroom/${roomUuid}`)
-      refetch()
+      const response = await postInviteAcceptance(roomUuid)
+      setSelectedTheme(response.themaCategory) // 초대된 방의 테마 카테고리로 set
+      setRoomTitle(response.title) // 초대된 방의 제목으로 set
+      setIsHost(false) // guest 이므로 host는 false
+      await postReadNotification(objectId) // 알림 읽음 처리
+      router.push(`/gameroom/${roomUuid}`) // 초대된 방으로 이동
     } catch (error) {
       if (error instanceof Error) {
         Swal.fire(
-          "존재하지 않는 방입니다.",
-          error instanceof Error ? error.message : "",
+          ERROR_MESSAGES.INVITATION.ROOM_NOT_FOUND, // 수락 전에 방이 폭파됐을 경우
+          error.message,
           "error",
         )
       }
@@ -49,85 +53,39 @@ const InvitedList = () => {
   }
 
   // 초대 요청 거절 시
-  const handleDeny = async (notificationId: string) => {
+  const handleDeny = async (objectId: string) => {
     Swal.fire({
-      title: "초대를 거절했습니다.",
+      title: ALERT_MESSAGES.INVITATION.INVITATION_DENIED,
       width: "500px",
       padding: "40px",
     })
-    await postReadNotification(notificationId)
-    refetch()
+    await postReadNotification(objectId) // 알림 읽음 처리
+    refetchRequest() // 바로 refetch 해주면서 읽은 알림은 사라지게 됨
   }
 
   if (!notificationList) {
     return <div>데이터 없음</div>
   }
 
+  // 게임 초대 알림만 가져오도록 필터링
+  const gameInvitations = FilterGameInvitations(notificationList)
+
   return (
     <div>
-      {notificationList.length === 0 ? (
-        <NoText>받은 초대 요청이 없습니다.</NoText>
+      {gameInvitations.length === 0 ? (
+        <NoText>{ALERT_MESSAGES.INVITATION.NO_INVITATIONS}</NoText>
       ) : (
-        notificationList
-          .filter((data) => data.type === "GAME")
-          .map((user, i) => (
-            <div key={i}>
-              <MainContainer>
-                <ProfileBox>
-                  <ProfileImg src={user.profileUrl} alt="프로필 이미지" />
-                  <div>{user.nickname}</div>
-                </ProfileBox>
-                <ButtonBox>
-                  <Button
-                    text="수락"
-                    theme="success"
-                    width="60px"
-                    onClick={() => handleAccept(user.roomUuid, user.id)}
-                  />
-                  <Button
-                    text="거절"
-                    theme="fail"
-                    width="60px"
-                    onClick={() => handleDeny(user.id)}
-                  />
-                </ButtonBox>
-              </MainContainer>
-            </div>
-          ))
+        gameInvitations.map((notification, i) => (
+          <InvitationItem
+            key={i}
+            notification={notification}
+            onAccept={handleAccept}
+            onDeny={handleDeny}
+          />
+        ))
       )}
     </div>
   )
 }
 
 export default InvitedList
-
-const MainContainer = styled.div`
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 10px;
-  margin: 10px;
-  font-size: 17px;
-  border-radius: 0.25rem;
-`
-const ProfileBox = styled.div`
-  display: flex;
-  align-items: center;
-  gap: 10px;
-`
-const ButtonBox = styled.div`
-  display: flex;
-  gap: 5px;
-`
-const NoText = styled.div`
-  font-size: 14px;
-  text-align: center;
-  padding: 5px;
-`
-
-const ProfileImg = styled.img`
-  width: 40px;
-  height: 40px;
-  border-radius: 30%;
-  object-fit: cover;
-`

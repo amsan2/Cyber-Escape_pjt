@@ -7,23 +7,21 @@ interface IngameQuizState {
 
 interface IngameQuizAction {
   setSolved: (solved: number) => void
-  hint: number
   setHint: (hint: number) => void
-  reset: () => void
+  resetQuizState: () => void
 }
 
 const initialState: IngameQuizState = {
   solved: 0,
   hint: 1,
 }
+
 const useIngameQuizStore = create<IngameQuizState & IngameQuizAction>(
   (set) => ({
     ...initialState,
     setSolved: (solved: number) => set({ solved }),
-    hint: 1,
-
     setHint: (hint: number) => set({ hint }),
-    reset: () => {
+    resetQuizState: () => {
       set(initialState)
     },
   }),

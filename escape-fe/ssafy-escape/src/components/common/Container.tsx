@@ -3,7 +3,7 @@ import { ReactNode } from "react"
 import { useRouter, usePathname } from "next/navigation"
 import styled from "styled-components"
 import ArrowBackIosNewIcon from "@mui/icons-material/ArrowBackIosNew"
-import useIngameThemeStore from "@/stores/IngameTheme"
+import useIngameThemeStore from "@/stores/IngameThemeStore"
 import useUserStore from "@/stores/UserStore"
 import patchExit from "@/services/game/room/patchExit"
 interface ContainerProps {

@@ -55,7 +55,7 @@ public class RoomDto {
 	@Getter
 	public static class PostRequest {
 		private final String title;
-		private final Long themaId;
+		private final int category;
 		private final String password;
 		private final String hostUuid;
 	}
@@ -63,15 +63,17 @@ public class RoomDto {
 	@Builder
 	@Getter
 	public static class PostResponse {
+		private final String title;
 		private final String roomUuid;
 		private final String hostUuid;
-		private final Long themaId;
+		private final int category;
 
-		public static PostResponse of(final String roomUuid, final String hostUuid, final Long themaId) {
+		public static PostResponse of(final String title, final String roomUuid, final String hostUuid, final int category) {
 			return PostResponse.builder()
+				.title(title)
 				.roomUuid(roomUuid)
 				.hostUuid(hostUuid)
-				.themaId(themaId)
+				.category(category)
 				.build();
 		}
 	}
@@ -115,6 +117,25 @@ public class RoomDto {
 			return InfoResponse.builder()
 				.title(room.getTitle())
 				.build();
+		}
+	}
+
+
+	// 초대 응답 받았을 때의 반환값
+	@Builder
+	@Getter
+	public static class AcceptResponse{
+		private final String roomUuid;
+		private final String title;
+		private final int themaCategory;
+
+		public static AcceptResponse from(Room room){
+			return AcceptResponse
+					.builder()
+					.roomUuid(room.getUuid())
+					.title(room.getTitle())
+					.themaCategory(room.getThema().getCategory())
+					.build();
 		}
 	}
 
@@ -202,6 +223,8 @@ public class RoomDto {
 		public void leaveGuest() {
 			this.guestSessionUuid = null;
 			this.guest = null;
+			this.isGuestReady = false;
+			this.isKicked = false;
 		}
 
 		public void changeReadyStatus(String sessionUuid) {
@@ -222,6 +245,13 @@ public class RoomDto {
 			} else {
 				throw new RoomException(ExceptionCodeSet.ROOM_INVALID_USER);
 			}
+		}
+
+		public void resetStatus() {
+			isHostReady = false;
+			isGuestReady = false;
+			hostProgress = 0;
+			guestProgress = 0;
 		}
 	}
 }

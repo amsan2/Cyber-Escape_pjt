@@ -47,15 +47,12 @@ public class UserUtil {
         return findByLoginId(getLoginIdFromContextHolder());
     }
 
-    private String getLoginIdFromContextHolder() {
+    public String getLoginIdFromContextHolder() {
         return SecurityContextHolder.getContext().getAuthentication().getName();
     }
 
     public String randomNickname(){
-        // nickname 랜덤 생성 -> API 서버 속도 따라서 다른 듯 (5초까지 봤음,,)
-        String url = "https://nickname.hwanmoo.kr/?format=text&count=1&max_length=20";
-        RestTemplate restTemplate = new RestTemplate();
-        return restTemplate.getForObject(url, String.class);
+        return NicknameGenerator.generateNickname();
     }
 
 }

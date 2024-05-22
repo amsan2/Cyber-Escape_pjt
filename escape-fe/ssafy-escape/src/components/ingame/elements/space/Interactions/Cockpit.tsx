@@ -2,7 +2,7 @@ import React, { useRef, useMemo, useState, useEffect } from "react"
 import { MeshBasicMaterial, BoxGeometry } from "three"
 import Video2 from "./Video2"
 import { useThree } from "@react-three/fiber"
-import SecondToTime from "@/hooks/SecondToTime"
+import SecondToTime from "@/utils/SecondToTime"
 import postUpdateRank from "@/services/main/ranking/postUpdateRank"
 import useUserStore from "@/stores/UserStore"
 

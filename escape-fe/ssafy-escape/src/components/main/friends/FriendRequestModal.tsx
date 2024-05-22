@@ -1,49 +1,46 @@
-"use client"
-
 import { useState } from "react"
 import { useQuery } from "@tanstack/react-query"
 import { styled } from "styled-components"
 import SearchIcon from "@mui/icons-material/Search"
 import HighlightOffIcon from "@mui/icons-material/HighlightOff"
-import Button from "@/components/common/Button"
+import Swal from "sweetalert2"
 import MainModal from "@/components/common/MainModal"
 import Input from "@/components/common/Input"
+import SearchResultItem from "./SearchResultItem"
 import postUserSearch from "@/services/main/friends/postUserSearch"
 import postFriendRequest from "@/services/main/friends/postFriendRequest"
-import Swal from "sweetalert2"
-
-interface FriendRequestModalProps {
-  open: boolean
-  onClose: () => void
-}
+import ALERT_MESSAGES from "@/constants/alertMessages"
 
 // 친구 추가 모달(검색)
-const FriendRequestModal = ({ open, onClose }: FriendRequestModalProps) => {
+const FriendRequestModal = ({ isOpen, onClose }: ModalProps) => {
   const [keyword, setKeyword] = useState<string>("")
+
+  // 친구 추가 모달 닫기
   const handleClose = () => {
     setKeyword("")
     onClose()
   }
 
-  const { data: searchData, refetch } = useQuery({
+  // 검색 결과 데이터 불러옴
+  const { data: searchData, refetch: refetchSearch } = useQuery({
     queryKey: ["searchUser", keyword],
     queryFn: () => postUserSearch(keyword),
-    enabled: false,
+    enabled: false, // 자동으로 쿼리 실행되지 않도록 false
   })
 
-  // 검색 시
+  // 검색 이벤트
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault()
     if (keyword.trim()) {
-      refetch()
+      refetchSearch()
     }
   }
 
-  //
-  const handleRequest = async (id: string) => {
-    await postFriendRequest(id, "FRIEND")
+  // 친구 신청
+  const handleRequest = async (receiverUuid: string) => {
+    await postFriendRequest(receiverUuid, "FRIEND") // 신청받는 유저의 uuid와 알림 type(GAME || FRIEND)
     Swal.fire({
-      title: "친구 요청 완료!",
+      title: ALERT_MESSAGES.FRIEND.REQUEST,
       width: "500px",
       padding: "40px",
     })
@@ -51,7 +48,7 @@ const FriendRequestModal = ({ open, onClose }: FriendRequestModalProps) => {
 
   return (
     <div>
-      <MainModal isOpen={open} onClose={handleClose} text="친구 추가">
+      <MainModal isOpen={isOpen} onClose={handleClose} text="친구 추가">
         <InputBox onSubmit={(e) => handleSearch(e)}>
           <Input
             $width="60%"
@@ -61,37 +58,20 @@ const FriendRequestModal = ({ open, onClose }: FriendRequestModalProps) => {
             onChange={(event) => setKeyword(event.target.value)}
           />
           <CustomSearchIcon onClick={(e) => handleSearch(e)} />
-          {keyword ? (
+          {keyword && (
             <CustomHighlightOffIcon
               onClick={() => {
                 setKeyword("")
               }}
             />
-          ) : null}
+          )}
         </InputBox>
         {!searchData || searchData.length === 0 ? (
-          <EmptyText>결과가 없습니다.</EmptyText>
+          <NoText>결과가 없습니다.</NoText>
         ) : (
-          <div>
-            {searchData.map((user, i) => (
-              <div key={i}>
-                <MainContainer>
-                  <ProfileBox>
-                    <ProfileImg src={user.profileUrl} alt="프로필 이미지" />
-                    <div>{user.nickname}</div>
-                  </ProfileBox>
-                  {user.relationship === "추가" ? (
-                    <Button
-                      text={user.relationship}
-                      theme="success"
-                      width="60px"
-                      onClick={() => handleRequest(user.userUuid)}
-                    />
-                  ) : null}
-                </MainContainer>
-              </div>
-            ))}
-          </div>
+          searchData.map((user, i) => (
+            <SearchResultItem key={i} user={user} onRequest={handleRequest} />
+          ))
         )}
       </MainModal>
     </div>
@@ -100,30 +80,6 @@ const FriendRequestModal = ({ open, onClose }: FriendRequestModalProps) => {
 
 export default FriendRequestModal
 
-const MainContainer = styled.div`
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 10px;
-  font-size: 17px;
-`
-const ProfileBox = styled.div`
-  display: flex;
-  align-items: center;
-  gap: 10px;
-`
-
-const ProfileImg = styled.img`
-  width: 40px;
-  height: 40px;
-  border-radius: 30%;
-  object-fit: cover;
-`
-
-const EmptyText = styled.div`
-  padding: 10px;
-  text-align: center;
-`
 const InputBox = styled.form`
   display: flex;
   flex-direction: column;
@@ -140,12 +96,18 @@ const CustomSearchIcon = styled(SearchIcon)`
   left: 6.8vw;
   cursor: pointer;
 `
+
 const CustomHighlightOffIcon = styled(HighlightOffIcon)`
   display: flex;
   align-items: center;
   position: absolute;
   top: 7px;
   right: 6.8vw;
-  opacity: 50%;
   cursor: pointer;
+  opacity: 50%;
+`
+
+const NoText = styled.div`
+  padding: 10px;
+  text-align: center;
 `

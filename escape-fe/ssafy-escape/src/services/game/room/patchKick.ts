@@ -9,9 +9,9 @@ interface PatchKickRequestProps {
 // 게임방 강퇴시키기
 const patchKick = async (
   data: PatchKickRequestProps,
-): Promise<NullBodyProps> => {
+): Promise<NullResponseProps> => {
   try {
-    const response = await api.patch<NullBodyProps>(
+    const response = await api.patch<NullResponseProps>(
       API_PATH.GAME.MULTI.ROOM.KICK,
       data,
     )

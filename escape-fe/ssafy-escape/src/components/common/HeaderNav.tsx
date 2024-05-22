@@ -258,12 +258,12 @@ const MainHeader = () => {
 
       <HydrationBoundary state={dehydrate(queryClient)}>
         <FriendMainModal
-          open={friendModalopen}
+          isOpen={friendModalopen}
           onClose={handleFriendModalClose}
         />
 
         <NotificationModal
-          open={notificationModalopen}
+          isOpen={notificationModalopen}
           onClose={handleNotificationModalClose}
         />
       </HydrationBoundary>

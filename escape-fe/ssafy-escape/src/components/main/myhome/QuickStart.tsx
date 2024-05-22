@@ -3,33 +3,29 @@
 import { useRouter } from "next/navigation"
 import Image from "next/image"
 import { styled } from "styled-components"
+import useIngameThemeStore from "@/stores/IngameThemeStore"
 import { MainColor } from "@/styles/palette"
-import useIngameThemeStore from "@/stores/IngameTheme"
-import { Paytone_One } from "next/font/google"
+import { paytoneOne } from "@/styles/GoogleFont"
 
-const paytoneOne = Paytone_One({
-  subsets: ["latin"],
-  weight: "400",
-})
+// 메인홈의 바로 시작 
 const QuickStart = () => {
   const router = useRouter()
   const { setSelectedThemeType } = useIngameThemeStore()
   return (
-    <StartContainer>
+    <MainContainer>
       <div style={{ textAlign: "center" }}>
         <TitleText className={paytoneOne.className}>Cyber Escape</TitleText>
         <SubTitleText>바로 시작하기</SubTitleText>
       </div>
       <MainContent>
         <SelectMode
-          className="selectmode"
           onClick={() => {
             router.push("/main/theme"), setSelectedThemeType("single")
           }}
         >
           <Image
             src={process.env.NEXT_PUBLIC_IMAGE_URL + "/image/single.png"}
-            alt=""
+            alt="싱글 이미지"
             width={250}
             height={250}
             style={{ cursor: "pointer" }}
@@ -37,14 +33,13 @@ const QuickStart = () => {
           <ThemeText>싱글(1인)</ThemeText>
         </SelectMode>
         <SelectMode
-          className="selectmode"
           onClick={() => {
             router.push("/main/multi"), setSelectedThemeType("multi")
           }}
         >
           <Image
             src={process.env.NEXT_PUBLIC_IMAGE_URL + "/image/multi.png"}
-            alt=""
+            alt="멀티 이미지"
             width={250}
             height={250}
             style={{ cursor: "pointer" }}
@@ -52,11 +47,18 @@ const QuickStart = () => {
           <ThemeText>멀티(2인)</ThemeText>
         </SelectMode>
       </MainContent>
-    </StartContainer>
+    </MainContainer>
   )
 }
 
 export default QuickStart
+
+const MainContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+`
 
 const TitleText = styled.div`
   font-size: 80px;
@@ -67,13 +69,6 @@ const TitleText = styled.div`
 
 const SubTitleText = styled.div`
   font-size: 22px;
-`
-
-const StartContainer = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 20px;
 `
 
 const MainContent = styled.div`

@@ -1,6 +1,7 @@
 "use client"
 import axios, { AxiosResponse, InternalAxiosRequestConfig } from "axios"
 import useUserStore from "@/stores/UserStore"
+import API_PATH from "@/constants/path"
 // AxiosRequestConfig 타입 확장
 interface CustomAxiosRequestConfig extends InternalAxiosRequestConfig {
   _retry?: boolean
@@ -38,7 +39,7 @@ api.interceptors.response.use(
         try {
           const refreshResponse = await axios
             .post(
-              `${api.defaults.baseURL}/auth/refresh`,
+              `${api.defaults.baseURL}${API_PATH.AUTH.REFRESH_ACCESSTOKEN}`,
               { refreshToken: refreshToken },
               {
                 headers: { Authorization: `Bearer ${accessToken}` },

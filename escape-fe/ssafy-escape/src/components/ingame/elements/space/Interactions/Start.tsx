@@ -1,4 +1,4 @@
-import useIngameThemeStore from "@/stores/IngameTheme"
+import useIngameThemeStore from "@/stores/IngameThemeStore"
 import React, { useEffect, useRef, useState } from "react"
 import styled from "styled-components"
 
