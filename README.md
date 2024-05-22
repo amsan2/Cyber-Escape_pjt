@@ -115,6 +115,8 @@
 
 ![Section 1 (1) (2)](https://github.com/amsan2/Cyber-Escape_pjt/assets/88939170/69f20043-e213-44ae-aa9f-1c7510e03fe9)
 
+## 🎞최종 발표 PPT
+[자율 최종발표 ppt.pdf](https://github.com/amsan2/Cyber-Escape_pjt/files/15409832/ppt.pdf)
 
 <br>
 
