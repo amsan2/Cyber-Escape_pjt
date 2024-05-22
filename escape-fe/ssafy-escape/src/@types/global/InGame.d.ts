@@ -29,12 +29,6 @@ interface SSAFTYProblemProps {
   setIsSolvedProblem: (isSolved: boolean) => void
 }
 
-interface QuizDataProps {
-  quizUuid: string
-  content: string
-  url: string
-  difficulty: number
-}
 
 interface ClickObjectProps {
   onClick: () => void

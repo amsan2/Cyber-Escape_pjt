@@ -1,33 +1,28 @@
-import API_PATH from "@/constants/path"
 import api from "@/services/api"
-
-interface GetFriendListBodyProps {
-  status: number
-  message: string
-  data: GetFriendListDataProps[]
-}
-
-interface GetFriendListDataProps {
-  nickname: string
-  friendUuid: string
-  profile: string
-}
+import API_PATH from "@/constants/path"
+import ERROR_MESSAGES from "@/constants/errorMessages"
 
 // 친구 목록 조회
 const getFriendList = async (
   pageNumber: number,
 ): Promise<GetFriendListDataProps[]> => {
   try {
-    const response = await api.get<GetFriendListBodyProps>(
+    const response = await api.get<GetFriendListResponseProps>(
       `${API_PATH.MAIN.FRIEND.LIST}?pageNumber=${pageNumber}`,
     )
-    if (response.status === 400) {
-      throw new Error(`오류: ${response.data.message}`)
+
+    // 잘못된 요청
+    if (response.data.status === 400) {
+      throw new Error(
+        response.data.message || ERROR_MESSAGES.INVALID_CREDENTIALS,
+      )
     }
     return response.data.data
-  } catch (error) {
-    console.error(error)
-    throw error
+  } catch (error: any) {
+    // 디버깅용
+    console.error("친구 목록 조회 에러:", error)
+
+    throw new Error(error.response.data.message || ERROR_MESSAGES.GENERIC_ERROR)
   }
 }
 

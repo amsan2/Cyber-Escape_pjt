@@ -6,7 +6,7 @@ import ERROR_MESSAGES from "@/constants/errorMessages"
 // 회원 탈퇴
 const patchQuit = async (): Promise<null> => {
   try {
-    const response = await api.patch<NullBodyProps>(API_PATH.AUTH.QUIT)
+    const response = await api.patch<NullResponseProps>(API_PATH.AUTH.QUIT)
 
     // 잘못된 요청
     if (response.data.status === 400) {

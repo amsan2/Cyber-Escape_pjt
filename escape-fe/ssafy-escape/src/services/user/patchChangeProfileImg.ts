@@ -10,7 +10,7 @@ const patchChangeProfileImg = async (
     const formData = new FormData()
     formData.append("multipartFile", file) // 서버에서 받을 파라미터 이름: "multipartFile"
     try {
-      const response = await api.patch<StringBodyProps>(
+      const response = await api.patch<StringResponseProps>(
         API_PATH.MAIN.PROFILE_IMG_CHANGE,
         formData,
         {

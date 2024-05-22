@@ -3,11 +3,10 @@
 import { useQuery } from "@tanstack/react-query"
 import { styled } from "styled-components"
 import Button from "../common/Button"
-// import postInvitedAccept from "@/services/notification/postInvitedAccept"
 import getNotificationList from "@/services/notification/getNotificationList"
 import Swal from "sweetalert2"
 import postReadNotification from "@/services/notification/postReadNotification"
-import postAcceptance from "@/services/game/room/postAcceptance"
+import postInviteAcceptance from "@/services/notification/postInviteAcceptance"
 import { useRouter } from "next/navigation"
 import useIngameThemeStore from "@/stores/IngameThemeStore"
 import useUserStore from "@/stores/UserStore"
@@ -27,14 +26,14 @@ const InvitedList = () => {
   const { setIsHost } = useUserStore()
   const router = useRouter()
   // 초대 요청 수락 시
-  const handleAccept = async (roomUuid: string, notificationId: string) => {
+  const handleAccept = async (roomUuid: string, objectId: string) => {
     try {
-      const response = await postAcceptance({ roomUuid: roomUuid })
-      setSelectedTheme(response.data.themaCategory)
-      setRoomTitle(response.data.title)
+      const response = await postInviteAcceptance(roomUuid)
+      setSelectedTheme(response.themaCategory)
+      setRoomTitle(response.title)
       setIsHost(false)
       // 알림 읽음 처리
-      await postReadNotification(notificationId)
+      await postReadNotification(objectId)
       router.push(`/gameroom/${roomUuid}`)
       refetch()
     } catch (error) {
@@ -49,13 +48,13 @@ const InvitedList = () => {
   }
 
   // 초대 요청 거절 시
-  const handleDeny = async (notificationId: string) => {
+  const handleDeny = async (objectId: string) => {
     Swal.fire({
       title: "초대를 거절했습니다.",
       width: "500px",
       padding: "40px",
     })
-    await postReadNotification(notificationId)
+    await postReadNotification(objectId)
     refetch()
   }
 
@@ -70,25 +69,30 @@ const InvitedList = () => {
       ) : (
         notificationList
           .filter((data) => data.type === "GAME")
-          .map((user, i) => (
+          .map((notification, i) => (
             <div key={i}>
               <MainContainer>
                 <ProfileBox>
-                  <ProfileImg src={user.profileUrl} alt="프로필 이미지" />
-                  <div>{user.nickname}</div>
+                  <ProfileImg
+                    src={notification.profileUrl}
+                    alt="프로필 이미지"
+                  />
+                  <div>{notification.nickname}</div>
                 </ProfileBox>
                 <ButtonBox>
                   <Button
                     text="수락"
                     theme="success"
                     width="60px"
-                    onClick={() => handleAccept(user.roomUuid, user.id)}
+                    onClick={() =>
+                      handleAccept(notification.roomUuid, notification.id)
+                    }
                   />
                   <Button
                     text="거절"
                     theme="fail"
                     width="60px"
-                    onClick={() => handleDeny(user.id)}
+                    onClick={() => handleDeny(notification.id)}
                   />
                 </ButtonBox>
               </MainContainer>

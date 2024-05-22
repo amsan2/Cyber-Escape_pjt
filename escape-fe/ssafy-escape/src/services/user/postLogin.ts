@@ -9,7 +9,7 @@ const postLogin = async (
   password: string,
 ): Promise<UserInfoProps> => {
   try {
-    const response = await api.post<PostLoginBodyProps>(API_PATH.AUTH.LOGIN, {
+    const response = await api.post<PostLoginResponseProps>(API_PATH.AUTH.LOGIN, {
       loginId,
       password,
     })

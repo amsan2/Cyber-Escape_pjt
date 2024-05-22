@@ -5,7 +5,7 @@ import ERROR_MESSAGES from "@/constants/errorMessages"
 // 회원가입
 const postSignUp = async (loginId: string, password: string): Promise<null> => {
   try {
-    const response = await api.post<NullBodyProps>(API_PATH.AUTH.SIGNUP, {
+    const response = await api.post<NullResponseProps>(API_PATH.AUTH.SIGNUP, {
       loginId,
       password,
     })

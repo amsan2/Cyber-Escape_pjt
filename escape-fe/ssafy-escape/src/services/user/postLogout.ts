@@ -6,7 +6,7 @@ import ERROR_MESSAGES from "@/constants/errorMessages"
 // 로그아웃
 const postLogout = async (): Promise<null> => {
   try {
-    const response = await api.post<NullBodyProps>(API_PATH.AUTH.LOGOUT)
+    const response = await api.post<NullResponseProps>(API_PATH.AUTH.LOGOUT)
 
     // 잘못된 요청
     if (response.data.status === 400) {

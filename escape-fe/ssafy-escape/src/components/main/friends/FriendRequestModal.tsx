@@ -40,8 +40,8 @@ const FriendRequestModal = ({ open, onClose }: FriendRequestModalProps) => {
   }
 
   //
-  const handleRequest = async (id: string) => {
-    await postFriendRequest(id, "FRIEND")
+  const handleRequest = async (receiverUuid: string) => {
+    await postFriendRequest(receiverUuid, "FRIEND") // 신청받뉸 유저의 uuid와 알림 type(GAME | FRIEND)
     Swal.fire({
       title: "친구 요청 완료!",
       width: "500px",

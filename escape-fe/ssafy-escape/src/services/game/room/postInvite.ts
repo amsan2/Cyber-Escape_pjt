@@ -9,9 +9,9 @@ interface PostInviteRequestProps {
 // 친구 초대하기
 const postInvite = async (
   data: PostInviteRequestProps,
-): Promise<NullBodyProps> => {
+): Promise<NullResponseProps> => {
   try {
-    const response = await api.post<NullBodyProps>(
+    const response = await api.post<NullResponseProps>(
       API_PATH.GAME.MULTI.ROOM.INVITE,
       data,
     )

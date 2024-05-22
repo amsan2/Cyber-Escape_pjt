@@ -26,10 +26,10 @@ const FriendRequestActions = () => {
   // 친구 요청 수락 눌렀을 시
   const handleRequest = async (
     requestUserUuid: string,
-    notificationId: string,
+    objectId: string,
   ) => {
     await postFriendAddition(requestUserUuid)
-    await postReadNotification(notificationId)
+    await postReadNotification(objectId)
     Swal.fire({
       title: "친구 추가 완료!",
       width: "500px",
@@ -40,8 +40,8 @@ const FriendRequestActions = () => {
   }
 
   // 친구 요청 거절 눌렀을 시
-  const handleDeny = async (notificationId: string) => {
-    await postReadNotification(notificationId)
+  const handleDeny = async (objectId: string) => {
+    await postReadNotification(objectId)
     Swal.fire({
       title: "친구 요청을 거절했습니다.",
       width: "500px",
@@ -58,25 +58,27 @@ const FriendRequestActions = () => {
       ) : null}
       {requestData
         ?.filter((data) => data.type === "FRIEND")
-        .map((user) => (
-          <div key={user.senderUuid}>
+        .map((notification) => (
+          <div key={notification.senderUuid}>
             <SubContainer>
               <ProfileBox>
-                <ProfileImg src={user.profileUrl} alt="프로필 이미지" />
-                <div>{user.nickname}</div>
+                <ProfileImg src={notification.profileUrl} alt="프로필 이미지" />
+                <div>{notification.nickname}</div>
               </ProfileBox>
               <ButtonBox>
                 <Button
                   text="수락"
                   theme="success"
                   width="60px"
-                  onClick={() => handleRequest(user.senderUuid, user.id)}
+                  onClick={() =>
+                    handleRequest(notification.senderUuid, notification.id)
+                  }
                 />
                 <Button
                   text="거절"
                   theme="fail"
                   width="60px"
-                  onClick={() => handleDeny(user.id)}
+                  onClick={() => handleDeny(notification.id)}
                 />
               </ButtonBox>
             </SubContainer>
