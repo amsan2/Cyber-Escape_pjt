@@ -8,12 +8,19 @@ interface ThemeIconStyleProps {
   $isActive: boolean
 }
 
+interface ThemeMainBoxStyleProps {
+  $justifyContent?: string
+  $paddingRight?: string
+}
+
 const ThemeSelectBox = ({
   activeTheme,
   handleThemeClick,
+  justifyContent,
+  paddingRight,
 }: ThemeSelectBoxProps) => {
   return (
-    <ThemeMainBox>
+    <ThemeMainBox $justifyContent={justifyContent} $paddingRight={paddingRight}>
       {themes.map((theme, index) => (
         <ThemeSubBox key={index} onClick={() => handleThemeClick(index)}>
           <ThemeIcon
@@ -42,10 +49,12 @@ const ThemeSelectBox = ({
 
 export default ThemeSelectBox
 
-const ThemeMainBox = styled.div`
+const ThemeMainBox = styled.div<ThemeMainBoxStyleProps>`
   display: flex;
   align-items: center;
   gap: 15px;
+  justify-content: ${(props) => props.$justifyContent};
+  padding-right: ${(props) => props.$paddingRight};
 `
 
 const ThemeSubBox = styled.div`

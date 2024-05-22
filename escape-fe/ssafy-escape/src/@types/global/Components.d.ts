@@ -34,4 +34,17 @@ interface ProfileImageSectionProps {
 interface ThemeSelectBoxProps {
   activeTheme: number
   handleThemeClick: (idx: number) => void
+  justifyContent?: string
+  paddingRight?: string
+}
+
+interface RankItemProps {
+  user: RankData
+}
+
+interface RankData {
+  rank: number
+  profileUrl: string
+  nickname: string
+  bestTime: string
 }

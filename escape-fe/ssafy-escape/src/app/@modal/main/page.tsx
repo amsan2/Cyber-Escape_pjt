@@ -1,10 +1,10 @@
+import { HydrationBoundary, dehydrate } from "@tanstack/react-query"
 import { getQueryClient } from "@/hooks/getQueryClient"
 import Main from "@/components/main/myhome/Main"
+import { themeIdx } from "@/components/common/ThemeSelectBox"
 import postMyRanking from "@/services/main/ranking/postMyRanking"
-import { HydrationBoundary, dehydrate } from "@tanstack/react-query"
 
 const Page = async () => {
-  const themeIdx = [1, 4, 7]
   const queryClient = getQueryClient()
   await Promise.all(
     themeIdx.map((idx) =>

@@ -1,9 +1,4 @@
-import { styled } from "styled-components"
-import Image from "next/image"
-
-interface ImageProps {
-  $isActive: boolean
-}
+import styled from "styled-components"
 
 interface TopThreeProps {
   $isTopThree: boolean
@@ -18,30 +13,6 @@ export const TitleBox = styled.div`
   justify-content: center;
 `
 
-export const ThemeMainBox = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: end;
-  padding-right: 10px;
-  gap: 15px;
-`
-
-export const ThemeSubBox = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 8px;
-`
-
-export const CustomImage = styled(Image)<ImageProps>`
-  transition: transform 0.3s ease-in-out;
-  transform: ${(props) => (props.$isActive ? "scale(1.2)" : "scale(1)")};
-  cursor: pointer;
-  &:hover {
-    transform: scale(1.2);
-  }
-`
-
 export const RankingMainBox = styled.div`
   width: 70vw;
   height: 48vh;
@@ -53,7 +24,6 @@ export const RankingMainBox = styled.div`
 `
 
 export const RankingSubBox = styled.div`
-  /* background-color: #ebebeb; */
   border-radius: 20px;
   padding: 15px;
   width: 38vw;
@@ -120,6 +90,6 @@ export const Time = styled.div<TopThreeProps>`
   font-weight: ${(props) => (props.$isTopThree ? "bold" : "normal")};
 `
 
-export const NoTimeText = styled.div`
+export const NoText = styled.div`
   text-align: center;
 `

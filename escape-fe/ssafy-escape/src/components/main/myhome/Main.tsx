@@ -1,16 +1,35 @@
+"use client"
+
+import styled from "styled-components"
 import MyProfile from "./MyProfile"
 import QuickStart from "./QuickStart"
-import * as S from "@/app/@modal/main/mainStyle"
 
 // 메인홈
 const Main = () => {
   return (
-    <S.MainContainer>
+    <MainContainer>
       <MyProfile />
-      <S.VerticalLine />
+      <VerticalLine />
       <QuickStart />
-    </S.MainContainer>
+    </MainContainer>
   )
 }
 
 export default Main
+
+const MainContainer = styled.div`
+  display: flex;
+  width: 66vw;
+  height: 66vh;
+  padding: 20px;
+  gap: 2vw;
+  align-items: center;
+  justify-content: center;
+`
+
+const VerticalLine = styled.div`
+  height: 75%;
+  width: 2px;
+  background-color: #ccc;
+  margin-right: 2.5vw;
+`

@@ -55,7 +55,7 @@ const InvitedList = () => {
   // 초대 요청 거절 시
   const handleDeny = async (objectId: string) => {
     Swal.fire({
-      title: ALERT_MESSAGES.INVITATION.INVITATION_DENIED,
+      title: ALERT_MESSAGES.INVITATION.DENIED_INVITATION,
       width: "500px",
       padding: "40px",
     })
