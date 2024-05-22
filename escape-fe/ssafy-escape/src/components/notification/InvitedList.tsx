@@ -3,7 +3,6 @@
 import { useEffect } from "react"
 import { useQuery } from "@tanstack/react-query"
 import { useRouter } from "next/navigation"
-import { styled } from "styled-components"
 import Swal from "sweetalert2"
 import getNotificationList from "@/services/notification/getNotificationList"
 import postReadNotification from "@/services/notification/postReadNotification"
@@ -14,22 +13,23 @@ import ERROR_MESSAGES from "@/constants/errorMessages"
 import ALERT_MESSAGES from "@/constants/alertMessages"
 import FilterGameInvitations from "@/utils/FilterGameInvitations"
 import InvitationItem from "./InvitedItem"
+import { NoText } from "@/styles/UserItemStyles"
 
-// 받은 초대 목록 리스트
+// 받은 초대 목록
 const InvitedList = () => {
   const router = useRouter()
   const { setSelectedTheme, setRoomTitle } = useIngameThemeStore()
   const { setIsHost } = useUserStore()
 
   // 알림 목록 데이터를 불러옴
-  const { data: notificationList, refetch } = useQuery({
+  const { data: notificationList, refetch: refetchRequest } = useQuery({
     queryKey: ["notificationList"],
     queryFn: () => getNotificationList(),
   })
 
   // 컴포넌트가 마운트 될 때 데이터 갱신
   useEffect(() => {
-    refetch()
+    refetchRequest()
   }, [])
 
   // 초대 요청 수락 시
@@ -60,7 +60,7 @@ const InvitedList = () => {
       padding: "40px",
     })
     await postReadNotification(objectId) // 알림 읽음 처리
-    refetch() // 바로 refetch 해주면서 읽은 알림은 사라지게 됨
+    refetchRequest() // 바로 refetch 해주면서 읽은 알림은 사라지게 됨
   }
 
   if (!notificationList) {
@@ -89,9 +89,3 @@ const InvitedList = () => {
 }
 
 export default InvitedList
-
-const NoText = styled.div`
-  font-size: 14px;
-  text-align: center;
-  padding: 5px;
-`
