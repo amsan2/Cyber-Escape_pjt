@@ -1,32 +1,33 @@
 "use client"
 
 import { useEffect, useState } from "react"
-import ExitGame from "@/components/ingame/ExitGame"
 import Image from "next/image"
-import * as S from "./ingameStyle"
-import SpaceTheme from "../../components/ingame/main/space/SpaceTheme"
-import HorrorTheme from "@/components/ingame/main/horror/HorrorTheme"
-import SsafyTheme from "@/components/ingame/main/ssafy/SsafyTheme"
+import Swal from "sweetalert2"
 import useIngameThemeStore from "@/stores/IngameThemeStore"
 import StartScene from "@/components/ingame/StartScene"
+import ExitGame from "@/components/ingame/ExitGame"
+import SpaceTheme from "@/components/ingame/main/space/SpaceTheme"
+import HorrorTheme from "@/components/ingame/main/horror/HorrorTheme"
 import HorrorTheme2 from "@/components/ingame/main/horror2/HorrorTheme2"
+import SsafyTheme from "@/components/ingame/main/ssafy/SsafyTheme"
 import SsafyTheme2 from "@/components/ingame/main/ssafy2/SsafyTheme2"
-import Swal from "sweetalert2"
+import * as S from "./ingameStyle"
+
+// 인게임 페이지
 const Page = () => {
   const [isModelLoaded, setIsModelLoaded] = useState(false)
   const [isGameStart, setIsGameStart] = useState(false)
   const { selectedTheme } = useIngameThemeStore()
 
-  const onStartClick = () => {
+  // 게임 시작하는 클릭
+  const handleStartClick = () => {
     const canvas = document.querySelector("canvas")
     if (canvas && !document.pointerLockElement) {
       canvas.requestPointerLock()
     }
   }
 
-  const handleGameStart = () => {
-    setIsGameStart(true)
-  }
+  // 나가기 버튼
   const exitGame = (e: any) => {
     e.preventDefault()
     Swal.fire({
@@ -40,8 +41,9 @@ const Page = () => {
       }
     })
   }
+
   useEffect(() => {
-    document.addEventListener("click", onStartClick)
+    document.addEventListener("click", handleStartClick)
   }, [])
 
   return (
@@ -74,16 +76,11 @@ const Page = () => {
       ) : null}
 
       {isModelLoaded && !isGameStart ? (
-        <StartScene onFinish={handleGameStart} selectedTheme={selectedTheme} />
-      ) : null}
-      {isModelLoaded ? (
         <div>
-          {/* <StartingCountDown
-            isModelLoaded={isModelLoaded}
-            onFinish={handleGameStart}
-          /> */}
-          {/*for merge request */}
-
+          <StartScene
+            onFinish={() => setIsGameStart(true)}
+            selectedTheme={selectedTheme}
+          />
           <ExitGame>
             <Image
               src={process.env.NEXT_PUBLIC_IMAGE_URL + "/image/exitbutton.png"}
@@ -94,13 +91,18 @@ const Page = () => {
             />
           </ExitGame>
         </div>
-      ) : !isModelLoaded &&
-        (selectedTheme === 1 || selectedTheme === 2 || selectedTheme === 3) ? (
-        <S.LoadingText>Now Loading...</S.LoadingText>
-      ) : !isModelLoaded &&
-        (selectedTheme === 4 || selectedTheme === 5 || selectedTheme === 6) ? (
-        <S.LoadingText style={{ color: "white" }}>Now Loading...</S.LoadingText>
-      ) : null}
+      ) : (
+        <S.LoadingText
+          style={{
+            color:
+              selectedTheme === 1 || selectedTheme === 2 || selectedTheme === 3
+                ? "red"
+                : "white",
+          }}
+        >
+          Now Loading...
+        </S.LoadingText>
+      )}
     </S.Container>
   )
 }

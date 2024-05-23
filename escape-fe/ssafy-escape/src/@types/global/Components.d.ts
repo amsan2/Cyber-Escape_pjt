@@ -57,3 +57,10 @@ interface RankData {
   bestTime: string
 }
 
+interface HomeProps {
+  showText?: boolean // 배경만 쓸 건지 여부(showText가 false면 배경만 쓰겠다는 뜻)
+}
+
+interface CameraMoveToPositionRef {
+  moveToPosition: (x: number, y: number, z: number) => void
+}

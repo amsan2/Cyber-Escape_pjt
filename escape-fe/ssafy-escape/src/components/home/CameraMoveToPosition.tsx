@@ -1,9 +1,6 @@
 import { forwardRef, useEffect, useImperativeHandle, useState } from "react"
 import { useThree, useFrame } from "@react-three/fiber"
 
-export interface CameraMoveToPositionRef {
-  moveToPosition: (x: number, y: number, z: number) => void
-}
 
 const CameraMoveToPosition = forwardRef<CameraMoveToPositionRef, {}>(
   (props, ref) => {

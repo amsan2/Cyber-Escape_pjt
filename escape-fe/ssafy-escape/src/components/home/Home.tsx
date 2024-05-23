@@ -3,19 +3,14 @@
 import { useRef, useState } from "react"
 import { useRouter } from "next/navigation"
 import { Canvas } from "@react-three/fiber"
+import styled from "styled-components"
 import Login from "../login/Login"
 import HomeRoom from "./HomeRoom"
-import CameraMoveToPosition, {
-  CameraMoveToPositionRef,
-} from "./CameraMoveToPosition"
+import CameraMoveToPosition from "./CameraMoveToPosition"
 import HeaderNav from "../common/HeaderNav"
 import useUserStore from "@/stores/UserStore"
 import { paytoneOne } from "@/styles/GoogleFont"
-import * as S from "../../app/homeStyle"
-
-interface HomeProps {
-  showText?: boolean // 배경만 쓸 건지 여부(showText가 false면 배경만 쓰겠다는 뜻)
-}
+import { MainColor } from "@/styles/palette"
 
 // 첫 시작 페이지
 const Home = ({ showText = true }: HomeProps) => {
@@ -66,15 +61,15 @@ const Home = ({ showText = true }: HomeProps) => {
         <div>
           {!isStartClicked && showText ? (
             <div>
-              <S.TitleText className={paytoneOne.className}>
+              <TitleText className={paytoneOne.className}>
                 Cyber Escape
-              </S.TitleText>
-              <S.StartButtton
+              </TitleText>
+              <StartButtton
                 className={paytoneOne.className}
                 onClick={handleStartClick}
               >
                 START
-              </S.StartButtton>
+              </StartButtton>
             </div>
           ) : isStartClicked && showText ? (
             <Login handleLoginback={handleBackClick} />
@@ -86,3 +81,34 @@ const Home = ({ showText = true }: HomeProps) => {
 }
 
 export default Home
+
+const TitleText = styled.div`
+  font-size: 110px;
+  color: ${MainColor};
+  position: absolute;
+  top: 40%;
+  left: 50%;
+  font-weight: bold;
+  transform: translate(-50%, -50%);
+  white-space: nowrap;
+  text-shadow: 2px 2px 2px rgba(0, 0, 0, 0.5);
+`
+
+const StartButtton = styled.button`
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 60px;
+  color: white;
+  background: none;
+  border: none;
+  cursor: pointer;
+  text-shadow: 2px 2px 2px rgba(0, 0, 0, 0.5);
+  margin-top: 50px;
+  transition: font-size 0.3s ease;
+
+  &:hover {
+    font-size: 66px;
+  }
+`

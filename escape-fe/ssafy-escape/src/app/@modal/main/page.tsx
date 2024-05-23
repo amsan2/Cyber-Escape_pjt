@@ -4,17 +4,22 @@ import Main from "@/components/main/myhome/Main"
 import { themeIdx } from "@/components/common/ThemeSelectBox"
 import postMyRanking from "@/services/main/ranking/postMyRanking"
 
+// 메인페이지
 const Page = async () => {
+
   const queryClient = getQueryClient()
+
   await Promise.all(
     themeIdx.map((idx) =>
       queryClient.prefetchQuery({
-        queryKey: ["myRanking", idx],
+        queryKey: ["myRanking", idx], // 모든 테마의 내 랭킹 데이터 prefetch 
         queryFn: () => postMyRanking(idx),
       }),
     ),
   )
+
   const dehydratedState = dehydrate(queryClient)
+  
   return (
     <HydrationBoundary state={dehydratedState}>
       <Main />

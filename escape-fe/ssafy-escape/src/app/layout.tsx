@@ -1,15 +1,12 @@
 "use client"
-import { Noto_Sans_KR } from "next/font/google"
+
+import { usePathname } from "next/navigation"
+import { notoSansKr } from "@/styles/GoogleFont"
 import StyledComponentsRegistry from "../lib/registry"
 import QueryProvider from "../hooks/QueryProvider"
-import "./globals.css"
-import { usePathname } from "next/navigation"
 import useUserStore from "@/stores/UserStore"
 import ClientHead from "./ClintHead"
-
-const notoSansKr = Noto_Sans_KR({
-  subsets: ["latin"],
-})
+import "./globals.css"
 
 const Layout = ({
   children,
@@ -21,6 +18,7 @@ const Layout = ({
   const pathname = usePathname()
   const segments = pathname.split("/")
   const { isLogin } = useUserStore()
+  
   return (
     <html>
       <ClientHead />
