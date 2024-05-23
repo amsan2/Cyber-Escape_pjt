@@ -8,11 +8,11 @@ const Multi = () => {
 
   return (
     <Container
-      display="flex"
-      justifyContent="space-between"
-      alignItems="center"
-      flexDirection="column"
-      backgroundColor="none"
+      $display="flex"
+      $justifyContent="space-between"
+      $alignItems="center"
+      $flexDirection="column"
+      $backgroundColor="none"
     >
       <S.Title>멀티 모드</S.Title>
       <div></div>

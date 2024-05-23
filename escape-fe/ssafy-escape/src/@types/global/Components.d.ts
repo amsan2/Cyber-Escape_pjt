@@ -46,13 +46,6 @@ interface ProfileImageSectionProps {
   handleChangeImg: (e: React.ChangeEvent<HTMLInputElement>) => void
 }
 
-interface ThemeSelectBoxProps {
-  activeTheme: number
-  handleThemeClick: (idx: number) => void
-  justifyContent?: string
-  paddingRight?: string
-}
-
 interface RankItemProps {
   user: RankData
 }
@@ -63,3 +56,4 @@ interface RankData {
   nickname: string
   bestTime: string
 }
+

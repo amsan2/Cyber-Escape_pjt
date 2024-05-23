@@ -57,11 +57,11 @@ const Create = () => {
   }
   return (
     <Container
-      display="flex"
-      justifyContent="space-evenly"
-      alignItems="center"
-      flexDirection="column"
-      backgroundColor="none"
+      $display="flex"
+      $justifyContent="space-evenly"
+      $alignItems="center"
+      $flexDirection="column"
+      $backgroundColor="none"
     >
       <S.CreateContainer>
         <S.MenuBox>

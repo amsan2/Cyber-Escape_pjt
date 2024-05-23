@@ -1,47 +1,23 @@
 "use client"
-import { ReactNode } from "react"
+
 import { useRouter, usePathname } from "next/navigation"
 import styled from "styled-components"
 import ArrowBackIosNewIcon from "@mui/icons-material/ArrowBackIosNew"
 import useIngameThemeStore from "@/stores/IngameThemeStore"
 import useUserStore from "@/stores/UserStore"
 import patchExit from "@/services/game/room/patchExit"
-interface ContainerProps {
-  children: ReactNode
-  isBackButton?: boolean // 뒤로 가기 버튼 유무
-  display?: string
-  flexDirection?: string
-  justifyContent?: string
-  alignItems?: string
-  backgroundColor?: string
-  gap?: string
-}
-interface ContainerStyleProps {
-  $display?: string
-  $flexDirection?: string
-  $justifyContent?: string
-  $alignItems?: string
-  $backgroundColor?: string
-  $gap?: string
-}
-const Container = ({
-  isBackButton = true,
-  children,
-  display,
-  flexDirection,
-  justifyContent,
-  alignItems,
-  backgroundColor,
-  gap,
-}: ContainerProps) => {
+
+const Container = (props: ContainerProps) => {
+  const { children, isBackButton } = props
   const router = useRouter()
   const pathname = usePathname()
   const segments = pathname.split("/")
   const { roomUuid } = useIngameThemeStore()
   const { userUuid } = useUserStore()
+
   const gameOut = async () => {
     try {
-      const rr = await patchExit({
+      await patchExit({
         roomUuid: roomUuid || "",
         userUuid: userUuid || "",
       })
@@ -49,6 +25,7 @@ const Container = ({
       console.error(e)
     }
   }
+
   const movePage = async () => {
     if (segments[1] === "gameroom") {
       await gameOut()
@@ -59,20 +36,14 @@ const Container = ({
       router.back()
     }
   }
+
   return (
-    <ContainerStyle
-      $display={display}
-      $flexDirection={flexDirection}
-      $justifyContent={justifyContent}
-      $alignItems={alignItems}
-      $backgroundColor={backgroundColor}
-      $gap={gap}
-    >
-      {isBackButton ? (
+    <ContainerStyle {...props}>
+      {isBackButton && (
         <BackIcon onClick={() => movePage()}>
           <ArrowBackIosNewIcon />
         </BackIcon>
-      ) : null}
+      )}
       {children}
     </ContainerStyle>
   )
@@ -80,7 +51,7 @@ const Container = ({
 
 export default Container
 
-const ContainerStyle = styled.div<ContainerStyleProps>`
+const ContainerStyle = styled.div<ContainerProps>`
   width: 70vw;
   height: 80vh;
   position: absolute;

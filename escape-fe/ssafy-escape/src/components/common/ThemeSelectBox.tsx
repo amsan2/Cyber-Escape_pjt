@@ -4,15 +4,7 @@ import Image from "next/image"
 export const themeIdx = [1, 4, 7]
 const themes = ["공포", "싸피", "우주"]
 
-interface ThemeIconStyleProps {
-  $isActive: boolean
-}
-
-interface ThemeMainBoxStyleProps {
-  $justifyContent?: string
-  $paddingRight?: string
-}
-
+// 랭킹 조회하는 테마 선택 컴포넌트
 const ThemeSelectBox = ({
   activeTheme,
   handleThemeClick,

@@ -1,10 +1,5 @@
 import styled from "styled-components"
 
-interface InputProps {
-  $width?: string
-  $textIndent?: string
-}
-
 const Input = styled.input<InputProps>`
   width: ${(props) => props.$width || "200px"};
   padding: 10px;

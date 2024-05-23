@@ -68,7 +68,7 @@ const Waiting = ({
       </Canvas>
       <HeaderNav />
       {roomData ? (
-        <Container display="flex" alignItems="center" flexDirection="column">
+        <Container $display="flex" $alignItems="center" $flexDirection="column">
           <div style={{ fontSize: "1.8rem" }}>{roomTitle}</div>
           <WaitingContainer>
             <InviteModal open={showModal} handleClose={handleModalClose} />
@@ -189,7 +189,7 @@ const Waiting = ({
           </WaitingContainer>
         </Container>
       ) : (
-        <Container display="flex" justifyContent="center" alignItems="center">
+        <Container $display="flex" $justifyContent="center" $alignItems="center">
           <CircularProgress />
         </Container>
       )}
