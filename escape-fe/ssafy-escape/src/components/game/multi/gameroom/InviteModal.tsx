@@ -9,6 +9,8 @@ import { useInfiniteQuery } from "@tanstack/react-query"
 import { usePathname } from "next/navigation"
 import Swal from "sweetalert2"
 import InfiniteQuery from "@/hooks/InfiniteQuery"
+import CustomAlert from "@/components/common/CustomAlert"
+import ALERT_MESSAGES from "@/constants/alertMessages"
 
 interface InviteModalProps {
   open: boolean
@@ -43,11 +45,7 @@ const InviteModal = ({ open, handleClose }: InviteModalProps) => {
       roomUuid: roomUuid,
       userUuid: userUuid ? userUuid : "",
     })
-    Swal.fire({
-      title: "초대 요청 완료!",
-      width: "400px",
-      padding: "40px",
-    })
+    CustomAlert({ title: ALERT_MESSAGES.INVITATION.INVITATION_SUCCESS })
     handleClose()
   }
 

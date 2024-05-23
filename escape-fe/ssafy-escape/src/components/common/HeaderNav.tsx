@@ -21,6 +21,9 @@ import Swal from "sweetalert2"
 import { EventSourcePolyfill, NativeEventSource } from "event-source-polyfill"
 import { Badge, formControlClasses } from "@mui/material"
 import { MainColor } from "@/styles/palette"
+import CustomAlert from "./CustomAlert"
+import ALERT_MESSAGES from "@/constants/alertMessages"
+import ERROR_MESSAGES from "@/constants/errorMessages"
 
 interface HeaderProps {
   Icon: React.ElementType
@@ -171,17 +174,13 @@ const MainHeader = () => {
   const handleLogout = async () => {
     try {
       await logout()
-      Swal.fire({
-        title: "로그아웃 완료!",
-        width: "500px",
-        padding: "40px",
-      })
+      CustomAlert({ title: ALERT_MESSAGES.AUTH.LOGOUT })
       router.push("/")
     } catch (error) {
       console.error(error)
       if (error instanceof Error) {
         Swal.fire(
-          "로그아웃 실패",
+          ERROR_MESSAGES.AUTH.LOGOUT_FAILED,
           error instanceof Error ? error.message : "",
           "error",
         )

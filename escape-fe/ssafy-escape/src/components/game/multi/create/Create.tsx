@@ -11,6 +11,8 @@ import { useState, useEffect } from "react"
 import useIngameThemeStore from "@/stores/IngameThemeStore"
 import useUserStore from "@/stores/UserStore"
 import postCreateRoom from "@/services/game/room/postCreateRoom"
+import ALERT_MESSAGES from "@/constants/alertMessages"
+import CustomAlert from "@/components/common/CustomAlert"
 interface postCreateRoomRequestProps {
   title: string
   category: number
@@ -45,12 +47,7 @@ const Create = () => {
   }
   const createRoom = async () => {
     if (buttonDisabled()) {
-      Swal.fire({
-        icon: "error",
-        text: "모든 항목을 채워주세요",
-        width: "500px",
-        padding: "40px",
-      })
+      CustomAlert({ title: ALERT_MESSAGES.ROOM.EMPTY_INPUT })
       return
     }
     const response = await postCreateRoom(data)

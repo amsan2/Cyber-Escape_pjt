@@ -4,7 +4,9 @@ const ERROR_MESSAGES = {
   AUTH: {
     USER_NOT_FOUND: "사용자를 찾을 수 없습니다.",
     DUPLICATE_ID: "중복된 아이디입니다.",
-    INVALID_ID_FORMAT: "아이디 형식이 올바르지 않습니다.",
+    INVALID_ID_FORMAT:
+      "아이디는 3~20자 사이 대소문자 또는 숫자만 입력해 주세요!",
+    LOGOUT_FAILED: "로그아웃 실패!",
     INVALID_PASSWORD_FORMAT: "비밀번호 형식이 올바르지 않습니다.",
   },
   INVITATION: {

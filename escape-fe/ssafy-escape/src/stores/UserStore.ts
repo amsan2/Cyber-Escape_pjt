@@ -24,9 +24,9 @@ interface UserAction {
 const initialState: UserState = {
   isLogin: false,
   isHost: false,
-  userUuid: null,
-  nickname: null,
-  profileUrl: undefined,
+  userUuid: "",
+  nickname: "",
+  profileUrl: "",
   accessToken: null,
 }
 

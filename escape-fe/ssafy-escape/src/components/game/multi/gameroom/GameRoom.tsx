@@ -11,6 +11,8 @@ import Waiting from "./Waiting"
 import Ingame from "./Ingame"
 import Swal from "sweetalert2"
 import Countdown from "./CountDown"
+import CustomAlert from "@/components/common/CustomAlert"
+import ALERT_MESSAGES from "@/constants/alertMessages"
 // socket cleint, openvidu session, 게임 입장 및 퇴장 다 여기서 관리
 
 const GameRoom = () => {
@@ -175,22 +177,14 @@ const GameRoom = () => {
       setGameStart(true)
     }
     if (roomData?.kicked && roomData?.guest?.uuid === userUuid) {
-      Swal.fire({
-        title: "방장으로부터 강제 퇴장 당했습니다.",
-        width: "500px",
-        padding: "40px",
-      })
+      CustomAlert({ title: ALERT_MESSAGES.ROOM.FORCED_EXIT })
       setTimeout(() => {
         window.location.href = "/main"
       }, 2000)
     }
     if (roomData?.host === null) {
       // 호스트가 나가면 대기방이 저절로 삭제되기 때문에 patchExit 할 필요가 없음. 이 부분 추후 수정 필요
-      Swal.fire({
-        title: "호스트가 이탈하여 게임이 종료되었습니다.",
-        width: "500px",
-        padding: "40px",
-      })
+      CustomAlert({ title: ALERT_MESSAGES.ROOM.HOST_LEFT })
       setTimeout(() => {
         window.location.href = "/main"
       }, 2000)
@@ -207,7 +201,7 @@ const GameRoom = () => {
     }
     if (isIngame && roomData?.guest === null) {
       // 게임 중에 게스트가 이탈하면
-      Swal.fire("상대방이 이탈하였습니다. 게임을 종료합니다")
+      CustomAlert({ title: ALERT_MESSAGES.AUTH.SIGNUP })
       setTimeout(() => {
         progressReset()
       }, 2000)

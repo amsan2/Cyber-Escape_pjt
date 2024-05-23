@@ -1,3 +1,18 @@
+interface LoginProps {
+  handleLoginback: () => void // 로그인 페이지에서 뒤로가기를 눌렀을 경우
+}
+
+interface AuthFormProps {
+  mainText: string
+  buttonText: string
+  loginId: string
+  password: string
+  setLoginId: (id: string) => void
+  setPassword: (password: string) => void
+  onBack: () => void
+  onSubmit: (e: React.FormEvent<HTMLFormElement>) => void
+}
+
 interface InvitationItemProps {
   notification: GetNotificationListDataProps
   onAccept: (roomUuid: string, notificationId: string) => void

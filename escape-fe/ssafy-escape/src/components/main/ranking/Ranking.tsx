@@ -4,10 +4,10 @@ import { useState } from "react"
 import { useInfiniteQuery } from "@tanstack/react-query"
 import EmojiEventsIcon from "@mui/icons-material/EmojiEvents"
 import postRankingList from "@/services/main/ranking/postRankingList"
-import * as S from "@/styles/RankingStyles"
 import ThemeSelectBox, { themeIdx } from "@/components/common/ThemeSelectBox"
 import InfiniteQuery from "@/hooks/InfiniteQuery"
 import RankItem from "./RankItem"
+import * as S from "@/styles/RankingStyles"
 
 // 전체 랭킹
 const Ranking = () => {

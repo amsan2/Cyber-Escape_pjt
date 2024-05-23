@@ -10,6 +10,8 @@ import { useQuery } from "@tanstack/react-query"
 import getQuiz from "@/services/ingame/getQuiz"
 import Swal from "sweetalert2"
 import data from "@/data/ingame/horror/HorrorOption.json"
+import CustomAlert from "@/components/common/CustomAlert"
+import ALERT_MESSAGES from "@/constants/alertMessages"
 
 // 세 번째 문제 모달
 const ThirdProblemModal = ({
@@ -77,11 +79,7 @@ const ThirdProblemModal = ({
     } else if (hint === 0 && openHint) {
       setHintModalOpen(true)
     } else if (hint === 0) {
-      Swal.fire({
-        title: "힌트를 모두 사용했습니다.",
-        width: "500px",
-        padding: "40px",
-      })
+      CustomAlert({ title: ALERT_MESSAGES.INGAME.OUT_OF_HINT })
     }
   }
 

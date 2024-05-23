@@ -1,11 +1,11 @@
 import { useInfiniteQuery } from "@tanstack/react-query"
-import Swal from "sweetalert2"
 import useModalStore from "@/stores/ModalStore"
 import getFriendList from "@/services/main/friends/getFriendList"
 import postDeleteFriend from "@/services/main/friends/postDeleteFriend"
 import FriendItem from "./FriendItem"
 import ALERT_MESSAGES from "@/constants/alertMessages"
 import InfiniteQuery from "@/hooks/InfiniteQuery"
+import CustomAlert from "@/components/common/CustomAlert"
 
 // 친구 목록 (무한 스크롤)
 const FriendList = () => {
@@ -26,11 +26,7 @@ const FriendList = () => {
   // 친구 삭제 버튼 클릭 시
   const handleDelete = async (friendUuid: string) => {
     await postDeleteFriend(friendUuid)
-    Swal.fire({
-      title: ALERT_MESSAGES.FRIEND.DELETE,
-      width: "500px",
-      padding: "40px",
-    })
+    CustomAlert({ title: ALERT_MESSAGES.FRIEND.DELETE })
     refetchFriends()
   }
 

@@ -10,6 +10,8 @@ import { useQuery } from "@tanstack/react-query"
 import getQuiz from "@/services/ingame/getQuiz"
 import Swal from "sweetalert2"
 import data from "@/data/ingame/horror/HorrorOption.json"
+import CustomAlert from "@/components/common/CustomAlert"
+import ALERT_MESSAGES from "@/constants/alertMessages"
 
 // 첫 번째 문제 모달
 // 문제 모달 중복 코드 많아서 추후 리팩토링 필요
@@ -52,11 +54,7 @@ const FirstProblemModal = ({
     } else if (hint === 0 && openHint) {
       setHintModalOpen(true)
     } else if (hint === 0) {
-      Swal.fire({
-        title: "힌트를 모두 사용했습니다.",
-        width: "500px",
-        padding: "40px",
-      })
+      CustomAlert({ title: ALERT_MESSAGES.ROOM.GUEST_LEFT })
     }
   }
 
@@ -158,7 +156,7 @@ const FirstProblemModal = ({
         <div>힌트보기</div>
       </HintIconBox>
       <HintModal
-        open={hintModalopen}
+        isOpen={hintModalopen}
         onClose={handleCloseModal}
         quizUuid={quizData[0].quizUuid}
       />
