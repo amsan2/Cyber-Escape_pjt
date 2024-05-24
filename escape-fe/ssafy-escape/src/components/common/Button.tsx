@@ -43,7 +43,7 @@ const getHoverBackgroundColor = (theme: string) => {
 const ButtonStyle = styled.button<ButtonProps>`
   width: ${(props) => props.width || "100%"};
   height: ${(props) => props.height || "100%"};
-  font-size: ${(props) => props.fontSize || "inherit"};
+  font-size: ${(props) => props.fontSize || "13px"};
   padding: 10px;
   border: none;
   border-radius: 0.25rem;

@@ -1,9 +1,24 @@
 import Image from "next/image"
 import styled from "styled-components"
 
-interface CrosshairProp {
-  interactNum: number
+const Crosshair = ({ interactNum }: CrosshairProps) => {
+  const imageURL = process.env.NEXT_PUBLIC_IMAGE_URL + "/image/selection.png"
+  const imageURL_2 = process.env.NEXT_PUBLIC_IMAGE_URL + "/image/open_door.png"
+
+  return interactNum === 1 ? (
+    <Crosshair1></Crosshair1>
+  ) : interactNum === 2 ? (
+    <Crosshair2>
+      <Image src={imageURL} alt={"선택"} width={50} height={50} />
+    </Crosshair2>
+  ) : interactNum === 3 ? (
+    <Crosshair2>
+      <Image src={imageURL_2} alt={"문"} width={50} height={50} />
+    </Crosshair2>
+  ) : null
 }
+
+export default Crosshair
 
 const Crosshair1 = styled.div`
   position: fixed;
@@ -44,22 +59,3 @@ const Crosshair2 = styled.image`
   height: 22px;
   transform: translate(-50%, -50%);
 `
-
-const Crosshair = ({ interactNum }: CrosshairProp) => {
-  const imageURL = process.env.NEXT_PUBLIC_IMAGE_URL + "/image/selection.png"
-  const imageURL_2 = process.env.NEXT_PUBLIC_IMAGE_URL + "/image/open_door.png"
-
-  return interactNum === 1 ? (
-    <Crosshair1></Crosshair1>
-  ) : interactNum === 2 ? (
-    <Crosshair2>
-      <Image src={imageURL} alt={"선택"} width={50} height={50} />
-    </Crosshair2>
-  ) : interactNum === 3 ? (
-    <Crosshair2>
-      <Image src={imageURL_2} alt={"문"} width={50} height={50} />
-    </Crosshair2>
-  ) : null
-}
-
-export default Crosshair

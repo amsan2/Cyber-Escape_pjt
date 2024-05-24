@@ -10,9 +10,7 @@ import useUserStore from "@/stores/UserStore"
 import useIngameThemeStore from "@/stores/IngameThemeStore"
 import HomeRoom from "@/components/home/HomeRoom"
 import { Canvas } from "@react-three/fiber"
-import CameraMoveToPosition, {
-  CameraMoveToPositionRef,
-} from "@/components/home/CameraMoveToPosition"
+import CameraMoveToPosition from "@/components/home/CameraMoveToPosition"
 
 import { CircularProgress } from "@mui/material"
 import styled from "styled-components"
@@ -189,7 +187,11 @@ const Waiting = ({
           </WaitingContainer>
         </Container>
       ) : (
-        <Container $display="flex" $justifyContent="center" $alignItems="center">
+        <Container
+          $display="flex"
+          $justifyContent="center"
+          $alignItems="center"
+        >
           <CircularProgress />
         </Container>
       )}

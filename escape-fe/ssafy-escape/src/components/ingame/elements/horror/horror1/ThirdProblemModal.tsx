@@ -2,17 +2,19 @@ import Image from "next/image"
 import { styled } from "styled-components"
 import CloseIcon from "@mui/icons-material/Close"
 import Button from "@/components/common/Button"
-import useIngameQuizStore from "@/stores/IngameQuizStore"
-import postAnswer from "@/services/ingame/postAnswer"
-import HintModal from "../common/HintModal"
 import { useEffect, useState } from "react"
-
+import postAnswer from "@/services/ingame/postAnswer"
+import useIngameQuizStore from "@/stores/IngameQuizStore"
+import HintModal from "../../common/HintModal"
 import { useQuery } from "@tanstack/react-query"
 import getQuiz from "@/services/ingame/getQuiz"
+import Swal from "sweetalert2"
 import data from "@/data/ingame/horror/HorrorOption.json"
+import CustomAlert from "@/components/common/CustomAlert"
+import ALERT_MESSAGES from "@/constants/alertMessages"
 
-// 두 번째 문제 모달
-const SecondProblemModal = ({
+// 세 번째 문제 모달
+const ThirdProblemModal = ({
   onClose,
   penalty,
   setPenalty,
@@ -23,8 +25,16 @@ const SecondProblemModal = ({
   const [showExtraImage, setShowExtraImage] = useState(false)
   const [hintModalopen, setHintModalOpen] = useState<boolean>(false)
   const [index, setIndex] = useState(0)
+  const [openHint, setOpenHint] = useState<boolean>(false)
   const [optionData, setOptionData] = useState<HorrorOptionData | null>(null)
 
+  useEffect(() => {
+    setOptionData(data)
+  }, [])
+
+  if (!optionData) {
+    return
+  }
   useEffect(() => {
     const randomIndex = Math.floor(Math.random() * 10)
     setIndex(randomIndex)
@@ -40,36 +50,37 @@ const SecondProblemModal = ({
         setShowExtraImage(true)
         const hideImg = setTimeout(() => {
           setShowExtraImage(false)
-        }, 900)
+        }, 1300)
         return () => clearTimeout(hideImg)
-      }, 300)
+      }, 500)
       return () => clearTimeout(showImg)
     }, 5000)
     return () => clearTimeout(playAudio)
   }, [])
 
-  const { solved, setSolved } = useIngameQuizStore()
+  const { solved, hint, setSolved, setHint } = useIngameQuizStore()
+
   const { data: quizData } = useQuery({
-    queryKey: ["quizList", 3],
-    queryFn: () => getQuiz(3),
+    queryKey: ["quizList", 2],
+    queryFn: () => getQuiz(2),
   })
-
-  useEffect(() => {
-    setOptionData(data)
-  }, [])
-
-  if (!optionData) {
-    return
-  }
 
   if (!quizData) {
     return
   }
 
-  // 힌트 볼 때마다 시간 30초 깎는 패널티 적용
+  // 힌트 볼 때 시간 30초 깎는 패널티 적용
   const handleOpenModal = () => {
-    setHintModalOpen(true)
-    timePenalty()
+    if (hint === 1) {
+      setHint(0)
+      setOpenHint(true)
+      setHintModalOpen(true)
+      timePenalty()
+    } else if (hint === 0 && openHint) {
+      setHintModalOpen(true)
+    } else if (hint === 0) {
+      CustomAlert({ title: ALERT_MESSAGES.INGAME.OUT_OF_HINT })
+    }
   }
 
   const handleCloseModal = () => {
@@ -77,19 +88,22 @@ const SecondProblemModal = ({
   }
 
   const handleAnswerCheck = async (answer: string) => {
-    if ((await postAnswer(quizData[1].quizUuid, answer)).right) {
-      setSolved(solved + 1)
+    if ((await postAnswer(quizData[2].quizUuid, answer)).right) {
       if (progressUpdate) {
         progressUpdate()
       }
+      setSolved(solved + 1)
       onClose()
       if (setSubtitle) {
-        setSubtitle("...아, 기록하려면 노트도 챙겨야지.")
+        setSubtitle("...그러고 보니 처음부터 문고리가 없었던 것 같은데.")
         setTimeout(() => {
-          setSubtitle("책장 어디에 꽂아놨던 것 같은데...")
+          setSubtitle("마지막 희망이야.")
           setTimeout(() => {
-            setSubtitle("")
-          }, 10000)
+            setSubtitle("문고리...문고리를 찾아야 해.")
+            setTimeout(() => {
+              setSubtitle("")
+            }, 10000)
+          }, 4000)
         }, 4000)
       }
     } else {
@@ -118,14 +132,13 @@ const SecondProblemModal = ({
           </HorrorImageBox>
         </BlackBackground>
       )}
-
       <MainContainer>
         <div>
           <img
-            src={quizData[1].url}
-            width={600}
-            height={550}
-            alt="두번째 문제"
+            src={quizData[2].url}
+            width={620}
+            height={580}
+            alt="세번째 문제"
           />
           <CloseIconBox onClick={onClose}>
             <CloseIcon sx={{ fontSize: 40 }} />
@@ -138,7 +151,7 @@ const SecondProblemModal = ({
               opacity="0"
               onClick={() =>
                 handleAnswerCheck(
-                  optionData["horror2QuizList"][quizData[1].quizUuid][0],
+                  optionData["horror1QuizList"][quizData[2].quizUuid][0],
                 )
               }
             />
@@ -149,7 +162,7 @@ const SecondProblemModal = ({
               opacity="0"
               onClick={() =>
                 handleAnswerCheck(
-                  optionData["horror2QuizList"][quizData[1].quizUuid][1],
+                  optionData["horror1QuizList"][quizData[2].quizUuid][1],
                 )
               }
             />
@@ -162,7 +175,7 @@ const SecondProblemModal = ({
               opacity="0"
               onClick={() =>
                 handleAnswerCheck(
-                  optionData["horror2QuizList"][quizData[1].quizUuid][2],
+                  optionData["horror1QuizList"][quizData[2].quizUuid][2],
                 )
               }
             />
@@ -173,7 +186,7 @@ const SecondProblemModal = ({
               opacity="0"
               onClick={() =>
                 handleAnswerCheck(
-                  optionData["horror2QuizList"][quizData[1].quizUuid][3],
+                  optionData["horror1QuizList"][quizData[2].quizUuid][3],
                 )
               }
             />
@@ -191,23 +204,22 @@ const SecondProblemModal = ({
         <HintModal
           open={hintModalopen}
           onClose={handleCloseModal}
-          quizUuid={quizData[0].quizUuid}
+          quizUuid={quizData[2].quizUuid}
         />
       </MainContainer>
     </>
   )
 }
 
-export default SecondProblemModal
+export default ThirdProblemModal
 
 const MainContainer = styled.div`
   display: flex;
   flex-direction: column;
   position: absolute;
-  top: 50%;
+  top: 55%;
   left: 50%;
   transform: translate(-50%, -50%);
-  padding: 20px;
   z-index: 20;
 `
 
@@ -229,9 +241,9 @@ const ChoiceBox2 = styled(ChoiceBox1)`
 const CloseIconBox = styled.div`
   position: absolute;
   cursor: pointer;
-  right: 110px;
-  top: 75px;
-  z-index: 10;
+  right: 130px;
+  top: 40px;
+  z-index: 24;
 `
 
 const HorrorImageBox = styled.div`
@@ -244,7 +256,7 @@ const HorrorImageBox = styled.div`
   z-index: 25;
 `
 
-export const BlackBackground = styled.div`
+const BlackBackground = styled.div`
   position: fixed;
   width: 100vw;
   height: 100vh;
@@ -258,7 +270,7 @@ const HintIconBox = styled.div`
   align-items: center;
   cursor: pointer;
   left: 165px;
-  top: 72px;
+  top: 42px;
   z-index: 10;
   font-size: 16px;
 `

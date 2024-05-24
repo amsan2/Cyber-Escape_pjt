@@ -32,11 +32,9 @@ const postSignUp = async (loginId: string, password: string): Promise<null> => {
     }
   } catch (error: any) {
     // 디버깅용
-    console.error("회원가입 에러:", error)
+    console.error("회원가입 에러:", error.message)
 
-    throw new Error(
-      error.response.data.message || ERROR_MESSAGES.GENERIC_ERROR,
-    )
+    throw new Error(error.message || ERROR_MESSAGES.GENERIC_ERROR)
   }
 }
 

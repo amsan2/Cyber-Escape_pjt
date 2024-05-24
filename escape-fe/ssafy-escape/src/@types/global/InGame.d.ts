@@ -1,4 +1,26 @@
-// 인게임 관련 인터페이스들
+// 인게임 관련 인터페이스
+
+interface BasicSceneProps {
+  interactNum: number
+  children: ReactNode
+  mouseSpeed: number
+}
+
+interface CountdownTimerHandle {
+  applyPenalty: () => void
+  getTime: () => { minutes: number; seconds: number }
+}
+
+interface CountdownTimerProps {
+  onTimeOut: () => void
+  color: string
+  minutes?: number
+}
+
+interface CrosshairProps {
+  interactNum: number
+}
+
 
 interface IngameMainProps {
   isGameStart: boolean
@@ -68,4 +90,9 @@ interface HorrorOptionData {
 declare module "three/examples/jsm/utils/SkeletonUtils" {
   import { Object3D } from "three"
   export function clone(source: Object3D): Object3D
+}
+
+interface ShowGhostProps {
+  penalty: number
+  index: number
 }

@@ -45,10 +45,13 @@ const FooterNav = () => {
                 sx={{
                   fontSize: "50px",
                   cursor: "pointer",
-                  color: isActive ? item.color || "inherit" : "disabled",
+                  color: item.color ? item.color : null,
                 }}
+                color={isActive ? "inherit" : "disabled"}
               />
-              <TitleText style={{ color: isActive ? "inherit" : "gray" }}>
+              <TitleText
+                style={{ color: isActive ? "inherit" : item.color || "gray" }}
+              >
                 {item.label}
               </TitleText>
             </IconBox>

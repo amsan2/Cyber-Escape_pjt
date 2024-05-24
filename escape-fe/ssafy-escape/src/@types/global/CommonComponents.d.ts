@@ -1,3 +1,5 @@
+// 공통 컴포넌트 인터페이스
+
 interface ButtonProps {
   theme: "success" | "fail" | "game"
   text?: string

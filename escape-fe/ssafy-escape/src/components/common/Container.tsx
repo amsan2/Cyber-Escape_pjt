@@ -8,7 +8,7 @@ import useUserStore from "@/stores/UserStore"
 import patchExit from "@/services/game/room/patchExit"
 
 const Container = (props: ContainerProps) => {
-  const { children, isBackButton } = props
+  const { children, isBackButton = true } = props
   const router = useRouter()
   const pathname = usePathname()
   const segments = pathname.split("/")
@@ -39,11 +39,11 @@ const Container = (props: ContainerProps) => {
 
   return (
     <ContainerStyle {...props}>
-      {isBackButton && (
+      {isBackButton ? (
         <BackIcon onClick={() => movePage()}>
           <ArrowBackIosNewIcon />
         </BackIcon>
-      )}
+      ) : null}
       {children}
     </ContainerStyle>
   )

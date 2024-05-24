@@ -14,7 +14,6 @@ import Button from "@/components/common/Button"
 import Container from "@/components/common/Container"
 import { MainColor } from "@/styles/palette"
 
-
 // 로그인
 const Login = ({ handleLoginback }: LoginProps) => {
   const router = useRouter()
@@ -77,9 +76,9 @@ const Login = ({ handleLoginback }: LoginProps) => {
 
   return (
     <Container
-      display="flex"
-      justifyContent="center"
-      alignItems="center"
+      $display="flex"
+      $justifyContent="center"
+      $alignItems="center"
       isBackButton={false}
     >
       {!isSignUpClicked ? (

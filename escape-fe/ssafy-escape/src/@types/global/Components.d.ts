@@ -1,3 +1,5 @@
+// 공통 제외 컴포넌트 관련 인터페이스
+
 interface LoginProps {
   handleLoginback: () => void // 로그인 페이지에서 뒤로가기를 눌렀을 경우
 }

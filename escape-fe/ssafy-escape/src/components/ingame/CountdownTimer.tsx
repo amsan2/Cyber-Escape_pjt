@@ -1,4 +1,4 @@
-import React, {
+import {
   useState,
   useEffect,
   useCallback,
@@ -7,17 +7,6 @@ import React, {
   forwardRef,
 } from "react"
 import styled from "styled-components"
-
-export interface CountdownTimerHandle {
-  applyPenalty: () => void
-  getTime: () => { minutes: number; seconds: number }
-}
-
-interface CountdownTimerProps {
-  onTimeOut: () => void
-  color: string
-  minutes?: number
-}
 
 const CountdownTimer: ForwardRefRenderFunction<
   CountdownTimerHandle,
@@ -28,6 +17,7 @@ const CountdownTimer: ForwardRefRenderFunction<
     seconds: 0,
   })
 
+  // 시간 깎는 패널티 주는 함수(30초)
   const applyPenalty = useCallback(() => {
     setTime((prevTime) => {
       let { minutes, seconds } = prevTime
@@ -41,10 +31,12 @@ const CountdownTimer: ForwardRefRenderFunction<
     })
   }, [])
 
+  // 부모 컴포넌트에서 접근 가능하도록 설정
   useImperativeHandle(ref, () => ({
     applyPenalty,
     getTime: () => time,
   }))
+
   useEffect(() => {
     const interval = setInterval(() => {
       setTime((prevTime) => {
@@ -59,7 +51,7 @@ const CountdownTimer: ForwardRefRenderFunction<
 
         if (minutes < 0 || (minutes === 0 && seconds === 0)) {
           clearInterval(interval)
-          onTimeOut()
+          onTimeOut() // 시간 종료 함수
           return { minutes: 0, seconds: 0 }
         }
 
@@ -69,6 +61,7 @@ const CountdownTimer: ForwardRefRenderFunction<
 
     return () => clearInterval(interval)
   }, [onTimeOut])
+
   return (
     <Container color={color}>
       <TimerDigit>{time.minutes.toString().padStart(2, "0")}</TimerDigit>:

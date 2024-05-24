@@ -12,12 +12,12 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
       {children}
       <SubContainer>
         {pathname === "/main" ||
-          pathname === "/main/ranking" ||
-          (pathname === "/main/help" && (
-            <>
-              <FooterNav />
-            </>
-          ))}
+        pathname === "/main/ranking" ||
+        pathname === "/main/help" ? (
+          <>
+            <FooterNav />
+          </>
+        ) : null}
       </SubContainer>
     </Container>
   )
