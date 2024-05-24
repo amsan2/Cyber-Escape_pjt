@@ -1,32 +1,31 @@
-import Image from "next/image"
-import { styled } from "styled-components"
-import CloseIcon from "@mui/icons-material/Close"
-import Button from "@/components/common/Button"
-import useIngameQuizStore from "@/stores/IngameQuizStore"
-import postAnswer from "@/services/ingame/postAnswer"
-import HintModal from "../../common/HintModal"
 import { useEffect, useState } from "react"
 import { useQuery } from "@tanstack/react-query"
+import { styled } from "styled-components"
+import CloseIcon from "@mui/icons-material/Close"
+import postAnswer from "@/services/ingame/postAnswer"
 import getQuiz from "@/services/ingame/getQuiz"
-import Swal from "sweetalert2"
+import useIngameQuizStore from "@/stores/IngameQuizStore"
+import useIngameStateStore from "@/stores/IngameStateStore"
 import data from "@/data/ingame/horror/HorrorOption.json"
-import CustomAlert from "@/components/common/CustomAlert"
-import ALERT_MESSAGES from "@/constants/alertMessages"
+import ChoiceButton from "../common/ChoiceButton"
+import Hint from "../common/Hint"
+
+const themeIndex = 1
+const problemIndex = 0
 
 // 첫 번째 문제 모달
-// 문제 모달 중복 코드 많아서 추후 리팩토링 필요
 const FirstProblemModal = ({
   onClose,
   penalty,
+  timePenalty,
   setPenalty,
   setSubtitle,
-  timePenalty,
   progressUpdate,
 }: ProblemProps) => {
-  const [openHint, setOpenHint] = useState<boolean>(false)
-  const [hintModalopen, setHintModalOpen] = useState<boolean>(false)
-  const { solved, hint, setSolved, setHint } = useIngameQuizStore()
   const [optionData, setOptionData] = useState<HorrorOptionData | null>(null)
+  const { solved, hint, setSolved, setHint } = useIngameQuizStore()
+  const { openHint, isHintModalOpen, setOpenHint, setIsHintModalOpen } =
+    useIngameStateStore()
 
   useEffect(() => {
     setOptionData(data)
@@ -37,30 +36,8 @@ const FirstProblemModal = ({
     queryFn: () => getQuiz(2),
   })
 
-  if (!quizData) {
-    return
-  }
-  if (!optionData) {
-    return
-  }
-
-  // 힌트 볼 때 시간 30초 깎는 패널티 적용
-  const handleOpenModal = () => {
-    if (hint === 1) {
-      setHint(0)
-      setOpenHint(true)
-      setHintModalOpen(true)
-      timePenalty()
-    } else if (hint === 0 && openHint) {
-      setHintModalOpen(true)
-    } else if (hint === 0) {
-      CustomAlert({ title: ALERT_MESSAGES.ROOM.GUEST_LEFT })
-    }
-  }
-
-  // 힌트 모달 닫기
-  const handleCloseModal = () => {
-    setHintModalOpen(false)
+  if (!quizData || !optionData) {
+    return null
   }
 
   // 선지 클릭 시 정답여부 확인
@@ -90,75 +67,51 @@ const FirstProblemModal = ({
   }
 
   return (
-    <MainContainer id="chat-container">
-      <div>
+    <MainContainer>
+      <>
         <img src={quizData[0].url} width={600} height={550} alt="첫번째 문제" />
         <CloseIconBox onClick={onClose}>
           <CloseIcon sx={{ fontSize: 40 }} />
         </CloseIconBox>
-
         <ChoiceBox1>
-          <Button
-            theme="fail"
-            width="100px"
-            height="40px"
-            opacity="0"
-            onClick={() =>
-              handleAnswerCheck(
-                optionData["horror1QuizList"][quizData[0].quizUuid][0],
-              )
-            }
-          />
-          <Button
-            theme="fail"
-            width="100px"
-            height="40px"
-            opacity="0"
-            onClick={() =>
-              handleAnswerCheck(
-                optionData["horror1QuizList"][quizData[0].quizUuid][1],
-              )
-            }
-          />
+          {[0, 1].map((choiceIndex) => (
+            <ChoiceButton
+              key={choiceIndex}
+              optionData={optionData}
+              quizData={quizData}
+              handleAnswerCheck={handleAnswerCheck}
+              themeIndex={themeIndex}
+              problemIndex={problemIndex}
+              choiceIndex={choiceIndex}
+            />
+          ))}
         </ChoiceBox1>
         <ChoiceBox2>
-          <Button
-            theme="fail"
-            width="100px"
-            height="40px"
-            opacity="0"
-            onClick={() =>
-              handleAnswerCheck(
-                optionData["horror1QuizList"][quizData[0].quizUuid][2],
-              )
-            }
-          />
-          <Button
-            theme="fail"
-            width="100px"
-            height="40px"
-            opacity="0"
-            onClick={() =>
-              handleAnswerCheck(
-                optionData["horror1QuizList"][quizData[0].quizUuid][3],
-              )
-            }
-          />
+          {[2, 3].map((choiceIndex) => (
+            <ChoiceButton
+              key={choiceIndex}
+              optionData={optionData}
+              quizData={quizData}
+              handleAnswerCheck={handleAnswerCheck}
+              themeIndex={themeIndex}
+              problemIndex={problemIndex}
+              choiceIndex={choiceIndex}
+            />
+          ))}
         </ChoiceBox2>
-      </div>
-      <HintIconBox onClick={handleOpenModal}>
-        <Image
-          src={process.env.NEXT_PUBLIC_IMAGE_URL + "/image/hint.png"}
-          alt="힌트 아이콘"
-          width={35}
-          height={35}
-        />
-        <div>힌트보기</div>
-      </HintIconBox>
-      <HintModal
-        isOpen={hintModalopen}
-        onClose={handleCloseModal}
-        quizUuid={quizData[0].quizUuid}
+      </>
+      <Hint
+        isHintModalOpen={isHintModalOpen}
+        setIsHintModalOpen={setIsHintModalOpen}
+        hint={hint}
+        setHint={setHint}
+        openHint={openHint}
+        setOpenHint={setOpenHint}
+        timePenalty={timePenalty}
+        quizData={quizData}
+        problemIndex={0}
+        left={"165px"}
+        top={"70px"}
       />
     </MainContainer>
   )
@@ -198,15 +151,4 @@ const CloseIconBox = styled.div`
   right: 110px;
   top: 75px;
   z-index: 10;
-`
-
-const HintIconBox = styled.div`
-  position: absolute;
-  display: flex;
-  align-items: center;
-  cursor: pointer;
-  left: 165px;
-  top: 70px;
-  z-index: 10;
-  font-size: 16px;
 `

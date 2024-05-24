@@ -1,25 +1,37 @@
+import { useEffect, useState } from "react"
 import { styled } from "styled-components"
 
-interface BloodTextProps {
-  role: "experiment" | "scientist"
-  penalty: number
-}
-
-const BloodText = ({ role }: BloodTextProps) => {
+const BloodText = ({ role, penalty }: PenaltyProps) => {
+  const [showBloodText, setShowBloodText] = useState<boolean>(false)
   const messages = new Array(350).fill(
     role === "experiment" ? "살려줘" : "죽어",
   )
+
   const getRandomFontSize = () => {
     return Math.floor(Math.random() * 45) + 20 // 20px ~ 64px 사이의 랜덤 크기
   }
+
+  useEffect(() => {
+    if (penalty === 2) {
+      setShowBloodText(true)
+      setTimeout(() => {
+        setTimeout(() => {
+          setShowBloodText(false)
+        }, 500)
+      }, 500)
+    }
+  }, [penalty])
+
   return (
-    <Container>
-      {messages.map((message, index) => (
-        <Message key={index} fontSize={getRandomFontSize()}>
-          {message}
-        </Message>
-      ))}
-    </Container>
+    showBloodText && (
+      <Container>
+        {messages.map((message, index) => (
+          <Message key={index} fontSize={getRandomFontSize()}>
+            {message}
+          </Message>
+        ))}
+      </Container>
+    )
   )
 }
 

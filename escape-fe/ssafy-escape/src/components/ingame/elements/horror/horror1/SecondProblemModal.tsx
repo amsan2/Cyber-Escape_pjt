@@ -152,7 +152,7 @@ const SecondProblemModal = ({
         <div>힌트보기</div>
       </HintIconBox>
       <HintModal
-        open={hintModalopen}
+        isOpen={hintModalopen}
         onClose={handleCloseModal}
         quizUuid={quizData[1].quizUuid}
       />

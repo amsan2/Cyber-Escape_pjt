@@ -39,7 +39,9 @@ const FriendRequestModal = ({ isOpen, onClose }: ModalProps) => {
   // 친구 신청
   const handleRequest = async (receiverUuid: string) => {
     await postFriendRequest(receiverUuid, "FRIEND") // 신청받는 유저의 uuid와 알림 type(GAME || FRIEND)
-    CustomAlert({ title: ALERT_MESSAGES.FRIEND.REQUEST })
+    CustomAlert({
+      title: ALERT_MESSAGES.FRIEND.REQUEST,
+    })
   }
 
   return (

@@ -6,12 +6,9 @@ import Swal from "sweetalert2"
 import useIngameThemeStore from "@/stores/IngameThemeStore"
 import StartScene from "@/components/ingame/StartScene"
 import ExitGame from "@/components/ingame/ExitGame"
-import SpaceTheme from "@/components/ingame/main/space/SpaceTheme"
-import HorrorTheme from "@/components/ingame/main/horror/HorrorTheme"
-import HorrorTheme2 from "@/components/ingame/main/horror2/HorrorTheme2"
-import SsafyTheme from "@/components/ingame/main/ssafy/SsafyTheme"
-import SsafyTheme2 from "@/components/ingame/main/ssafy2/SsafyTheme2"
-import * as S from "./ingameStyle"
+import RenderTheme from "@/components/ingame/elements/common/RenderTheme"
+import LoadingText from "@/components/ingame/elements/common/LoadingText"
+import { Container } from "./ingameStyle"
 
 // 인게임 페이지
 const Page = () => {
@@ -42,68 +39,36 @@ const Page = () => {
     })
   }
 
+  // 클릭 이벤트 리스너 부착(언마운트 시 제거)
   useEffect(() => {
     document.addEventListener("click", handleStartClick)
-  }, [])
+    return () => {
+      document.removeEventListener("click", handleStartClick)
+    }
+  }, [handleStartClick])
 
   return (
-    <S.Container>
-      {selectedTheme === 7 ? (
-        <SpaceTheme
-          setIsModelLoaded={setIsModelLoaded}
-          isGameStart={isGameStart}
+    <Container>
+      {RenderTheme({ selectedTheme, setIsModelLoaded, isGameStart })}
+      {isModelLoaded && !isGameStart && (
+        <StartScene
+          onFinish={() => setIsGameStart(true)}
+          selectedTheme={selectedTheme}
         />
-      ) : selectedTheme === 1 || selectedTheme === 2 ? (
-        <HorrorTheme
-          setIsModelLoaded={setIsModelLoaded}
-          isGameStart={isGameStart}
-        />
-      ) : selectedTheme === 4 || selectedTheme === 5 ? (
-        <SsafyTheme
-          setIsModelLoaded={setIsModelLoaded}
-          isGameStart={isGameStart}
-        />
-      ) : selectedTheme === 3 ? (
-        <HorrorTheme2
-          setIsModelLoaded={setIsModelLoaded}
-          isGameStart={isGameStart}
-        />
-      ) : selectedTheme === 6 ? (
-        <SsafyTheme2
-          setIsModelLoaded={setIsModelLoaded}
-          isGameStart={isGameStart}
-        />
-      ) : null}
-
-      {isModelLoaded && !isGameStart ? (
-        <div>
-          <StartScene
-            onFinish={() => setIsGameStart(true)}
-            selectedTheme={selectedTheme}
-          />
-          <ExitGame>
-            <Image
-              src={process.env.NEXT_PUBLIC_IMAGE_URL + "/image/exitbutton.png"}
-              alt="exit game image"
-              onClick={(e) => exitGame(e)}
-              width="40"
-              height="40"
-            />
-          </ExitGame>
-        </div>
-      ) : (
-        <S.LoadingText
-          style={{
-            color:
-              selectedTheme === 1 || selectedTheme === 2 || selectedTheme === 3
-                ? "red"
-                : "white",
-          }}
-        >
-          Now Loading...
-        </S.LoadingText>
       )}
-    </S.Container>
+      {isModelLoaded && (
+        <ExitGame>
+          <Image
+            src={process.env.NEXT_PUBLIC_IMAGE_URL + "/image/exitbutton.png"}
+            alt="exit game image"
+            onClick={exitGame}
+            width="40"
+            height="40"
+          />
+        </ExitGame>
+      )}
+      {LoadingText({ isModelLoaded, selectedTheme })}
+    </Container>
   )
 }
 

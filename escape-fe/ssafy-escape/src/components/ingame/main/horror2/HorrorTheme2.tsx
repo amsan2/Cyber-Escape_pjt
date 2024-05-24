@@ -2,7 +2,7 @@ import BasicScene from "../../BasicScene"
 import Player from "../../elements/common/Player"
 import MeshObjects from "../../elements/horror/horror2/MeshObjects"
 import Floor from "../../elements/common/Floor"
-import Blood from "../../elements/horror/horror1/Blood"
+import Blood from "../../elements/horror/common/Blood"
 import { useEffect, useRef, useState } from "react"
 import FirstProblemModal from "../../elements/horror/horror2/FirstProblemModal"
 import useIngameQuizStore from "@/stores/IngameQuizStore"
@@ -28,8 +28,8 @@ import ScissorDoll from "../../elements/horror/horror2/ScissorDoll"
 import Spider from "../../elements/horror/horror2/Spider"
 import CreepyDoll from "../../elements/horror/horror2/CreepyDoll"
 import VoodooDoll from "../../elements/horror/horror2/VoodooDoll"
-import BloodText from "../../elements/horror/horror2/BloodText"
-import PlaySound from "../../elements/horror/common/PlaySound"
+import BloodText from "../../elements/horror/common/BloodText"
+import PlayPenaltySound from "../../elements/horror/common/PlayPenaltySound"
 import Result from "../../elements/common/Result"
 import useUserStore from "@/stores/UserStore"
 import styled from "styled-components"
@@ -312,7 +312,7 @@ const HorrorTheme2 = ({
           selectedThemeType={selectedThemeType}
         />
       ) : null}
-      <PlaySound penalty={penalty} role="scientist" />
+      <PlayPenaltySound penalty={penalty} role="scientist" />
       <BasicScene interactNum={interactNum} mouseSpeed={mouseSpeed}>
         <Player position={[3, 40, 0]} speed={80} />
         <Floor

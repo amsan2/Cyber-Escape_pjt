@@ -21,7 +21,6 @@ interface CrosshairProps {
   interactNum: number
 }
 
-
 interface IngameMainProps {
   isGameStart: boolean
   setIsModelLoaded: (isModelLoaded: boolean) => void
@@ -51,7 +50,6 @@ interface SSAFTYProblemProps {
   setIsSolvedProblem: (isSolved: boolean) => void
 }
 
-
 interface ClickObjectProps {
   onClick: () => void
   isFind?: boolean
@@ -62,11 +60,6 @@ interface ClickObjectProps {
 
 interface StartProps {
   setSubtitle: (subtitle: string) => void
-}
-
-interface PlaySoundProps {
-  penalty: number
-  role: "experiment" | "scientist"
 }
 
 interface SolvedObjectProps {
@@ -83,8 +76,35 @@ interface OptionList {
 }
 
 interface HorrorOptionData {
-  horror1QuizList: OptionList
-  horror2QuizList: OptionList
+  [key: string]: OptionList
+}
+
+interface ChoiceButtonProps {
+  optionData: HorrorOptionData
+  quizData: QuizDataProps[]
+  handleAnswerCheck: (answer: string) => void
+  themeIndex: number
+  problemIndex: number
+  choiceIndex: number
+}
+
+interface HintProps {
+  setIsHintModalOpen
+  hint: number
+  setHint: (hint: number) => void
+  openHint: boolean
+  setOpenHint: (open: boolean) => void
+  timePenalty: () => void
+  isHintModalOpen: boolean
+  quizData: QuizDataProps[]
+  problemIndex: number
+  left: string
+  top: string
+}
+
+interface HintIconBoxProps {
+  left: string
+  top: string
 }
 
 declare module "three/examples/jsm/utils/SkeletonUtils" {
@@ -92,7 +112,50 @@ declare module "three/examples/jsm/utils/SkeletonUtils" {
   export function clone(source: Object3D): Object3D
 }
 
-interface ShowGhostProps {
+interface PenaltyProps {
   penalty: number
-  index: number
+  index?: number
+  role?: "experiment" | "scientist"
+}
+
+interface RenderThemeProps {
+  selectedTheme: number
+  setIsModelLoaded: (isModelLoaded: boolean) => void
+  isGameStart: boolean
+}
+
+interface LoadingTextProps {
+  selectedTheme: number
+  isModelLoaded: boolean
+}
+
+interface PlaySoundProps {
+  audioFileName: string
+  play: boolean
+}
+
+interface SingleVictoryProps {
+  userUuid: string | null
+  selectedTheme: number
+  setClearTime: (clearTime: string) => void
+  setResult: (result: string) => void
+  setIsGameFinished: (isGameFinished: boolean) => void
+}
+
+interface ProblemModalsProps {
+  showFirstProblem: boolean
+  showSecondProblem: boolean
+  showThirdProblem: boolean
+  handleFirstProblem: () => void
+  handleSecondProblem: () => void
+  handleThirdProblem: () => void
+  penalty?: number
+  timePenalty: () => void
+  setPenalty?: (penalty: number) => void
+  setSubtitle?: (subtitle: string) => void
+}
+
+interface ProductionsProps {
+  isFiveMinLater: boolean
+  ghostIndex: number
 }

@@ -3,7 +3,7 @@ import Image from "next/image"
 import styled from "styled-components"
 
 // 귀신 갑툭튀
-const ShowGhost = ({ penalty, index }: ShowGhostProps) => {
+const ShowGhost = ({ penalty, index }: PenaltyProps) => {
   const [showExtraImage, setShowExtraImage] = useState<boolean>(false)
 
   useEffect(() => {
