@@ -9,6 +9,7 @@ import getNotificationList from "@/services/notification/getNotificationList"
 import ALERT_MESSAGES from "@/constants/alertMessages"
 import Button from "@/components/common/Button"
 import * as S from "@/styles/UserItemStyles"
+import CustomAlert from "@/components/common/CustomAlert"
 
 // 받은 친구 요청 목록
 const FriendRequestList = () => {
@@ -26,11 +27,7 @@ const FriendRequestList = () => {
   const handleAccept = async (requestUserUuid: string, objectId: string) => {
     await postFriendAddition(requestUserUuid)
     postReadNotification(objectId)
-    Swal.fire({
-      title: ALERT_MESSAGES.FRIEND.ACCEPT,
-      width: "500px",
-      padding: "40px",
-    })
+    CustomAlert({ title: ALERT_MESSAGES.FRIEND.ACCEPT })
     refetchFriends() // 친구 목록 바로 갱신되도록 refetchFriends 실행
     refetchRequest() // 요청 목록도 같이 갱신
   }
@@ -38,11 +35,7 @@ const FriendRequestList = () => {
   // 친구 요청 거절 눌렀을 시
   const handleDeny = async (objectId: string) => {
     postReadNotification(objectId)
-    Swal.fire({
-      title: ALERT_MESSAGES.FRIEND.DENY,
-      width: "500px",
-      padding: "40px",
-    })
+    CustomAlert({ title: ALERT_MESSAGES.FRIEND.DENY })
     refetchFriends()
     refetchRequest()
   }

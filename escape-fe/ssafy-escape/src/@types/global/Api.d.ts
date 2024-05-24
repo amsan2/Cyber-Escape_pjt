@@ -1,3 +1,5 @@
+// api 함수 관련 인터페이스
+
 interface NullResponseProps {
   status: number
   message: string

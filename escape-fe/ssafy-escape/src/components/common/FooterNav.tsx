@@ -1,4 +1,5 @@
 "use client"
+
 import { useEffect, useState } from "react"
 import { usePathname, useRouter } from "next/navigation"
 import styled from "styled-components"
@@ -8,7 +9,21 @@ import MeetingRoomIcon from "@mui/icons-material/MeetingRoom"
 import AccountCircleIcon from "@mui/icons-material/AccountCircle"
 import { MainColor } from "@/styles/palette"
 
-const Nav = () => {
+// 네비게이션 item
+const navItems = [
+  { path: "/main", icon: AccountCircleIcon, label: "마이홈" },
+  { path: "/main/ranking", icon: EmojiEventsIcon, label: "싱글랭킹" },
+  { path: "/main/help", icon: HelpIcon, label: "게임설명" },
+  {
+    path: "/main/mode",
+    icon: MeetingRoomIcon,
+    label: "게임시작",
+    color: MainColor,
+  },
+]
+
+// 하단 네비게이션 바
+const FooterNav = () => {
   const [choice, setChoice] = useState<string | null>("/main")
   const router = useRouter()
   const pathname = usePathname()
@@ -21,65 +36,33 @@ const Nav = () => {
     <div>
       <hr style={{ margin: "10px 20px" }} />
       <MainContainer>
-        {/* 중복 있어서 나중에 컴포넌트화 시키면 좋을 듯*/}
-
-        {choice === "/main" ? (
-          <IconBox onClick={() => router.push("/main")}>
-            <AccountCircleIcon sx={{ fontSize: "50px", cursor: "pointer" }} />
-            <TitleText>마이홈</TitleText>
-          </IconBox>
-        ) : (
-          <IconBox onClick={() => router.push("/main")}>
-            <AccountCircleIcon
-              sx={{ fontSize: "50px", cursor: "pointer" }}
-              color="disabled"
-            />
-            <TitleText style={{ color: "gray" }}>마이홈</TitleText>
-          </IconBox>
-        )}
-
-        {choice === "/main/ranking" ? (
-          <IconBox onClick={() => router.push("/main/ranking")}>
-            <EmojiEventsIcon sx={{ fontSize: "50px", cursor: "pointer" }} />
-            <TitleText>싱글랭킹</TitleText>
-          </IconBox>
-        ) : (
-          <IconBox onClick={() => router.push("/main/ranking")}>
-            <EmojiEventsIcon
-              sx={{ fontSize: "50px", cursor: "pointer" }}
-              color="disabled"
-            />
-            <TitleText style={{ color: "gray" }}>싱글랭킹</TitleText>
-          </IconBox>
-        )}
-
-        {choice === "/main/help" ? (
-          <IconBox onClick={() => router.push("/main/help")}>
-            <HelpIcon sx={{ fontSize: "50px", cursor: "pointer" }} />
-            <TitleText>게임설명</TitleText>
-          </IconBox>
-        ) : (
-          <IconBox onClick={() => router.push("/main/help")}>
-            <HelpIcon
-              sx={{ fontSize: "50px", cursor: "pointer" }}
-              color="disabled"
-            />
-            <TitleText style={{ color: "gray" }}>게임설명</TitleText>
-          </IconBox>
-        )}
-
-        <IconBox onClick={() => router.push("/main/mode")}>
-          <MeetingRoomIcon
-            sx={{ fontSize: "50px", cursor: "pointer", color: MainColor }}
-          />
-          <TitleText style={{ color: MainColor }}>게임시작</TitleText>
-        </IconBox>
+        {navItems.map((item, index) => {
+          const Icon = item.icon
+          const isActive = choice === item.path
+          return (
+            <IconBox key={index} onClick={() => router.push(item.path)}>
+              <Icon
+                sx={{
+                  fontSize: "50px",
+                  cursor: "pointer",
+                  color: item.color ? item.color : null,
+                }}
+                color={isActive ? "inherit" : "disabled"}
+              />
+              <TitleText
+                style={{ color: isActive ? "inherit" : item.color || "gray" }}
+              >
+                {item.label}
+              </TitleText>
+            </IconBox>
+          )
+        })}
       </MainContainer>
     </div>
   )
 }
 
-export default Nav
+export default FooterNav
 
 const MainContainer = styled.div`
   display: flex;
@@ -87,11 +70,13 @@ const MainContainer = styled.div`
   justify-content: center;
   gap: 6px;
 `
+
 const TitleText = styled.div`
   font-size: 25px;
   cursor: pointer;
   margin-right: 5px;
 `
+
 const IconBox = styled.div`
   display: flex;
   flex-direction: row;

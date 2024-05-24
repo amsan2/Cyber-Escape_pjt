@@ -48,11 +48,11 @@ const Room = () => {
   if (isLoading) {
     return (
       <Container
-        display="flex"
-        justifyContent="center"
-        alignItems="center"
-        flexDirection="column"
-        backgroundColor="none"
+        $display="flex"
+        $justifyContent="center"
+        $alignItems="center"
+        $flexDirection="column"
+        $backgroundColor="none"
       >
         <CircularProgress />
       </Container>
@@ -60,11 +60,11 @@ const Room = () => {
   }
   return (
     <Container
-      display="flex"
-      justifyContent="center"
-      alignItems="center"
-      flexDirection="column"
-      backgroundColor="none"
+      $display="flex"
+      $justifyContent="center"
+      $alignItems="center"
+      $flexDirection="column"
+      $backgroundColor="none"
     >
       {roomData?.data.roomList.map((room) => (
         <RoomList key={room.uuid} roomData={room} />

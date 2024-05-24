@@ -8,6 +8,8 @@ import useUserStore from "@/stores/UserStore"
 import { useRouter } from "next/navigation"
 import patchJoin from "@/services/game/room/patchJoin"
 import Swal from "sweetalert2"
+import ALERT_MESSAGES from "@/constants/alertMessages"
+import CustomAlert from "@/components/common/CustomAlert"
 
 interface ResponseData {
   roomUuid: string
@@ -74,11 +76,8 @@ const Random = () => {
           userUuid: userUuid || "",
           password: "",
         })
-        Swal.fire({
-          title: "매칭 완료!",
-          width: "400px",
-          padding: "40px",
-        })
+
+        CustomAlert({ title: ALERT_MESSAGES.ROOM.MACHING_SUCCESS })
         router.push(`/gameroom/${matchData.roomUuid}`)
       }
     }
@@ -87,11 +86,11 @@ const Random = () => {
 
   return (
     <Container
-      display="flex"
-      justifyContent="center"
-      alignItems="center"
-      flexDirection="column"
-      backgroundColor="none"
+      $display="flex"
+      $justifyContent="center"
+      $alignItems="center"
+      $flexDirection="column"
+      $backgroundColor="none"
     >
       <h1 style={{ marginBottom: "10%" }}>상대를 매칭 중입니다.</h1>
       <CircularProgress />

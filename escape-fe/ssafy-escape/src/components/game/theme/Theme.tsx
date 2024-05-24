@@ -30,11 +30,11 @@ const Theme = () => {
   }
   return (
     <Container
-      display="flex"
-      justifyContent="space-between"
-      flexDirection="column"
-      alignItems="center"
-      backgroundColor="none"
+      $display="flex"
+      $justifyContent="space-between"
+      $flexDirection="column"
+      $alignItems="center"
+      $backgroundColor="none"
     >
       <h1 style={{ margin: "0" }}>테마 선택</h1>
       <ThemeCarousel

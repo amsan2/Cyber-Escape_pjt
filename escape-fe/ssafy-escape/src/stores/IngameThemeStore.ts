@@ -1,22 +1,8 @@
 import { create } from "zustand"
 import { persist } from "zustand/middleware"
 
-interface ThemeState {
-  selectedTheme: number | null
-  selectedThemeType: "multi" | "single" | null
-  roomTitle: string | null
-  roomUuid: string | null
-}
-
-interface ThemeAction {
-  setSelectedTheme: (theme: number) => void
-  setSelectedThemeType: (theme: "multi" | "single" | null) => void
-  setRoomTitle: (roomTitle: string) => void
-  setRoomUuid: (roomUuid: string) => void
-}
-
 const initialState: ThemeState = {
-  selectedTheme: null,
+  selectedTheme: 1,
   selectedThemeType: null,
   roomTitle: null,
   roomUuid: null,

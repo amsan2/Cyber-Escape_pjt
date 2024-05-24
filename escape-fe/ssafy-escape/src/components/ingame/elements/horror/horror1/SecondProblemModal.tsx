@@ -2,16 +2,19 @@ import Image from "next/image"
 import { styled } from "styled-components"
 import CloseIcon from "@mui/icons-material/Close"
 import Button from "@/components/common/Button"
-import { useState, useEffect } from "react"
-import postAnswer from "@/services/ingame/postAnswer"
 import useIngameQuizStore from "@/stores/IngameQuizStore"
-import HintModal from "../common/HintModal"
-import data from "@/data/ingame/horror/HorrorOption.json"
+import postAnswer from "@/services/ingame/postAnswer"
+import HintModal from "../../common/HintModal"
+import { useState, useEffect } from "react"
 import { useQuery } from "@tanstack/react-query"
 import getQuiz from "@/services/ingame/getQuiz"
+import Swal from "sweetalert2"
+import data from "@/data/ingame/horror/HorrorOption.json"
+import CustomAlert from "@/components/common/CustomAlert"
+import ALERT_MESSAGES from "@/constants/alertMessages"
 
-// 세 번째 문제 모달
-const ThirdProblemModal = ({
+// 두 번째 문제 모달
+const SecondProblemModal = ({
   onClose,
   penalty,
   setPenalty,
@@ -19,15 +22,14 @@ const ThirdProblemModal = ({
   timePenalty,
   progressUpdate,
 }: ProblemProps) => {
+  const [openHint, setOpenHint] = useState<boolean>(false)
   const [hintModalopen, setHintModalOpen] = useState<boolean>(false)
+  const { solved, hint, setSolved, setHint } = useIngameQuizStore()
   const [optionData, setOptionData] = useState<HorrorOptionData | null>(null)
-
-  const { solved, setSolved } = useIngameQuizStore()
   const { data: quizData } = useQuery({
-    queryKey: ["quizList", 3],
-    queryFn: () => getQuiz(3),
+    queryKey: ["quizList", 2],
+    queryFn: () => getQuiz(2),
   })
-
   useEffect(() => {
     setOptionData(data)
   }, [])
@@ -35,36 +37,44 @@ const ThirdProblemModal = ({
   if (!optionData) {
     return
   }
+
   if (!quizData) {
     return
   }
 
-  // 힌트 볼 때마다 시간 30초 깎는 패널티 적용
+  // 힌트 볼 때 시간 30초 깎는 패널티 적용
   const handleOpenModal = () => {
-    setHintModalOpen(true)
-    timePenalty()
+    if (hint === 1) {
+      setHint(0)
+      setOpenHint(true)
+      setHintModalOpen(true)
+      timePenalty()
+    } else if (hint === 0 && openHint) {
+      setHintModalOpen(true)
+    } else if (hint === 0) {
+      CustomAlert({ title: ALERT_MESSAGES.INGAME.OUT_OF_HINT })
+    }
   }
+
+  // 힌트 모달 닫기
   const handleCloseModal = () => {
     setHintModalOpen(false)
   }
 
   const handleAnswerCheck = async (answer: string) => {
-    if ((await postAnswer(quizData[2].quizUuid, answer)).right) {
+    if ((await postAnswer(quizData[1].quizUuid, answer)).right) {
       setSolved(solved + 1)
       if (progressUpdate) {
         progressUpdate()
       }
       onClose()
       if (setSubtitle) {
-        setSubtitle("이런, 시간이...서둘러 나가야겠군.")
+        setSubtitle("...정신이 이상해지는 것 같아.")
         setTimeout(() => {
-          setSubtitle("...아, 제일 중요한 걸 놓고 갈 뻔했네.")
+          setSubtitle("혹시 책들 중에 단서가 있지 않을까?")
           setTimeout(() => {
-            setSubtitle("주사기랑 망치가 어디있지?")
-            setTimeout(() => {
-              setSubtitle("")
-            }, 10000)
-          }, 4000)
+            setSubtitle("")
+          }, 10000)
         }, 4000)
       }
     } else {
@@ -75,12 +85,13 @@ const ThirdProblemModal = ({
       }
     }
   }
+
   return (
     <MainContainer>
       <div>
-        <img src={quizData[2].url} width={620} height={580} alt="세번째 문제" />
+        <img src={quizData[1].url} width={550} height={550} alt="두번째 문제" />
         <CloseIconBox onClick={onClose}>
-          <CloseIcon sx={{ fontSize: 30 }} />
+          <CloseIcon sx={{ fontSize: 40 }} />
         </CloseIconBox>
         <ChoiceBox1>
           <Button
@@ -90,7 +101,7 @@ const ThirdProblemModal = ({
             opacity="0"
             onClick={() =>
               handleAnswerCheck(
-                optionData["horror2QuizList"][quizData[2].quizUuid][0],
+                optionData["horror1QuizList"][quizData[1].quizUuid][0],
               )
             }
           />
@@ -101,7 +112,7 @@ const ThirdProblemModal = ({
             opacity="0"
             onClick={() =>
               handleAnswerCheck(
-                optionData["horror2QuizList"][quizData[2].quizUuid][1],
+                optionData["horror1QuizList"][quizData[1].quizUuid][1],
               )
             }
           />
@@ -114,7 +125,7 @@ const ThirdProblemModal = ({
             opacity="0"
             onClick={() =>
               handleAnswerCheck(
-                optionData["horror2QuizList"][quizData[2].quizUuid][2],
+                optionData["horror1QuizList"][quizData[1].quizUuid][2],
               )
             }
           />
@@ -125,7 +136,7 @@ const ThirdProblemModal = ({
             opacity="0"
             onClick={() =>
               handleAnswerCheck(
-                optionData["horror2QuizList"][quizData[2].quizUuid][3],
+                optionData["horror1QuizList"][quizData[1].quizUuid][3],
               )
             }
           />
@@ -141,23 +152,24 @@ const ThirdProblemModal = ({
         <div>힌트보기</div>
       </HintIconBox>
       <HintModal
-        open={hintModalopen}
+        isOpen={hintModalopen}
         onClose={handleCloseModal}
-        quizUuid={quizData[2].quizUuid}
+        quizUuid={quizData[1].quizUuid}
       />
     </MainContainer>
   )
 }
 
-export default ThirdProblemModal
+export default SecondProblemModal
 
 const MainContainer = styled.div`
   display: flex;
   flex-direction: column;
   position: absolute;
-  top: 55%;
+  top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
+  padding: 20px;
   z-index: 20;
 `
 
@@ -179,9 +191,9 @@ const ChoiceBox2 = styled(ChoiceBox1)`
 const CloseIconBox = styled.div`
   position: absolute;
   cursor: pointer;
-  right: 130px;
-  top: 40px;
-  z-index: 24;
+  right: 60px;
+  top: 92px;
+  z-index: 10;
 `
 
 const HintIconBox = styled.div`
@@ -189,8 +201,8 @@ const HintIconBox = styled.div`
   display: flex;
   align-items: center;
   cursor: pointer;
-  left: 165px;
-  bottom: 90px;
+  left: 60px;
+  top: 90px;
   z-index: 10;
   font-size: 16px;
 `

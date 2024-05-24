@@ -1,7 +1,7 @@
 import { useEffect, useMemo } from "react"
 
 // 패널티에 따른 효과음 재생
-const PlaySound = ({ penalty, role }: PlaySoundProps) => {
+const PlayPenaltySound = ({ penalty, role }: PenaltyProps) => {
   const soundArray = useMemo(() => {
     return role === "experiment"
       ? [
@@ -33,4 +33,4 @@ const PlaySound = ({ penalty, role }: PlaySoundProps) => {
   return null
 }
 
-export default PlaySound
+export default PlayPenaltySound

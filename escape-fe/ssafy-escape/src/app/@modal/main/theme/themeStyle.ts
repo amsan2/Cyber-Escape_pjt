@@ -1,5 +1,6 @@
 import Image from "next/image"
 import styled from "styled-components"
+
 export const MainContainer = styled.div`
   margin-top: 3%;
   width: 90%;

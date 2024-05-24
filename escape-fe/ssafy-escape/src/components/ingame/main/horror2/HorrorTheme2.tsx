@@ -1,35 +1,35 @@
 import BasicScene from "../../BasicScene"
 import Player from "../../elements/common/Player"
-import MeshObjects from "../../elements/horror2/MeshObjects"
+import MeshObjects from "../../elements/horror/horror2/MeshObjects"
 import Floor from "../../elements/common/Floor"
-import Blood from "../../elements/horror/Blood"
+import Blood from "../../elements/horror/common/Blood"
 import { useEffect, useRef, useState } from "react"
-import FirstProblemModal from "../../elements/horror2/FirstProblemModal"
+import FirstProblemModal from "../../elements/horror/horror2/FirstProblemModal"
 import useIngameQuizStore from "@/stores/IngameQuizStore"
-import SecondProblemModal from "../../elements/horror2/SecondProblemModal"
-import ThirdProblemModal from "../../elements/horror2/ThirdProblemModal"
-import ThirdProblemObject from "../../elements/horror2/ThirdProblemObject"
+import SecondProblemModal from "../../elements/horror/horror2/SecondProblemModal"
+import ThirdProblemModal from "../../elements/horror/horror2/ThirdProblemModal"
+import ThirdProblemObject from "../../elements/horror/horror2/ThirdProblemObject"
 import Subtitle from "../../elements/common/Subtitle"
-import HorrorRoom2 from "../../elements/horror2/HorrorRoom2"
+import HorrorRoom2 from "../../elements/horror/horror2/HorrorRoom2"
 import { Environment, Lightformer } from "@react-three/drei"
-import Paper from "../../elements/horror2/Paper"
-import Start from "../../elements/horror2/Start"
-import Computer from "../../elements/horror2/Computer"
-import CountdownTimer, { CountdownTimerHandle } from "../../CountdownTimer"
+import Paper from "../../elements/horror/horror2/Paper"
+import Start from "../../elements/horror/horror2/Start"
+import Computer from "../../elements/horror/horror2/Computer"
+import CountdownTimer from "../../CountdownTimer"
 import { QueryClient, useQuery } from "@tanstack/react-query"
 import useIngameThemeStore from "@/stores/IngameThemeStore"
 import getQuiz from "@/services/ingame/getQuiz"
-import ScrunchedPaper from "../../elements/horror2/ScrunchedPaper"
-import FinalDoor from "../../elements/horror2/FinalDoor"
-import Syringe from "../../elements/horror2/Syringe"
-import Hammer from "../../elements/horror2/Hammer"
-import Glasses from "../../elements/horror2/Glasses"
-import ScissorDoll from "../../elements/horror2/ScissorDoll"
-import Spider from "../../elements/horror2/Spider"
-import CreepyDoll from "../../elements/horror2/CreepyDoll"
-import VoodooDoll from "../../elements/horror2/VoodooDoll"
-import BloodText from "../../elements/horror2/BloodText"
-import PlaySound from "../../PlaySound"
+import ScrunchedPaper from "../../elements/horror/horror2/ScrunchedPaper"
+import FinalDoor from "../../elements/horror/horror2/FinalDoor"
+import Syringe from "../../elements/horror/horror2/Syringe"
+import Hammer from "../../elements/horror/horror2/Hammer"
+import Glasses from "../../elements/horror/horror2/Glasses"
+import ScissorDoll from "../../elements/horror/horror2/ScissorDoll"
+import Spider from "../../elements/horror/horror2/Spider"
+import CreepyDoll from "../../elements/horror/horror2/CreepyDoll"
+import VoodooDoll from "../../elements/horror/horror2/VoodooDoll"
+import BloodText from "../../elements/horror/common/BloodText"
+import PlayPenaltySound from "../../elements/horror/common/PlayPenaltySound"
 import Result from "../../elements/common/Result"
 import useUserStore from "@/stores/UserStore"
 import styled from "styled-components"
@@ -312,12 +312,8 @@ const HorrorTheme2 = ({
           selectedThemeType={selectedThemeType}
         />
       ) : null}
-      <PlaySound penalty={penalty} role="scientist" />
-      <BasicScene
-        interactNum={interactNum}
-        onAir={true}
-        mouseSpeed={mouseSpeed}
-      >
+      <PlayPenaltySound penalty={penalty} role="scientist" />
+      <BasicScene interactNum={interactNum} mouseSpeed={mouseSpeed}>
         <Player position={[3, 40, 0]} speed={80} />
         <Floor
           rotation={[Math.PI / -2, 0, 0]}

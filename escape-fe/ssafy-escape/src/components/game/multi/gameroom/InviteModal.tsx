@@ -8,6 +8,9 @@ import postInvite from "@/services/game/room/postInvite"
 import { useInfiniteQuery } from "@tanstack/react-query"
 import { usePathname } from "next/navigation"
 import Swal from "sweetalert2"
+import InfiniteQuery from "@/hooks/InfiniteQuery"
+import CustomAlert from "@/components/common/CustomAlert"
+import ALERT_MESSAGES from "@/constants/alertMessages"
 
 interface InviteModalProps {
   open: boolean
@@ -36,36 +39,13 @@ const InviteModal = ({ open, handleClose }: InviteModalProps) => {
     }
   }, [open, refetch])
 
-  const handleScroll = (event: Event) => {
-    const target = event.target as Document
-    if (
-      target.documentElement.scrollTop + window.innerHeight + 200 >=
-      target.documentElement.scrollHeight
-    ) {
-      if (hasNextPage && !isFetchingNextPage) {
-        fetchNextPage()
-      }
-    }
-  }
-
-  useEffect(() => {
-    window.addEventListener("scroll", handleScroll)
-    return () => {
-      window.removeEventListener("scroll", handleScroll)
-    }
-  }, [hasNextPage, isFetchingNextPage, fetchNextPage])
-
   // 초대 요청 시
   const sendInvitation = (roomUuid: string, userUuid: string) => {
     postInvite({
       roomUuid: roomUuid,
       userUuid: userUuid ? userUuid : "",
     })
-    Swal.fire({
-      title: "초대 요청 완료!",
-      width: "400px",
-      padding: "40px",
-    })
+    CustomAlert({ title: ALERT_MESSAGES.INVITATION.INVITATION_SUCCESS })
     handleClose()
   }
 
@@ -82,6 +62,11 @@ const InviteModal = ({ open, handleClose }: InviteModalProps) => {
       text="친구 초대"
       isFriendModal={false}
     >
+      <InfiniteQuery
+        hasNextPage={hasNextPage}
+        isFetchingNextPage={isFetchingNextPage}
+        fetchNextPage={fetchNextPage}
+      />
       {friendsData.pages.map((page, i) => (
         <div key={i}>
           {page.length !== 0 ? (

@@ -1,10 +1,10 @@
 import { useGLTF } from "@react-three/drei"
 
 interface PortraitProps {
-  twoMinLater: boolean
+  isTwoMinLater: boolean
 }
 
-const Art = ({ twoMinLater }: PortraitProps) => {
+const Art = ({ isTwoMinLater }: PortraitProps) => {
   const art = useGLTF(
     process.env.NEXT_PUBLIC_IMAGE_URL + "/glb/horror/art.glb",
     true,
@@ -23,7 +23,7 @@ const Art = ({ twoMinLater }: PortraitProps) => {
   )
   return (
     <>
-      {twoMinLater ? (
+      {isTwoMinLater ? (
         <>
           <primitive object={horrorArt.scene} scale={35} />
           <primitive object={horrorArt2.scene} scale={35} />

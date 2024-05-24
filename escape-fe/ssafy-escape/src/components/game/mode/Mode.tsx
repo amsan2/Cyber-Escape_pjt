@@ -10,11 +10,11 @@ const Mode = () => {
   const { setSelectedThemeType } = useIngameThemeStore()
   return (
     <Container
-      display="flex"
-      alignItems="center"
-      flexDirection="column"
-      backgroundColor="none"
-      gap="50px"
+      $display="flex"
+      $alignItems="center"
+      $flexDirection="column"
+      $backgroundColor="none"
+      $gap="50px"
     >
       <h1 style={{ margin: "0" }}>모드 선택</h1>
       <S.MainContent>

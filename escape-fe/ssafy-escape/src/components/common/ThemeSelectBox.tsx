@@ -1,19 +1,20 @@
+"use client"
+
 import styled from "styled-components"
 import Image from "next/image"
 
 export const themeIdx = [1, 4, 7]
 const themes = ["공포", "싸피", "우주"]
 
-interface ThemeIconStyleProps {
-  $isActive: boolean
-}
-
+// 랭킹 조회하는 테마 선택 컴포넌트
 const ThemeSelectBox = ({
   activeTheme,
   handleThemeClick,
+  justifyContent,
+  paddingRight,
 }: ThemeSelectBoxProps) => {
   return (
-    <ThemeMainBox>
+    <ThemeMainBox $justifyContent={justifyContent} $paddingRight={paddingRight}>
       {themes.map((theme, index) => (
         <ThemeSubBox key={index} onClick={() => handleThemeClick(index)}>
           <ThemeIcon
@@ -42,10 +43,12 @@ const ThemeSelectBox = ({
 
 export default ThemeSelectBox
 
-const ThemeMainBox = styled.div`
+const ThemeMainBox = styled.div<ThemeMainBoxStyleProps>`
   display: flex;
   align-items: center;
   gap: 15px;
+  justify-content: ${(props) => props.$justifyContent};
+  padding-right: ${(props) => props.$paddingRight};
 `
 
 const ThemeSubBox = styled.div`

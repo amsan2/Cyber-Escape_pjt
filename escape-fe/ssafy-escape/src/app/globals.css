@@ -8,12 +8,6 @@ body {
   padding: 0;
 }
 
-@font-face {
-  font-family: "PaytoneOne";
-  font-weight: 400;
-  src: url("/fonts/PaytoneOne-Regular.ttf") format("truetype");
-}
-
-.paytone-one {
-  font-family: "PaytoneOne";
+.swal2-title-custom {
+  font-size: 20px;
 }

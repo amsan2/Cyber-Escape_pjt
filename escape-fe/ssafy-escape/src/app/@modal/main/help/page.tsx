@@ -1,8 +1,10 @@
 "use client"
+
+import Image from "next/image"
 import styled from "styled-components"
 import HelpIcon from "@mui/icons-material/Help"
-import Image from "next/image"
 
+// 게임 설명 페이지
 const Page = () => {
   return (
     <div>
@@ -14,7 +16,7 @@ const Page = () => {
         <ImgBox>
           <Image
             src={process.env.NEXT_PUBLIC_IMAGE_URL + "/image/help/single_1.PNG"}
-            alt=""
+            alt="싱글 인게임 사진1"
             width={700}
             height={450}
           />
@@ -34,7 +36,7 @@ const Page = () => {
               src={
                 process.env.NEXT_PUBLIC_IMAGE_URL + "/image/help/single_2.PNG"
               }
-              alt=""
+              alt="싱글 인게임 사진2"
               width={400}
               height={250}
             />
@@ -44,7 +46,7 @@ const Page = () => {
               src={
                 process.env.NEXT_PUBLIC_IMAGE_URL + "/image/help/single_22.PNG"
               }
-              alt=""
+              alt="싱글 인게임 사진3"
               width={400}
               height={250}
             />
@@ -60,7 +62,7 @@ const Page = () => {
               src={
                 process.env.NEXT_PUBLIC_IMAGE_URL + "/image/help/single_3.PNG"
               }
-              alt=""
+              alt="공포 인게임 사진"
               width={400}
               height={250}
             />
@@ -70,7 +72,7 @@ const Page = () => {
               src={
                 process.env.NEXT_PUBLIC_IMAGE_URL + "/image/help/space_1.PNG"
               }
-              alt=""
+              alt="우주 인게임 사진"
               width={400}
               height={250}
             />
@@ -87,7 +89,7 @@ const Page = () => {
               src={
                 process.env.NEXT_PUBLIC_IMAGE_URL + "/image/help/single_5.PNG"
               }
-              alt=""
+              alt="싱글 인게임 사진4"
               width={400}
               height={250}
             />
@@ -97,7 +99,7 @@ const Page = () => {
               src={
                 process.env.NEXT_PUBLIC_IMAGE_URL + "/image/help/single_6.PNG"
               }
-              alt=""
+              alt="싱글 인게임 사진5"
               width={400}
               height={250}
             />
@@ -114,7 +116,7 @@ const Page = () => {
         <ImgBox>
           <Image
             src={process.env.NEXT_PUBLIC_IMAGE_URL + "/image/help/multi_1.PNG"}
-            alt=""
+            alt="멀티 인게임 사진"
             width={700}
             height={450}
           />
@@ -140,6 +142,7 @@ const MainContainer = styled.div`
   width: 70vw;
   height: 60vh;
   overflow-y: scroll;
+  
   &::-webkit-scrollbar {
     display: none;
   }
@@ -161,6 +164,7 @@ const SmallBox = styled.div`
   display: flex;
   padding: 20px;
 `
+
 const Text = styled.div`
   font-size: 16px;
 `

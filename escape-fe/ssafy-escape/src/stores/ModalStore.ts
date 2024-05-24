@@ -1,16 +1,5 @@
 import { create } from "zustand"
 
-interface ModalState {
-  isRequestModalOpen: boolean
-  isDeleteMode: boolean
-}
-
-interface ModalAction {
-  setIsRequestModalOpen: (isRequestModalOpen: boolean) => void
-  setIsDeleteMode: (isDeleteMode: boolean) => void
-  resetModalState: () => void
-}
-
 const initialState: ModalState = {
   isRequestModalOpen: false,
   isDeleteMode: false,

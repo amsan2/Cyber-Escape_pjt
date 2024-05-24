@@ -1,4 +1,25 @@
-// 인게임 관련 인터페이스들
+// 인게임 관련 인터페이스
+
+interface BasicSceneProps {
+  interactNum: number
+  children: ReactNode
+  mouseSpeed: number
+}
+
+interface CountdownTimerHandle {
+  applyPenalty: () => void
+  getTime: () => { minutes: number; seconds: number }
+}
+
+interface CountdownTimerProps {
+  onTimeOut: () => void
+  color: string
+  minutes?: number
+}
+
+interface CrosshairProps {
+  interactNum: number
+}
 
 interface IngameMainProps {
   isGameStart: boolean
@@ -29,7 +50,6 @@ interface SSAFTYProblemProps {
   setIsSolvedProblem: (isSolved: boolean) => void
 }
 
-
 interface ClickObjectProps {
   onClick: () => void
   isFind?: boolean
@@ -40,11 +60,6 @@ interface ClickObjectProps {
 
 interface StartProps {
   setSubtitle: (subtitle: string) => void
-}
-
-interface PlaySoundProps {
-  penalty: number
-  role: "experiment" | "scientist"
 }
 
 interface SolvedObjectProps {
@@ -61,11 +76,86 @@ interface OptionList {
 }
 
 interface HorrorOptionData {
-  horror1QuizList: OptionList
-  horror2QuizList: OptionList
+  [key: string]: OptionList
+}
+
+interface ChoiceButtonProps {
+  optionData: HorrorOptionData
+  quizData: QuizDataProps[]
+  handleAnswerCheck: (answer: string) => void
+  themeIndex: number
+  problemIndex: number
+  choiceIndex: number
+}
+
+interface HintProps {
+  setIsHintModalOpen
+  hint: number
+  setHint: (hint: number) => void
+  openHint: boolean
+  setOpenHint: (open: boolean) => void
+  timePenalty: () => void
+  isHintModalOpen: boolean
+  quizData: QuizDataProps[]
+  problemIndex: number
+  left: string
+  top: string
+}
+
+interface HintIconBoxProps {
+  left: string
+  top: string
 }
 
 declare module "three/examples/jsm/utils/SkeletonUtils" {
   import { Object3D } from "three"
   export function clone(source: Object3D): Object3D
+}
+
+interface PenaltyProps {
+  penalty: number
+  index?: number
+  role?: "experiment" | "scientist"
+}
+
+interface RenderThemeProps {
+  selectedTheme: number
+  setIsModelLoaded: (isModelLoaded: boolean) => void
+  isGameStart: boolean
+}
+
+interface LoadingTextProps {
+  selectedTheme: number
+  isModelLoaded: boolean
+}
+
+interface PlaySoundProps {
+  audioFileName: string
+  play: boolean
+}
+
+interface SingleVictoryProps {
+  userUuid: string | null
+  selectedTheme: number
+  setClearTime: (clearTime: string) => void
+  setResult: (result: string) => void
+  setIsGameFinished: (isGameFinished: boolean) => void
+}
+
+interface ProblemModalsProps {
+  showFirstProblem: boolean
+  showSecondProblem: boolean
+  showThirdProblem: boolean
+  handleFirstProblem: () => void
+  handleSecondProblem: () => void
+  handleThirdProblem: () => void
+  penalty?: number
+  timePenalty: () => void
+  setPenalty?: (penalty: number) => void
+  setSubtitle?: (subtitle: string) => void
+}
+
+interface ProductionsProps {
+  isFiveMinLater: boolean
+  ghostIndex: number
 }

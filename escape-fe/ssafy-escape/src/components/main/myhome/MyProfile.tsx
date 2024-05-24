@@ -3,7 +3,6 @@
 import { useState } from "react"
 import { useQuery } from "@tanstack/react-query"
 import { styled } from "styled-components"
-import Swal from "sweetalert2"
 import FormatTime from "@/utils/FormatTime"
 import postMyRanking from "@/services/main/ranking/postMyRanking"
 import getAutoCreateNickname from "@/services/main/nickname/getAutoCreateNickname"
@@ -15,6 +14,7 @@ import ALERT_MESSAGES from "@/constants/alertMessages"
 import NicknameSection from "./NicknameSection"
 import ProfileImageSection from "./ProfileImageSection"
 import ThemeSelectBox, { themeIdx } from "@/components/common/ThemeSelectBox"
+import CustomAlert from "@/components/common/CustomAlert"
 
 // 내 프로필
 const MyProfile = () => {
@@ -41,20 +41,12 @@ const MyProfile = () => {
     const idDuplicate = await postIsDuplicationNickname(nickname)
     if (idDuplicate) {
       await patchNicknameChange(nickname, newNickname)
-      Swal.fire({
-        title: ALERT_MESSAGES.PROFILE.CHANGE_NICKNAME,
-        width: "500px",
-        padding: "40px",
-      })
+      CustomAlert({ title: ALERT_MESSAGES.PROFILE.CHANGE_NICKNAME })
       setNickname(newNickname)
       setNewNickname("")
       setIsActiveChangeNickname(false)
     } else {
-      Swal.fire({
-        title: ALERT_MESSAGES.PROFILE.DUPLICATE_NICKNAME,
-        width: "500px",
-        padding: "40px",
-      })
+      CustomAlert({ title: ALERT_MESSAGES.PROFILE.DUPLICATE_NICKNAME })
     }
   }
 
@@ -67,11 +59,7 @@ const MyProfile = () => {
         setProfileImg(reader.result as string)
         const newImgUrl = await patchChangeProfileImg(file)
         setProfileUrl(newImgUrl)
-        Swal.fire({
-          title: ALERT_MESSAGES.PROFILE.CHANGE_IMG,
-          width: "500px",
-          padding: "40px",
-        })
+        CustomAlert({ title: ALERT_MESSAGES.PROFILE.CHANGE_IMG })
       }
       reader.readAsDataURL(file)
     }

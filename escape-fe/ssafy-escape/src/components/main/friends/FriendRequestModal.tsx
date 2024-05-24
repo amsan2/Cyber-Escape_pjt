@@ -3,9 +3,9 @@ import { useQuery } from "@tanstack/react-query"
 import { styled } from "styled-components"
 import SearchIcon from "@mui/icons-material/Search"
 import HighlightOffIcon from "@mui/icons-material/HighlightOff"
-import Swal from "sweetalert2"
 import MainModal from "@/components/common/MainModal"
 import Input from "@/components/common/Input"
+import CustomAlert from "@/components/common/CustomAlert"
 import SearchResultItem from "./SearchResultItem"
 import postUserSearch from "@/services/main/friends/postUserSearch"
 import postFriendRequest from "@/services/main/friends/postFriendRequest"
@@ -39,10 +39,8 @@ const FriendRequestModal = ({ isOpen, onClose }: ModalProps) => {
   // 친구 신청
   const handleRequest = async (receiverUuid: string) => {
     await postFriendRequest(receiverUuid, "FRIEND") // 신청받는 유저의 uuid와 알림 type(GAME || FRIEND)
-    Swal.fire({
+    CustomAlert({
       title: ALERT_MESSAGES.FRIEND.REQUEST,
-      width: "500px",
-      padding: "40px",
     })
   }
 

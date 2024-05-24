@@ -1,44 +1,39 @@
 "use client"
+
 import { useRef, useState } from "react"
-import * as S from "../../app/homeStyle"
-import Login from "../login/Login"
-import { Canvas } from "@react-three/fiber"
-import HomeRoom from "./HomeRoom"
 import { useRouter } from "next/navigation"
-import CameraMoveToPosition, {
-  CameraMoveToPositionRef,
-} from "./CameraMoveToPosition"
+import { Canvas } from "@react-three/fiber"
+import styled from "styled-components"
+import Login from "../login/Login"
+import HomeRoom from "./HomeRoom"
+import CameraMoveToPosition from "./CameraMoveToPosition"
 import HeaderNav from "../common/HeaderNav"
-import { Paytone_One } from "next/font/google"
 import useUserStore from "@/stores/UserStore"
+import { paytoneOne } from "@/styles/GoogleFont"
+import { MainColor } from "@/styles/palette"
 
-interface HomeProps {
-  showText?: boolean
-}
-
-const paytoneOne = Paytone_One({
-  subsets: ["latin"],
-  weight: "400",
-})
-
+// 첫 시작 페이지
 const Home = ({ showText = true }: HomeProps) => {
-  const router = useRouter()
-  const [isModelLoaded, setIsModelLoaded] = useState(false)
+  const [isModelLoaded, setIsModelLoaded] = useState<boolean>(false)
   const [isStartClicked, setIsStartClicked] = useState<boolean>(false)
   const pointerLockControlsRef = useRef<CameraMoveToPositionRef>(null)
+  const router = useRouter()
   const { isLogin } = useUserStore()
 
-  const onMoveClick = () => {
-    pointerLockControlsRef.current?.moveToPosition(3, 1, -7)
+  // START 버튼을 눌렀을 시
+  const handleStartClick = () => {
+    pointerLockControlsRef.current?.moveToPosition(3, 1, -7) // 카메라 이동
     const accessToken = sessionStorage.getItem("access_token")
     if (accessToken && isLogin) {
+      // 세션에 accessToken 유무, 로그인 유무 확인하여 메인페이지로 보냄
       router.push("/main")
     } else {
       setIsStartClicked(true)
     }
   }
 
-  const onBackClick = () => {
+  // 로그인 창에서 뒤로가기 버튼을 눌렀을 시
+  const handleBackClick = () => {
     pointerLockControlsRef.current?.moveToPosition(4, 3, -2)
     setIsStartClicked(false)
   }
@@ -61,28 +56,59 @@ const Home = ({ showText = true }: HomeProps) => {
         <HomeRoom onLoaded={setIsModelLoaded} />
         <CameraMoveToPosition ref={pointerLockControlsRef} />
       </Canvas>
-      {!showText ? <HeaderNav /> : null}
-      {isModelLoaded ? (
+      {!showText && <HeaderNav />}
+      {isModelLoaded && (
         <div>
           {!isStartClicked && showText ? (
-            <>
-              <S.TitleText className={paytoneOne.className}>
+            <div>
+              <TitleText className={paytoneOne.className}>
                 Cyber Escape
-              </S.TitleText>
-              <S.StartButtton
+              </TitleText>
+              <StartButtton
                 className={paytoneOne.className}
-                onClick={() => onMoveClick()}
+                onClick={handleStartClick}
               >
                 START
-              </S.StartButtton>
-            </>
+              </StartButtton>
+            </div>
           ) : isStartClicked && showText ? (
-            <Login handleLoginback={onBackClick} />
+            <Login handleLoginback={handleBackClick} />
           ) : null}
         </div>
-      ) : null}
+      )}
     </div>
   )
 }
 
 export default Home
+
+const TitleText = styled.div`
+  font-size: 110px;
+  color: ${MainColor};
+  position: absolute;
+  top: 40%;
+  left: 50%;
+  font-weight: bold;
+  transform: translate(-50%, -50%);
+  white-space: nowrap;
+  text-shadow: 2px 2px 2px rgba(0, 0, 0, 0.5);
+`
+
+const StartButtton = styled.button`
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 60px;
+  color: white;
+  background: none;
+  border: none;
+  cursor: pointer;
+  text-shadow: 2px 2px 2px rgba(0, 0, 0, 0.5);
+  margin-top: 50px;
+  transition: font-size 0.3s ease;
+
+  &:hover {
+    font-size: 66px;
+  }
+`

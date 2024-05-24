@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from "react"
+import { useRef, useEffect } from "react"
 import styled from "styled-components"
 import KeyboardReturnIcon from "@mui/icons-material/KeyboardReturn"
 
@@ -10,21 +10,6 @@ interface ChatProps {
 const Chat = ({ sendMessage, chatting }: ChatProps) => {
   const userInputRef = useRef<HTMLInputElement>(null)
   const chatBoxRef = useRef<HTMLDivElement>(null)
-
-  // useEffect(() => {
-  //   const handleClickInsideChat = (event: MouseEvent) => {
-  //     event.stopPropagation()
-  //   }
-
-  //   const chatContainer = document.getElementById(
-  //     "chat-container",
-  //   ) as HTMLElement
-  //   chatContainer.addEventListener("click", handleClickInsideChat)
-
-  //   return () => {
-  //     chatContainer.removeEventListener("click", handleClickInsideChat)
-  //   }
-  // }, [])
 
   useEffect(() => {
     if (chatBoxRef.current) {
@@ -41,13 +26,15 @@ const Chat = ({ sendMessage, chatting }: ChatProps) => {
       }
     }
   }
+
   const handleKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
     if (event.key === "Enter") {
       send()
     }
   }
+
   return (
-    <ChatContainer id="chat-container">
+    <ChatContainer>
       <ChatBox ref={chatBoxRef}>
         {chatting.map((message, index) => (
           <div key={index}>
