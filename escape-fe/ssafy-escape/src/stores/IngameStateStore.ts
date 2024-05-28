@@ -12,6 +12,15 @@ const useIngameStateStore = create<IngameState & IngameAction>((set) => ({
   isGameFinished: false,
   openHint: false,
   isHintModalOpen: false,
+  isSolvedFirstProblem: false,
+  isSolvedSecondProblem: false,
+  isSolvedThirdProblem: false,
+  setIsSolvedFirstProblem: (isSolvedFirstProblem) =>
+    set({ isSolvedFirstProblem }),
+  setIsSolvedSecondProblem: (isSolvedSecondProblem) =>
+    set({ isSolvedSecondProblem }),
+  setIsSolvedThirdProblem: (isSolvedThirdProblem) =>
+    set({ isSolvedThirdProblem }),
   setOpenHint: (openHint) => set({ openHint }),
   setPenalty: (penalty) => set({ penalty }),
   setShowFirstProblem: (showFirstProblem) => set({ showFirstProblem }),

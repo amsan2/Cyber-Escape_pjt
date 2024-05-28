@@ -1,41 +1,42 @@
-import { useGLTF } from "@react-three/drei"
 import { useEffect } from "react"
+import { useGLTF } from "@react-three/drei"
 
-interface PortraitProps {
-  isTwoMinLater: boolean
-  isFiveMinLater: boolean
-}
+const Portrait = ({ isTwoMinLater, isFiveMinLater }: TimeProps) => {
+  const portraitPaths = [
+    "/glb/horror/before_portrait.glb",
+    "/glb/horror/after_portrait.glb",
+  ]
 
-// 추후 중복 제거 리팩토링
-const Portrait = ({ isTwoMinLater, isFiveMinLater }: PortraitProps) => {
-  const portrait = useGLTF(
-    process.env.NEXT_PUBLIC_IMAGE_URL + "/glb/horror/before_portrait.glb",
-    true,
-  )
-  const horrorPortrait = useGLTF(
-    process.env.NEXT_PUBLIC_IMAGE_URL + "/glb/horror/after_portrait.glb",
-    true,
-  )
+  const [portrait, horrorPortrait] = portraitPaths
+    .map((path) => useGLTF(process.env.NEXT_PUBLIC_IMAGE_URL + path, true))
+    .map((gltf) => gltf.scene)
 
+  // 초기 위치 설정
   useEffect(() => {
-    if (portrait.scene && horrorPortrait.scene) {
-      portrait.scene.position.set(-8, 0, 0)
-      horrorPortrait.scene.position.set(-8, 0, 0)
+    if (portrait && horrorPortrait) {
+      portrait.position.set(-8, 0, 0)
+      horrorPortrait.position.set(-8, 0, 0)
     }
   }, [portrait, horrorPortrait])
 
-  let horrorPortraitScale = 35
-  if (isFiveMinLater) {
-    horrorPortrait.scene.position.set(15, 105, -132)
-    horrorPortrait.scene.rotation.set(3, 0, 0)
-    horrorPortraitScale = 45
-  }
+  // props에 따른 position, rotation, scale 변경
+
+  let horrorPortraitScale = 35 // 초기 scale
+
+  useEffect(() => {
+    if (isFiveMinLater) {
+      horrorPortrait.position.set(15, 105, -132)
+      horrorPortrait.rotation.set(3, 0, 0)
+      horrorPortraitScale = 45
+    }
+  }, [isFiveMinLater])
+
   return (
     <>
       {isTwoMinLater ? (
-        <primitive object={horrorPortrait.scene} scale={horrorPortraitScale} />
+        <primitive object={horrorPortrait} scale={horrorPortraitScale} />
       ) : (
-        <primitive object={portrait.scene} scale={35} />
+        <primitive object={portrait} scale={35} />
       )}
     </>
   )

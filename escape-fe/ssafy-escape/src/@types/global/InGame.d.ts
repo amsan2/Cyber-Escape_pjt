@@ -33,17 +33,17 @@ interface RoomProps {
   onLoaded: (isLoaded: boolean) => void
 }
 
-interface ProblemProps {
+interface HorrorProblemProps {
   onClose: () => void
-  penalty?: number
+  penalty: number
   timePenalty: () => void
-  setPenalty?: (penalty: number) => void
-  setSubtitle?: (subtitle: string) => void
+  setPenalty: (penalty: number) => void
+  setSubtitle: (subtitle: string) => void
   setShowSpider?: (showSpider: boolean) => void
   progressUpdate?: () => void
 }
 
-interface SSAFTYProblemProps {
+interface SSAFYProblemProps {
   onClose: () => void
   timePenalty: () => void
   progressUpdate?: () => void
@@ -58,8 +58,18 @@ interface ClickObjectProps {
   setInteractNum: (interactNum: number) => void
 }
 
+interface SequenceAction {
+  subtitle: string
+  delay?: number
+  action?: () => void
+  endAction?: () => void
+}
+
 interface StartProps {
   setSubtitle: (subtitle: string) => void
+  bgmName: string
+  firstSubtitle: string
+  sequenceActions: SequenceAction[]
 }
 
 interface SolvedObjectProps {
@@ -98,13 +108,24 @@ interface HintProps {
   isHintModalOpen: boolean
   quizData: QuizDataProps[]
   problemIndex: number
-  left: string
-  top: string
+  left?: string
+  top?: string
+  bottom?: string
 }
 
 interface HintIconBoxProps {
-  left: string
-  top: string
+  left?: string
+  top?: string
+  bottom?: string
+}
+
+interface ContainerProps {
+  opacity: number
+}
+
+interface TimeProps {
+  isTwoMinLater?: boolean
+  isFiveMinLater?: boolean
 }
 
 declare module "three/examples/jsm/utils/SkeletonUtils" {
@@ -113,9 +134,10 @@ declare module "three/examples/jsm/utils/SkeletonUtils" {
 }
 
 interface PenaltyProps {
-  penalty: number
+  penalty: number | undefined
   index?: number
   role?: "experiment" | "scientist"
+  isShowGhost?: boolean
 }
 
 interface RenderThemeProps {
@@ -146,6 +168,9 @@ interface ProblemModalsProps {
   showFirstProblem: boolean
   showSecondProblem: boolean
   showThirdProblem: boolean
+  isSolvedFirstProblem?: boolean
+  isSolvedSecondProblem?: boolean
+  isSolvedThirdProblem?: boolean
   handleFirstProblem: () => void
   handleSecondProblem: () => void
   handleThirdProblem: () => void
@@ -153,9 +178,39 @@ interface ProblemModalsProps {
   timePenalty: () => void
   setPenalty?: (penalty: number) => void
   setSubtitle?: (subtitle: string) => void
+  role: string
+  setShowSpider?: (show: boolean) => void
+  progressUpdate?: (progress: number) => void
+  setIsSolvedProblem?: (solve: boolean) => void
 }
 
 interface ProductionsProps {
   isFiveMinLater: boolean
   ghostIndex: number
+}
+
+interface LightProps {
+  penalty: number
+  solved: number
+}
+
+interface InteractionsProps {
+  isTwoMinLater?: boolean
+  isFiveMinLater?: boolean
+  isFlowerClicked?: boolean
+  setIsFlowerClicked?: (isClicked: boolean) => void
+  progressUpdate?: () => void
+  handleFirstProblem: () => void
+  handleSecondProblem: () => void
+  handleThirdProblem: () => void
+}
+
+
+interface BloodPoolProps {
+  solved: number
+  isFlowerClicked: boolean
+}
+
+interface SpiderProps {
+  showSpider: boolean
 }

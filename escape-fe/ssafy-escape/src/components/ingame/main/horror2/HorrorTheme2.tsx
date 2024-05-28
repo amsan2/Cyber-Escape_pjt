@@ -1,43 +1,31 @@
+import { useEffect, useRef, useState } from "react"
+import { Environment, Lightformer } from "@react-three/drei"
+import { QueryClient } from "@tanstack/react-query"
+import styled from "styled-components"
+import useIngameQuizStore from "@/stores/IngameQuizStore"
+import useIngameThemeStore from "@/stores/IngameThemeStore"
+import useUserStore from "@/stores/UserStore"
+import useIngameStateStore from "@/stores/IngameStateStore"
+import getQuiz from "@/services/ingame/getQuiz"
 import BasicScene from "../../BasicScene"
 import Player from "../../elements/common/Player"
-import MeshObjects from "../../elements/horror/horror2/MeshObjects"
+import MeshObjects from "../../elements/horror/horror2/Basics/MeshObjects"
 import Floor from "../../elements/common/Floor"
 import Blood from "../../elements/horror/common/Blood"
-import { useEffect, useRef, useState } from "react"
-import FirstProblemModal from "../../elements/horror/horror2/FirstProblemModal"
-import useIngameQuizStore from "@/stores/IngameQuizStore"
-import SecondProblemModal from "../../elements/horror/horror2/SecondProblemModal"
-import ThirdProblemModal from "../../elements/horror/horror2/ThirdProblemModal"
-import ThirdProblemObject from "../../elements/horror/horror2/ThirdProblemObject"
-import Subtitle from "../../elements/common/Subtitle"
-import HorrorRoom2 from "../../elements/horror/horror2/HorrorRoom2"
-import { Environment, Lightformer } from "@react-three/drei"
-import Paper from "../../elements/horror/horror2/Paper"
-import Start from "../../elements/horror/horror2/Start"
-import Computer from "../../elements/horror/horror2/Computer"
+import HorrorRoom2 from "../../elements/horror/horror2/Basics/HorrorRoom2"
+import Paper from "../../elements/horror/horror2/Basics/Paper"
 import CountdownTimer from "../../CountdownTimer"
-import { QueryClient, useQuery } from "@tanstack/react-query"
-import useIngameThemeStore from "@/stores/IngameThemeStore"
-import getQuiz from "@/services/ingame/getQuiz"
-import ScrunchedPaper from "../../elements/horror/horror2/ScrunchedPaper"
-import FinalDoor from "../../elements/horror/horror2/FinalDoor"
-import Syringe from "../../elements/horror/horror2/Syringe"
-import Hammer from "../../elements/horror/horror2/Hammer"
-import Glasses from "../../elements/horror/horror2/Glasses"
-import ScissorDoll from "../../elements/horror/horror2/ScissorDoll"
-import Spider from "../../elements/horror/horror2/Spider"
-import CreepyDoll from "../../elements/horror/horror2/CreepyDoll"
-import VoodooDoll from "../../elements/horror/horror2/VoodooDoll"
-import BloodText from "../../elements/horror/common/BloodText"
+import Glasses from "../../elements/horror/horror2/Basics/Glasses"
+import ScissorDoll from "../../elements/horror/horror2/Basics/ScissorDoll"
+import Spider from "../../elements/horror/horror2/Basics/Spider"
+import CreepyDoll from "../../elements/horror/horror2/Basics/CreepyDoll"
+import VoodooDoll from "../../elements/horror/horror2/Basics/VoodooDoll"
 import PlayPenaltySound from "../../elements/horror/common/PlayPenaltySound"
 import Result from "../../elements/common/Result"
-import useUserStore from "@/stores/UserStore"
-import styled from "styled-components"
-import Image from "next/image"
-
-// const startPosition = { x: 8, y: 8, z: -2 }
-// const startTargetPosition = { x: 4, y: 3, z: -2 }
-// const lookAt = { x: -4, y: 2, z: 2 }
+import Productions from "../../elements/horror/horror2/Basics/Productions"
+import Start from "../../elements/common/Start"
+import Interactions from "../../elements/horror/horror2/Basics/Interactions"
+import ProblemModals from "../../elements/common/ProblemModals"
 
 const HorrorTheme2 = ({
   isGameStart,
@@ -46,33 +34,33 @@ const HorrorTheme2 = ({
   progressReset,
   roomData,
 }: IngameMainProps) => {
-  const [isSyringeClicked, setIsSyringeClicked] = useState<boolean>(false)
-  const [isHammerClicked, setIsHammerClicked] = useState<boolean>(false)
-  const [twoMinLater, setTwoMinLater] = useState<boolean>(false)
-  const [fiveMinLater, setFiveMinLater] = useState<boolean>(false)
-  const [penalty, setPenalty] = useState<number>(0)
-  const [showFirstProblem, setShowFirstProblem] = useState<boolean>(false)
-  const [showSecondProblem, setShowSecondProblem] = useState<boolean>(false)
-  const [showThirdProblem, setShowThirdProblem] = useState<boolean>(false)
   const { solved, resetQuizState } = useIngameQuizStore()
   const { selectedThemeType } = useIngameThemeStore()
-  const [subtitle, setSubtitle] = useState<string>("")
-  const [interactNum, setInteractNum] = useState<number>(1)
   const [showSpider, setShowSpider] = useState<boolean>(false)
-  const [showBlackOut, setShowBlackOut] = useState<boolean>(false)
-  const [showBloodText, setShowBloodText] = useState<boolean>(false)
-  const [result, setResult] = useState<string>("")
-  const [isGameFinished, setIsGameFinished] = useState<boolean>(false)
-  const [isTimeOut, setIsTimeOut] = useState<boolean>(false)
-  const [showExtraImage, setShowExtraImage] = useState(false)
-  const [index, setIndex] = useState(0)
-  const [mouseSpeed, setMouseSpeed] = useState(0.5)
-
-  useEffect(() => {
-    const randomIndex = Math.floor(Math.random() * 10)
-    setIndex(randomIndex)
-  }, [])
+  const [isTwoMinLater, setIsTwoMinLater] = useState<boolean>(false)
+  const [isFiveMinLater, setIsFiveMinLater] = useState<boolean>(false)
+  const [ghostIndex, setGhostIndex] = useState(0)
+  const [environmentIntensity, setEnvironmentIntensity] = useState<number>(0.35)
+  const [isNull, setIsNull] = useState(false)
   const { isHost } = useUserStore()
+
+  const {
+    penalty,
+    showFirstProblem,
+    showSecondProblem,
+    showThirdProblem,
+    interactNum,
+    result,
+    isGameFinished,
+    setPenalty,
+    setShowFirstProblem,
+    setShowSecondProblem,
+    setShowThirdProblem,
+    setSubtitle,
+    setResult,
+    setIsGameFinished,
+  } = useIngameStateStore()
+
   const timerRef = useRef<CountdownTimerHandle | null>(null)
 
   // 시간 깎는 패널티 함수
@@ -81,8 +69,9 @@ const HorrorTheme2 = ({
       timerRef.current.applyPenalty()
     }
   }
+
+  // 시간 끝났을 시 이벤트 함수
   const handleTimeOut = () => {
-    setIsTimeOut(true)
     setResult("timeOut")
     setIsGameFinished(true)
   }
@@ -93,22 +82,20 @@ const HorrorTheme2 = ({
       queryKey: ["quizList", 3],
       queryFn: () => getQuiz(3),
     })
-  }, [])
 
-  useEffect(() => {
+    // 귀신 사진 출력에 쓸 랜덤 인덱스 추출
+    const randomIndex = Math.floor(Math.random() * 10) + 1
+    setGhostIndex(randomIndex)
+
     // 2분 경과 시
     const twoMintimer = setTimeout(() => {
       setPenalty(penalty + 1)
-      setTwoMinLater(true)
+      setIsTwoMinLater(true)
     }, 60000 * 2)
 
     // 5분 경과 시
     const fiveMintimer = setTimeout(() => {
-      const audio = new Audio(
-        process.env.NEXT_PUBLIC_IMAGE_URL + "/sound/lift_door_bangs.mp3",
-      )
-      audio.play()
-      setFiveMinLater(true)
+      setIsFiveMinLater(true)
     }, 60000 * 5)
 
     return () => {
@@ -116,81 +103,15 @@ const HorrorTheme2 = ({
     }
   }, [])
 
-  // 패널티 1개 -> 화면 까맣게 됨 / 패널티 2개 -> 빨간 글씨 출력 / 패널티 6개 -> 귀신 등장
   useEffect(() => {
-    if (penalty === 1) {
-      setShowBlackOut(true)
-      setTimeout(() => {
-        setTimeout(() => {
-          setShowBlackOut(false)
-        }, 2000)
-      }, 2000)
-    } else if (penalty === 2) {
-      setShowBloodText(true)
-      setTimeout(() => {
-        setTimeout(() => {
-          setShowBloodText(false)
-        }, 500)
-      }, 500)
-    } else if (penalty === 6) {
+    // 시간 경과에 따른 조명 연출
+    if (isTwoMinLater && !isFiveMinLater) {
+      setEnvironmentIntensity(0.25)
+    } else if (isFiveMinLater) {
+      setEnvironmentIntensity(0.2)
     }
-  }, [penalty])
+  }, [isTwoMinLater, isFiveMinLater])
 
-  // 시간 경과에 따른 조명 연출
-  const getEnvironmentIntensity = (
-    twoMinLater: boolean,
-    fiveMinLater: boolean,
-  ): number => {
-    if (twoMinLater && !fiveMinLater) {
-      return 0.25
-    } else if (fiveMinLater) {
-      return 0.2
-    } else {
-      return 0.35
-    }
-  }
-  const environmentIntensity = getEnvironmentIntensity(
-    twoMinLater,
-    fiveMinLater,
-  )
-
-  // 주사기 클릭 시 이벤트
-  const handleSyringeClick = () => {
-    if (solved === 3) {
-      setIsSyringeClicked(true)
-      setInteractNum(1)
-    }
-  }
-
-  // 망치 클릭 시 이벤트
-  const handleHammerClick = () => {
-    if (solved === 3) {
-      setIsHammerClicked(true)
-      setInteractNum(1)
-    }
-  }
-
-  useEffect(() => {
-    // 필요한 물품들을 다 챙겼을 시 이벤트(자막)
-    if (isHammerClicked && isSyringeClicked) {
-      setSubtitle("이제 필요한 건 다 챙긴 것 같은데.")
-      setTimeout(() => {
-        setSubtitle("슬슬 나가지 않으면 늦겠어.")
-        setTimeout(() => {
-          setSubtitle("")
-        }, 4000)
-      }, 4000)
-    }
-  }, [isHammerClicked, isSyringeClicked])
-
-  // 마지막 문 클릭 시 이벤트
-  const handleFinal = async () => {
-    if (isHammerClicked && isSyringeClicked) {
-      if (progressUpdate) {
-        progressUpdate()
-      }
-    }
-  }
   useEffect(() => {
     // 둘 중 한 명이 경기를 끝내면
     if (roomData?.guestProgress === 4 || roomData?.hostProgress === 4) {
@@ -220,6 +141,7 @@ const HorrorTheme2 = ({
       }, 5000)
     }
   }, [roomData])
+
   // 첫 번째 문제 모달
   const handleFirstProblem = () => {
     if (solved === 0) {
@@ -241,9 +163,23 @@ const HorrorTheme2 = ({
     }
   }
 
+  // 시작 시 연출
+  const sequenceActions: SequenceAction[] = [
+    { subtitle: "이번 실험은 반드시 성공시켜야 해. 반드시...!" },
+    { subtitle: "...너무 흥분해버렸네. 자, 뭐가 필요하더라?" },
+    {
+      subtitle: "마취가 깨기 전에 얼른 챙길 것만 챙겨서 나가야겠어.",
+    },
+    {
+      subtitle: "그 전에 데이터를 먼저 백업해두는 게 낫겠군.",
+      delay: 10000,
+      endAction: () => setIsNull(true),
+    },
+  ]
+
   return (
     <>
-      {isGameStart ? (
+      {isGameStart && (
         <>
           {!isGameFinished && (
             <CountdownTimer
@@ -253,74 +189,47 @@ const HorrorTheme2 = ({
               minutes={8}
             />
           )}
-          <Start setSubtitle={setSubtitle} />
-        </>
-      ) : null}
-      <Subtitle text={subtitle} />
-      {showExtraImage && (
-        <BlackBackground>
-          <HorrorImageBox>
-            <Image
-              src={
-                process.env.NEXT_PUBLIC_IMAGE_URL +
-                `/image/ghost/ghost${index}.jpg`
-              }
-              alt="귀신 이미지"
-              layout="fill"
-              objectFit="cover"
+          {!isNull && (
+            <Start
+              setSubtitle={setSubtitle}
+              bgmName="HorrorBgm2"
+              firstSubtitle="...오랜만에 좋은 실험체를 손에 넣어서 기분이 좋군."
+              sequenceActions={sequenceActions}
             />
-          </HorrorImageBox>
-        </BlackBackground>
+          )}
+        </>
       )}
-      {showFirstProblem ? (
-        <FirstProblemModal
-          onClose={handleFirstProblem}
-          penalty={penalty}
-          setPenalty={setPenalty}
-          setSubtitle={setSubtitle}
-          timePenalty={timePenalty}
-          setShowSpider={setShowSpider}
-          progressUpdate={progressUpdate}
-        />
-      ) : null}
-      {showSecondProblem ? (
-        <SecondProblemModal
-          onClose={handleSecondProblem}
-          penalty={penalty}
-          setPenalty={setPenalty}
-          setSubtitle={setSubtitle}
-          timePenalty={timePenalty}
-          progressUpdate={progressUpdate}
-        />
-      ) : null}
-      {showThirdProblem ? (
-        <ThirdProblemModal
-          onClose={handleThirdProblem}
-          penalty={penalty}
-          setPenalty={setPenalty}
-          setSubtitle={setSubtitle}
-          timePenalty={timePenalty}
-          progressUpdate={progressUpdate}
-        />
-      ) : null}
-      {showBloodText ? <BloodText role="scientist" penalty={penalty} /> : null}
-      {showBlackOut ? <BlackBackground></BlackBackground> : null}
-      {isGameFinished ? (
+      <ProblemModals
+        showFirstProblem={showFirstProblem}
+        showSecondProblem={showSecondProblem}
+        showThirdProblem={showThirdProblem}
+        handleFirstProblem={handleFirstProblem}
+        handleSecondProblem={handleSecondProblem}
+        handleThirdProblem={handleThirdProblem}
+        penalty={penalty}
+        setPenalty={setPenalty}
+        timePenalty={timePenalty}
+        setSubtitle={setSubtitle}
+        setShowSpider={setShowSpider}
+        progressUpdate={progressUpdate}
+        role="scientist"
+      />
+      {isGameFinished && (
         <Result
           type={result}
           themeIdx={3}
           selectedThemeType={selectedThemeType}
         />
-      ) : null}
+      )}
+      <Productions ghostIndex={ghostIndex} isFiveMinLater={isFiveMinLater} />
       <PlayPenaltySound penalty={penalty} role="scientist" />
-      <BasicScene interactNum={interactNum} mouseSpeed={mouseSpeed}>
+      <BasicScene interactNum={interactNum} mouseSpeed={0.5}>
         <Player position={[3, 40, 0]} speed={80} />
         <Floor
           rotation={[Math.PI / -2, 0, 0]}
           color="white"
           position={[0, 0.5, 0]}
         />
-        <MeshObjects />
         <Environment
           files={
             process.env.NEXT_PUBLIC_IMAGE_URL + "/hdr/concrete_tunnel_02_1k.hdr"
@@ -330,47 +239,22 @@ const HorrorTheme2 = ({
         >
           <Lightformer intensity={0.5} scale={1} target={[0, 0, 0]} />
         </Environment>
-        <Paper twoMinLater={twoMinLater} />
-        <Computer
-          onClick={handleFirstProblem}
-          solved={solved}
-          setInteractNum={setInteractNum}
-        />
+        <MeshObjects />
+        <HorrorRoom2 onLoaded={setIsModelLoaded} />
+        <Paper isTwoMinLater={isTwoMinLater} />
         <Blood penalty={penalty} role="scientist" />
         <VoodooDoll solved={solved} />
         <CreepyDoll solved={solved} />
+        <ScissorDoll isFiveMinLater={isFiveMinLater} />
         <Spider showSpider={showSpider} />
-        <ScissorDoll fiveMinLater={fiveMinLater} />
         <Glasses />
-        {!isSyringeClicked ? (
-          <Syringe
-            onClick={handleSyringeClick}
-            setInteractNum={setInteractNum}
-            solved={solved}
-          />
-        ) : null}
-        <HorrorRoom2 onLoaded={setIsModelLoaded} />
-        {!isHammerClicked ? (
-          <Hammer
-            onClick={handleHammerClick}
-            setInteractNum={setInteractNum}
-            solved={solved}
-          />
-        ) : null}
-        <FinalDoor
-          onClick={handleFinal}
-          setInteractNum={setInteractNum}
-          solved={solved}
-        />
-        <ScrunchedPaper
-          onClick={handleSecondProblem}
-          solved={solved}
-          setInteractNum={setInteractNum}
-        />
-        <ThirdProblemObject
-          onClick={handleThirdProblem}
-          solved={solved}
-          setInteractNum={setInteractNum}
+        <Interactions
+          isTwoMinLater={isTwoMinLater}
+          isFiveMinLater={isFiveMinLater}
+          handleFirstProblem={handleFirstProblem}
+          handleSecondProblem={handleSecondProblem}
+          handleThirdProblem={handleThirdProblem}
+          progressUpdate={progressUpdate}
         />
       </BasicScene>
     </>

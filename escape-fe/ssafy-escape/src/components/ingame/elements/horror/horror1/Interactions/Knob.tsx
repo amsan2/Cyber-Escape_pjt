@@ -8,7 +8,7 @@ const Knob = ({
   solved,
   setInteractNum,
 }: ClickObjectProps) => {
-  const knob = useGLTF(
+  const {scene: knob} = useGLTF(
     process.env.NEXT_PUBLIC_IMAGE_URL + "/glb/horror/knob.glb",
     true,
   )
@@ -27,11 +27,11 @@ const Knob = ({
   }, [])
 
   useEffect(() => {
-    if (knob.scene) {
-      if (isFind) {
-        knob.scene.position.set(0, 0, 0)
+    if (knob) {
+      if (isFind) { // 숨겨진 문고리를 찾아서 클릭 시 원위치로 이동
+        knob.position.set(0, 0, 0)
       } else {
-        knob.scene.position.set(
+        knob.position.set(
           knobPosition[index][0],
           knobPosition[index][1],
           knobPosition[index][2],
@@ -40,15 +40,17 @@ const Knob = ({
     }
   }, [knob, isFind, solved])
 
-  return solved === 3 ? (
-    <primitive
-      object={knob.scene}
-      scale={35}
-      onPointerOver={() => setInteractNum(2)}
-      onPointerOut={() => setInteractNum(1)}
-      onClick={onClick}
-    />
-  ) : null
+  return (
+    solved === 3 && (
+      <primitive
+        object={knob}
+        scale={35}
+        onPointerOver={() => setInteractNum(2)}
+        onPointerOut={() => setInteractNum(1)}
+        onClick={onClick}
+      />
+    )
+  )
 }
 
 export default Knob

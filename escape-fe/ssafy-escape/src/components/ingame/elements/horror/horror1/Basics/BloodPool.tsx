@@ -1,24 +1,16 @@
-import { useGLTF } from "@react-three/drei"
 import { memo, useEffect, useMemo } from "react"
-
-interface BloodPoolProps {
-  solved: number
-  isFlowerClicked: boolean
-}
+import { useGLTF } from "@react-three/drei"
 
 const BloodPool = memo(({ solved, isFlowerClicked }: BloodPoolProps) => {
-  const { scene: bloodPool1 } = useGLTF(
-    process.env.NEXT_PUBLIC_IMAGE_URL + "/glb/horror/pool_blood1.glb",
-    true,
-  )
-  const { scene: bloodPool2 } = useGLTF(
-    process.env.NEXT_PUBLIC_IMAGE_URL + "/glb/horror/pool_blood2.glb",
-    true,
-  )
-  const { scene: bloodPool3 } = useGLTF(
-    process.env.NEXT_PUBLIC_IMAGE_URL + "/glb/horror/pool_blood3.glb",
-    true,
-  )
+  const bloodPoolPaths = [
+    "/glb/horror/pool_blood1.glb",
+    "/glb/horror/pool_blood2.glb",
+    "/glb/horror/pool_blood3.glb",
+  ]
+
+  const [bloodPool1, bloodPool2, bloodPool3] = bloodPoolPaths
+    .map((path) => useGLTF(process.env.NEXT_PUBLIC_IMAGE_URL + path, true))
+    .map((gltf) => gltf.scene)
 
   const bloodPools = useMemo(() => {
     const pools = []
@@ -29,22 +21,24 @@ const BloodPool = memo(({ solved, isFlowerClicked }: BloodPoolProps) => {
     if (solved >= 2 && isFlowerClicked === false)
       pools.push(<primitive object={bloodPool2} scale={450} />)
     if (solved >= 3) pools.push(<primitive object={bloodPool3} scale={700} />)
+
     return pools
   }, [solved, isFlowerClicked, bloodPool1, bloodPool2, bloodPool3])
 
   useEffect(() => {
-    if (bloodPool1) {
-      bloodPool1.position.set(-35, 0, -22)
-    }
-    if (bloodPool2) {
-      bloodPool2.position.set(-36, 20, 44)
-    }
-    if (bloodPool3) {
-      bloodPool3.position.set(113, 0, -80)
-    }
-  }, [bloodPool1, bloodPool2, bloodPool3])
+    const positions = [
+      { pool: bloodPools[0].props.object, position: [-35, 0, -22] },
+      { pool: bloodPools[1].props.object, position: [-36, 20, 44] },
+      { pool: bloodPools[2].props.object, position: [113, 0, -80] },
+    ]
 
-  // 콘솔 오류 해결 필요
+    positions.forEach(({ pool, position }) => {
+      if (pool) {
+        pool.position.set(position[0], position[1], position[2])
+      }
+    })
+  }, [bloodPools])
+
   return <>{bloodPools}</>
 })
 export default BloodPool

@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from "react"
+import { useEffect, useState } from "react"
 import { Box } from "@react-three/drei"
 
 // 세 번째 문제가 숨겨진 곳(랜덤)
@@ -50,8 +50,8 @@ const ThirdProblemObject = ({
     setIndex(randomIndex)
   }, [])
 
-  return solved === 2 ? (
-    <>
+  return (
+    solved === 2 && (
       <Box
         position={objectArr[index][0]}
         args={objectArr[index][1]}
@@ -66,8 +66,8 @@ const ThirdProblemObject = ({
           opacity={0}
         />
       </Box>
-    </>
-  ) : null
+    )
+  )
 }
 
 export default ThirdProblemObject

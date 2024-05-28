@@ -3,29 +3,16 @@ import useIngameStateStore from "@/stores/IngameStateStore"
 import useUserStore from "@/stores/UserStore"
 import useIngameQuizStore from "@/stores/IngameQuizStore"
 import Flower from "../Interactions/Flower"
-import HorrorRoom from "./HorrorRoom"
 import Knob from "../Interactions/Knob"
 import SecondProblemObject from "../Interactions/SecondProblemObject"
 import Skull from "../Interactions/Skull"
 import ThirdProblemObject from "../Interactions/ThirdProblemObject"
 import SingleVictory from "../../common/SingleVictory"
 
-interface InteractionsProps {
-  isTwoMinLater: boolean
-  isFiveMinLater: boolean
-  isFlowerClicked: boolean
-  setIsFlowerClicked: (isClicked: boolean) => void
-  setIsModelLoaded: (isModelLoaded: boolean) => void
-  handleFirstProblem: () => void
-  handleSecondProblem: () => void
-  handleThirdProblem: () => void
-}
-
 // 상호작용되는 오브젝트들
 const Interactions = ({
   isFlowerClicked,
   setIsFlowerClicked,
-  setIsModelLoaded,
   handleFirstProblem,
   handleSecondProblem,
   handleThirdProblem,
@@ -44,7 +31,9 @@ const Interactions = ({
 
   // 침대 위 꽃 클릭 시 이벤트
   const handleFlowerClick = () => {
-    setIsFlowerClicked(true)
+    if (setIsFlowerClicked) {
+      setIsFlowerClicked(true)
+    }
     setInteractNum(1)
   }
 
@@ -83,7 +72,6 @@ const Interactions = ({
         solved={solved}
         setInteractNum={setInteractNum}
       />
-      <HorrorRoom onLoaded={setIsModelLoaded} />
       <Skull
         onClick={handleFirstProblem}
         solved={solved}

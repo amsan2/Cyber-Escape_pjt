@@ -3,6 +3,7 @@ import postUpdateRank from "@/services/main/ranking/postUpdateRank"
 import SecondToTime from "@/utils/SecondToTime"
 
 // CountdownTimer의 함수, state를 가져옴
+// 싱글 모드에서 탈출에 성공했을 경우 -> 최고기록 갱신 및 상태변경
 
 const SingleVictory = async ({
   userUuid,

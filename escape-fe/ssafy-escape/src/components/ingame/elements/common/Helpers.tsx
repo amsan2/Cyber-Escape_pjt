@@ -5,7 +5,6 @@ interface Movement {
   backward: boolean
   left: boolean
   right: boolean
-  // jump: boolean
 }
 
 export const usePlayerControls = () => {
@@ -14,7 +13,6 @@ export const usePlayerControls = () => {
     KeyS: "backward",
     KeyA: "left",
     KeyD: "right",
-    // Space: "jump",
   }
   const moveFieldByKey = (key: string): keyof Movement => keys[key]
 
@@ -23,7 +21,6 @@ export const usePlayerControls = () => {
     backward: false,
     left: false,
     right: false,
-    // jump: false,
   })
 
   useEffect(() => {

@@ -1,29 +1,22 @@
 import { useEffect, useRef, useState } from "react"
-import Lights from "@/components/ingame/elements/ssafy2/Lights"
+import { QueryClient } from "@tanstack/react-query"
+import useUserStore from "@/stores/UserStore"
+import useIngameStateStore from "@/stores/IngameStateStore"
+import useIngameThemeStore from "@/stores/IngameThemeStore"
+import getQuiz from "@/services/ingame/getQuiz"
 import BasicScene from "@/components/ingame/BasicScene"
 import Player from "@/components/ingame/elements/common/Player"
 import Floor from "@/components/ingame/elements/common/Floor"
-import CountdownTimer, { CountdownTimerHandle } from "../../CountdownTimer"
-import Start from "../../elements/ssafy2/Start"
-import MeshObjects from "../../elements/ssafy/MeshObjects"
-import useIngameThemeStore from "@/stores/IngameThemeStore"
-import { QueryClient } from "@tanstack/react-query"
-import getQuiz from "@/services/ingame/getQuiz"
+import CountdownTimer from "../../CountdownTimer"
+import MeshObjects from "../../elements/ssafy/Basics/MeshObjects"
 import Result from "../../elements/common/Result"
-import FirstProblemModal from "../../elements/ssafy/FirstProblemModal"
-import SecondProblemModal from "../../elements/ssafy/SecondProblemModal"
-import ThirdProblemModal from "../../elements/ssafy/ThirdProblemModal"
-import Subtitle from "../../elements/common/Subtitle"
-import Notebook1 from "../../elements/ssafy/NoteBook1"
-import Notebook2 from "../../elements/ssafy/NoteBook2"
-import SsafyClassRoom from "../../elements/ssafy/SsafyClassRoom"
-import postUpdateRank from "@/services/main/ranking/postUpdateRank"
-import useUserStore from "@/stores/UserStore"
-import SecondToTime from "@/utils/SecondToTime"
-import Plant from "../../elements/ssafy/Plant"
-import ThirdProblemObject from "../../elements/ssafy/ThirdProblemObject"
-import FinalDoorObject from "../../elements/ssafy/FinalDoorObject"
-import useIngameQuizStore from "@/stores/IngameQuizStore"
+import SsafyClassRoom from "../../elements/ssafy/Basics/SsafyClassRoom"
+import Plant from "../../elements/ssafy/Basics/Plant"
+import Lights from "../../elements/ssafy/Basics/Lights"
+import Interactions from "../../elements/ssafy/Basics/Interactions"
+import ProblemModals from "../../elements/common/ProblemModals"
+import Start from "../../elements/common/Start"
+
 const SsafyTheme = ({
   isGameStart,
   setIsModelLoaded,
@@ -31,24 +24,28 @@ const SsafyTheme = ({
   progressReset,
   roomData,
 }: IngameMainProps) => {
-  const [subtitle, setSubtitle] = useState<string>("")
   const timerRef = useRef<CountdownTimerHandle | null>(null)
-  const [interactNum, setInteractNum] = useState<number>(1)
-  const [isGameFinished, setIsGameFinished] = useState<boolean>(false)
-  const [result, setResult] = useState<string>("")
+  const [isNull, setIsNull] = useState(false)
   const { selectedThemeType } = useIngameThemeStore()
-  const [showFirstProblem, setShowFirstProblem] = useState<boolean>(false)
-  const [showSecondProblem, setShowSecondProblem] = useState<boolean>(false)
-  const [showThirdProblem, setShowThirdProblem] = useState<boolean>(false)
-  const [isSolvedFirstProblem, setIsSolvedFirstProblem] =
-    useState<boolean>(false)
-  const [isSolvedSecondProblem, setIsSolvedSecondProblem] =
-    useState<boolean>(false)
-  const [isSolvedThirdProblem, setIsSolvedThirdProblem] =
-    useState<boolean>(false)
-  const [clearTime, setClearTime] = useState<string>("")
-  const { userUuid, isHost } = useUserStore()
-  const [mouseSpeed, setMouseSpeed] = useState(0.5)
+  const { isHost } = useUserStore()
+  const {
+    showFirstProblem,
+    showSecondProblem,
+    showThirdProblem,
+    isSolvedFirstProblem,
+    isSolvedSecondProblem,
+    isSolvedThirdProblem,
+    interactNum,
+    result,
+    clearTime,
+    isGameFinished,
+    setShowFirstProblem,
+    setShowSecondProblem,
+    setShowThirdProblem,
+    setSubtitle,
+    setResult,
+    setIsGameFinished,
+  } = useIngameStateStore()
 
   // 시간 깎는 패널티 함수
   const timePenalty = () => {
@@ -78,23 +75,6 @@ const SsafyTheme = ({
     }
   }, [isSolvedFirstProblem, isSolvedSecondProblem, isSolvedThirdProblem])
 
-  // 마지막 문 클릭 시
-  const handleFinal = async () => {
-    if (selectedThemeType === "single") {
-      if (timerRef.current) {
-        const currentTime = timerRef.current.getTime()
-        const clearSeconds =
-          300 - (currentTime.minutes * 60 + currentTime.seconds)
-        setClearTime(SecondToTime(clearSeconds))
-        await postUpdateRank(SecondToTime(clearSeconds), userUuid as string, 4)
-      }
-      setResult("victory")
-      setIsGameFinished(true)
-      if (progressUpdate) {
-        progressUpdate()
-      }
-    }
-  }
   useEffect(() => {
     // 둘 중 한 명이 경기를 끝내면
     if (roomData?.guestProgress === 4 || roomData?.hostProgress === 4) {
@@ -134,10 +114,6 @@ const SsafyTheme = ({
 
   // 첫 번째 문제 모달
   const handleFirstProblem = () => {
-    const new_audio = new Audio(
-      process.env.NEXT_PUBLIC_IMAGE_URL + `/sound/ssafy_security.mp3`,
-    )
-    new_audio.play()
     setShowFirstProblem(!showFirstProblem)
   }
 
@@ -151,9 +127,23 @@ const SsafyTheme = ({
     setShowThirdProblem(!showThirdProblem)
   }
 
+  // 시작 시 연출
+  const sequenceActions: SequenceAction[] = [
+    { subtitle: "아 오늘 날씨도 좋은데 한강이나 가고 싶다" },
+    { subtitle: "몰래 도망가버릴까...?" },
+    {
+      subtitle: "프로님 죄송합니다!!!!!",
+    },
+    { subtitle: "노트북에 뭔가 단서가 있을 것 같아." },
+    {
+      subtitle: "칠판도 좀 수상한데?",
+      endAction: () => setIsNull(true),
+    },
+  ]
+
   return (
     <>
-      {isGameStart ? (
+      {isGameStart && (
         <>
           {!isGameFinished && (
             <CountdownTimer
@@ -163,81 +153,51 @@ const SsafyTheme = ({
               minutes={5}
             />
           )}
-          <Start setSubtitle={setSubtitle} />
+          {!isNull && (
+            <Start
+              setSubtitle={setSubtitle}
+              bgmName="SsafyBgm"
+              firstSubtitle="뭐야 그 사이 잠깐 졸았었네"
+              sequenceActions={sequenceActions}
+            />
+          )}
         </>
-      ) : null}
-      <Subtitle text={subtitle} />
-      {showFirstProblem && !isSolvedFirstProblem ? (
-        <FirstProblemModal
-          progressUpdate={progressUpdate}
-          onClose={handleFirstProblem}
-          timePenalty={timePenalty}
-          setIsSolvedProblem={setIsSolvedFirstProblem}
-        />
-      ) : null}
-      {showSecondProblem && !isSolvedSecondProblem ? (
-        <SecondProblemModal
-          progressUpdate={progressUpdate}
-          onClose={handleSecondProblem}
-          timePenalty={timePenalty}
-          setIsSolvedProblem={setIsSolvedSecondProblem}
-        />
-      ) : null}
-      {showThirdProblem && !isSolvedThirdProblem ? (
-        <ThirdProblemModal
-          progressUpdate={progressUpdate}
-          onClose={handleThirdProblem}
-          timePenalty={timePenalty}
-          setIsSolvedProblem={setIsSolvedThirdProblem}
-        />
-      ) : null}
-      {isGameFinished ? (
+      )}
+      <ProblemModals
+        showFirstProblem={showFirstProblem}
+        showSecondProblem={showSecondProblem}
+        showThirdProblem={showThirdProblem}
+        handleFirstProblem={handleFirstProblem}
+        handleSecondProblem={handleSecondProblem}
+        handleThirdProblem={handleThirdProblem}
+        timePenalty={timePenalty}
+        setSubtitle={setSubtitle}
+        role="trainee"
+      />
+      {isGameFinished && (
         <Result
           type={result}
           themeIdx={4}
           selectedThemeType={selectedThemeType}
           clearTime={clearTime}
         />
-      ) : null}
-      <BasicScene
-        interactNum={interactNum}
-        onAir={true}
-        mouseSpeed={mouseSpeed}
-      >
+      )}
+      <BasicScene interactNum={interactNum} mouseSpeed={0.5}>
         <MeshObjects />
         <Lights />
         <Player position={[-3, 11, 10]} speed={40} args={[0, 0, 0]} />
-        <Notebook1
-          onClick={handleFirstProblem}
-          setInteractNum={setInteractNum}
-          isSolvedProblem={isSolvedFirstProblem}
-        />
-        <Notebook2
-          onClick={handleSecondProblem}
-          setInteractNum={setInteractNum}
-          isSolvedProblem={isSolvedSecondProblem}
-        />
-        {!isSolvedThirdProblem ? (
-          <ThirdProblemObject
-            onClick={handleThirdProblem}
-            setInteractNum={setInteractNum}
-            isSolvedProblem={isSolvedThirdProblem}
-          />
-        ) : null}
-        <Plant />
-        {isSolvedFirstProblem &&
-        isSolvedSecondProblem &&
-        isSolvedThirdProblem ? (
-          <FinalDoorObject
-            onClick={handleFinal}
-            setInteractNum={setInteractNum}
-          />
-        ) : null}
         <Floor
           rotation={[Math.PI / -2, 0, 0]}
           color="white"
           position={[0, -0.5, 0]}
         />
+        <Interactions
+          handleFirstProblem={handleFirstProblem}
+          handleSecondProblem={handleSecondProblem}
+          handleThirdProblem={handleThirdProblem}
+          progressUpdate={progressUpdate}
+        />
+        <Plant />
         <SsafyClassRoom onLoaded={setIsModelLoaded} />
       </BasicScene>
     </>
