@@ -16,6 +16,7 @@ import Lights from "../../elements/ssafy/Basics/Lights"
 import Interactions from "../../elements/ssafy/Basics/Interactions"
 import ProblemModals from "../../elements/common/ProblemModals"
 import Start from "../../elements/common/Start"
+import Subtitle from "../../elements/common/Subtitle"
 
 const SsafyTheme = ({
   isGameStart,
@@ -39,6 +40,7 @@ const SsafyTheme = ({
     result,
     clearTime,
     isGameFinished,
+    subtitle,
     setShowFirstProblem,
     setShowSecondProblem,
     setShowThirdProblem,
@@ -182,6 +184,7 @@ const SsafyTheme = ({
           clearTime={clearTime}
         />
       )}
+      <Subtitle text={subtitle} />
       <BasicScene interactNum={interactNum} mouseSpeed={0.5}>
         <MeshObjects />
         <Lights />

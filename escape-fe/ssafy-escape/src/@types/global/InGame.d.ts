@@ -171,16 +171,16 @@ interface ProblemModalsProps {
   isSolvedFirstProblem?: boolean
   isSolvedSecondProblem?: boolean
   isSolvedThirdProblem?: boolean
+  penalty?: number
+  role: string
   handleFirstProblem: () => void
   handleSecondProblem: () => void
   handleThirdProblem: () => void
-  penalty?: number
   timePenalty: () => void
+  progressUpdate?: (progress: number) => void
   setPenalty?: (penalty: number) => void
   setSubtitle?: (subtitle: string) => void
-  role: string
   setShowSpider?: (show: boolean) => void
-  progressUpdate?: (progress: number) => void
   setIsSolvedProblem?: (solve: boolean) => void
 }
 

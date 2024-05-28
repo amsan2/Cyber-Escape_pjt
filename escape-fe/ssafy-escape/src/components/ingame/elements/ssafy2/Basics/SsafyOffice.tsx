@@ -1,17 +1,17 @@
-import { useGLTF } from "@react-three/drei"
 import { useEffect } from "react"
+import { useGLTF } from "@react-three/drei"
 import { Mesh } from "three"
 
 const SsafyOffice = ({ onLoaded }: RoomProps) => {
-  const { scene } = useGLTF(
+  const { scene: SsafyOffice } = useGLTF(
     process.env.NEXT_PUBLIC_IMAGE_URL + "/glb/ssafy2/office.glb",
     true,
   )
 
   useEffect(() => {
-    if (scene) {
-      scene.renderOrder = 0
-      scene.traverse((child) => {
+    if (SsafyOffice) {
+      SsafyOffice.renderOrder = 0
+      SsafyOffice.traverse((child) => {
         if (child instanceof Mesh) {
           child.castShadow = true
           child.receiveShadow = true
@@ -20,9 +20,9 @@ const SsafyOffice = ({ onLoaded }: RoomProps) => {
 
       onLoaded(true)
     }
-  }, [scene, onLoaded])
+  }, [SsafyOffice, onLoaded])
 
-  return <primitive object={scene} scale={10} />
+  return <primitive object={SsafyOffice} scale={10} />
 }
 
 export default SsafyOffice
