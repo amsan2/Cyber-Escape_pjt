@@ -1,9 +1,9 @@
-import Horror1FirstProblemModal from "../horror1/Basics/FirstProblemModal"
-import Horror1SecondProblemModal from "../horror1/Basics/SecondProblemModal"
-import Horror1ThirdProblemModal from "../horror1/Basics/ThirdProblemModal"
-import Horror2FirstProblemModal from "../horror2/Basics/FirstProblemModal"
-import Horror2SecondProblemModal from "../horror2/Basics/SecondProblemModal"
-import Horror2ThirdProblemModal from "../horror2/Basics/ThirdProblemModal"
+import Horror1FirstProblemModal from "../horror/horror1/Basics/FirstProblemModal"
+import Horror1SecondProblemModal from "../horror/horror1/Basics/SecondProblemModal"
+import Horror1ThirdProblemModal from "../horror/horror1/Basics/ThirdProblemModal"
+import Horror2FirstProblemModal from "../horror/horror2/Basics/FirstProblemModal"
+import Horror2SecondProblemModal from "../horror/horror2/Basics/SecondProblemModal"
+import Horror2ThirdProblemModal from "../horror/horror2/Basics/ThirdProblemModal"
 import Ssafy1FirstProblemModal from "@/components/ingame/elements/ssafy/Basics/FirstProblemModal"
 import Ssafy1SecondProblemModal from "@/components/ingame/elements/ssafy/Basics/FirstProblemModal"
 import Ssafy1ThirdProblemModal from "@/components/ingame/elements/ssafy/Basics/FirstProblemModal"
@@ -43,6 +43,9 @@ const ProblemModals = ({
   handleFirstProblem,
   handleSecondProblem,
   handleThirdProblem,
+  isSolvedFirstProblem,
+  isSolvedSecondProblem,
+  isSolvedThirdProblem,
   penalty,
   timePenalty,
   setPenalty,
@@ -96,7 +99,7 @@ const ProblemModals = ({
         </>
       ) : (
         <>
-          {showFirstProblem && FirstProblemModal && (
+          {showFirstProblem && FirstProblemModal && !isSolvedFirstProblem && (
             <FirstProblemModal
               onClose={handleFirstProblem}
               timePenalty={timePenalty}
@@ -104,15 +107,17 @@ const ProblemModals = ({
               setIsSolvedProblem={setIsSolvedProblem}
             />
           )}
-          {showSecondProblem && SecondProblemModal && (
-            <SecondProblemModal
-              onClose={handleFirstProblem}
-              timePenalty={timePenalty}
-              progressUpdate={progressUpdate}
-              setIsSolvedProblem={setIsSolvedProblem}
-            />
-          )}
-          {showThirdProblem && ThirdProblemModal && (
+          {showSecondProblem &&
+            SecondProblemModal &&
+            !isSolvedSecondProblem && (
+              <SecondProblemModal
+                onClose={handleFirstProblem}
+                timePenalty={timePenalty}
+                progressUpdate={progressUpdate}
+                setIsSolvedProblem={setIsSolvedProblem}
+              />
+            )}
+          {showThirdProblem && ThirdProblemModal && !isSolvedThirdProblem && (
             <ThirdProblemModal
               onClose={handleFirstProblem}
               timePenalty={timePenalty}

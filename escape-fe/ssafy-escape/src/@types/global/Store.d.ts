@@ -3,6 +3,9 @@ interface IngameState {
   showFirstProblem: boolean
   showSecondProblem: boolean
   showThirdProblem: boolean
+  isSolvedFirstProblem: boolean
+  isSolvedSecondProblem: boolean
+  isSolvedThirdProblem: boolean
   subtitle: string
   interactNum: number
   result: string
@@ -17,6 +20,9 @@ interface IngameAction {
   setShowFirstProblem: (show: boolean) => void
   setShowSecondProblem: (show: boolean) => void
   setShowThirdProblem: (show: boolean) => void
+  setIsSolvedFirstProblem: (solved: boolean) => void
+  setIsSolvedSecondProblem: (solved: boolean) => void
+  setIsSolvedThirdProblem: (solved: boolean) => void
   setSubtitle: (subtitle: string) => void
   setInteractNum: (num: number) => void
   setResult: (result: string) => void

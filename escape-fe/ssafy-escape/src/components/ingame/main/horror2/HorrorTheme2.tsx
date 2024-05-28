@@ -25,7 +25,7 @@ import Result from "../../elements/common/Result"
 import Productions from "../../elements/horror/horror2/Basics/Productions"
 import Start from "../../elements/common/Start"
 import Interactions from "../../elements/horror/horror2/Basics/Interactions"
-import ProblemModals from "../../elements/horror/common/ProblemModals"
+import ProblemModals from "../../elements/common/ProblemModals"
 
 const HorrorTheme2 = ({
   isGameStart,

@@ -168,6 +168,9 @@ interface ProblemModalsProps {
   showFirstProblem: boolean
   showSecondProblem: boolean
   showThirdProblem: boolean
+  isSolvedFirstProblem?: boolean
+  isSolvedSecondProblem?: boolean
+  isSolvedThirdProblem?: boolean
   handleFirstProblem: () => void
   handleSecondProblem: () => void
   handleThirdProblem: () => void
@@ -191,9 +194,9 @@ interface LightProps {
   solved: number
 }
 
-interface HorrorInteractionsProps {
-  isTwoMinLater: boolean
-  isFiveMinLater: boolean
+interface InteractionsProps {
+  isTwoMinLater?: boolean
+  isFiveMinLater?: boolean
   isFlowerClicked?: boolean
   setIsFlowerClicked?: (isClicked: boolean) => void
   progressUpdate?: () => void
@@ -201,6 +204,7 @@ interface HorrorInteractionsProps {
   handleSecondProblem: () => void
   handleThirdProblem: () => void
 }
+
 
 interface BloodPoolProps {
   solved: number

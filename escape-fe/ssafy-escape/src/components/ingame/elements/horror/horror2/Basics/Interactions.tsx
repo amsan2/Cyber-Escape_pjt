@@ -14,15 +14,12 @@ const Interactions = ({
   handleSecondProblem,
   handleThirdProblem,
   progressUpdate,
-}: HorrorInteractionsProps) => {
+}: InteractionsProps) => {
   const [isSyringeClicked, setIsSyringeClicked] = useState<boolean>(false)
   const [isHammerClicked, setIsHammerClicked] = useState<boolean>(false)
   const { solved } = useIngameQuizStore()
 
-  const {
-    setSubtitle,
-    setInteractNum,
-  } = useIngameStateStore()
+  const { setSubtitle, setInteractNum } = useIngameStateStore()
 
   // 주사기 클릭 시 이벤트
   const handleSyringeClick = () => {

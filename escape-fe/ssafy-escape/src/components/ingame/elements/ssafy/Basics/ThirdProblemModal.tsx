@@ -5,6 +5,8 @@ import postAnswer from "@/services/ingame/postAnswer"
 import { useQuery } from "@tanstack/react-query"
 import getQuiz from "@/services/ingame/getQuiz"
 
+const problemIndex = 2 // 0: 첫 번째 문제 1: 두 번째 문제 2: 세 번째 문제
+
 // 세 번째 문제 모달
 const ThirdProblemModal = ({
   onClose,
@@ -23,13 +25,12 @@ const ThirdProblemModal = ({
 
   // 선지 클릭 시 정답여부 확인
   const handleAnswerCheck = async (answer: string) => {
-    if ((await postAnswer(quizData[2].quizUuid, answer)).right) {
+    if ((await postAnswer(quizData[problemIndex].quizUuid, answer)).right) {
       setIsSolvedProblem(true)
       if (progressUpdate) {
         progressUpdate()
       }
       onClose()
-      // 문제 맞췄을 때 대사 띄워주는게 좋을 듯 합니다
     } else {
       alert("오답!")
       timePenalty()
@@ -38,42 +39,29 @@ const ThirdProblemModal = ({
 
   return (
     <MainContainer>
-      <div>
-        <img src={quizData[2].url} width={600} height={550} alt="세번째 문제" />
+      <>
+        <img
+          src={quizData[problemIndex].url}
+          width={600}
+          height={550}
+          alt="세번째 문제"
+        />
         <CloseIconBox onClick={onClose}>
           <CloseIcon sx={{ fontSize: 40 }} />
         </CloseIconBox>
         <ChoiceBox>
-          <Button
-            theme="fail"
-            width="350px"
-            height="30px"
-            opacity="0"
-            onClick={() => handleAnswerCheck("1")}
-          />
-          <Button
-            theme="fail"
-            width="350px"
-            height="30px"
-            opacity="0"
-            onClick={() => handleAnswerCheck("2")}
-          />
-          <Button
-            theme="fail"
-            width="350px"
-            height="30px"
-            opacity="0"
-            onClick={() => handleAnswerCheck("3")}
-          />
-          <Button
-            theme="fail"
-            width="350px"
-            height="30px"
-            opacity="0"
-            onClick={() => handleAnswerCheck("4")}
-          />
+          {["1", "2", "3", "4"].map((choiceIndex) => (
+            <Button
+              key={choiceIndex}
+              theme="fail"
+              width="350px"
+              height="30px"
+              opacity="0"
+              onClick={() => handleAnswerCheck(choiceIndex)}
+            />
+          ))}
         </ChoiceBox>
-      </div>
+      </>
     </MainContainer>
   )
 }

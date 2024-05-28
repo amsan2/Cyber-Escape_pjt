@@ -16,7 +16,7 @@ const Interactions = ({
   handleFirstProblem,
   handleSecondProblem,
   handleThirdProblem,
-}: HorrorInteractionsProps) => {
+}: InteractionsProps) => {
   const [isKnobClicked, setIsKnobClicked] = useState<boolean>(false)
   const { userUuid } = useUserStore()
   const { solved } = useIngameQuizStore()
