@@ -1,5 +1,5 @@
-import { useGLTF } from "@react-three/drei"
 import { useEffect } from "react"
+import { useGLTF } from "@react-three/drei"
 import { Mesh } from "three"
 
 // 로딩 오래 걸리는 큰 모델들은 onLoaded 적용해서 나머지 요소들과 함께 출력되도록 처리

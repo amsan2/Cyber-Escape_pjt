@@ -1,10 +1,6 @@
 import { useGLTF } from "@react-three/drei"
 
-interface PortraitProps {
-  isTwoMinLater: boolean
-}
-
-const Art = ({ isTwoMinLater }: PortraitProps) => {
+const Art = ({ isTwoMinLater }: ArtProps) => {
   const art = useGLTF(
     process.env.NEXT_PUBLIC_IMAGE_URL + "/glb/horror/art.glb",
     true,

@@ -28,7 +28,7 @@ const Knob = ({
 
   useEffect(() => {
     if (knob.scene) {
-      if (isFind) {
+      if (isFind) { // 숨겨진 문고리를 찾아서 클릭 시 원위치로 이동
         knob.scene.position.set(0, 0, 0)
       } else {
         knob.scene.position.set(
@@ -40,15 +40,17 @@ const Knob = ({
     }
   }, [knob, isFind, solved])
 
-  return solved === 3 ? (
-    <primitive
-      object={knob.scene}
-      scale={35}
-      onPointerOver={() => setInteractNum(2)}
-      onPointerOut={() => setInteractNum(1)}
-      onClick={onClick}
-    />
-  ) : null
+  return (
+    solved === 3 && (
+      <primitive
+        object={knob.scene}
+        scale={35}
+        onPointerOver={() => setInteractNum(2)}
+        onPointerOut={() => setInteractNum(1)}
+        onClick={onClick}
+      />
+    )
+  )
 }
 
 export default Knob

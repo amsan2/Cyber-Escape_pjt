@@ -2,12 +2,12 @@ import { useState, useEffect } from "react"
 import Image from "next/image"
 import styled from "styled-components"
 
-// 귀신 갑툭튀
-const ShowGhost = ({ penalty, index }: PenaltyProps) => {
+// 귀신 갑툭튀(패널티 4)
+const ShowGhost = ({ penalty, index, isShowGhost }: PenaltyProps) => {
   const [showExtraImage, setShowExtraImage] = useState<boolean>(false)
 
   useEffect(() => {
-    if (penalty === 4) {
+    if (penalty === 4 || isShowGhost) {
       const playAudio = setTimeout(() => {
         const audio = new Audio(
           process.env.NEXT_PUBLIC_IMAGE_URL + "/sound/woman_scream.mp3",

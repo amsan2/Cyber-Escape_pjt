@@ -1,5 +1,6 @@
-import { useGLTF } from "@react-three/drei"
 import { useEffect } from "react"
+import { useGLTF } from "@react-three/drei"
+import handlePointerOver from "@/utils/handlePointerOver"
 
 const Skull = ({ onClick, solved, setInteractNum }: ClickObjectProps) => {
   const skull = useGLTF(
@@ -14,17 +15,18 @@ const Skull = ({ onClick, solved, setInteractNum }: ClickObjectProps) => {
     }
   }, [skull, solved])
 
-  const handlePointerOver = () => {
-    if (solved === 0) {
-      setInteractNum(2)
-    }
-  }
-
   return (
     <primitive
       object={skull.scene}
       scale={40}
-      onPointerOver={handlePointerOver}
+      onPointerOver={() =>
+        handlePointerOver({
+          solved,
+          targetSolved: 0,
+          targetInteractNum: 1,
+          setInteractNum,
+        })
+      }
       onPointerOut={() => setInteractNum(1)}
       onClick={onClick}
     />

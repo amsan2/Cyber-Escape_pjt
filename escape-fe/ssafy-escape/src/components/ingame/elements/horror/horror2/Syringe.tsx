@@ -1,3 +1,4 @@
+import handlePointerOver from "@/utils/handlePointerOver"
 import { useGLTF } from "@react-three/drei"
 import { useEffect, useMemo } from "react"
 
@@ -42,17 +43,18 @@ const Syringe = ({ onClick, solved, setInteractNum }: ClickObjectProps) => {
     }
   }, [syringe, solved])
 
-  const handlePointerOver = () => {
-    if (solved === 3) {
-      setInteractNum(2)
-    }
-  }
-
   return (
     <primitive
       object={syringe.scene}
       scale={40}
-      onPointerOver={handlePointerOver}
+      onPointerOver={() =>
+        handlePointerOver({
+          solved,
+          targetSolved: 3,
+          targetInteractNum: 2,
+          setInteractNum,
+        })
+      }
       onPointerOut={() => setInteractNum(1)}
       onClick={onClick}
     />

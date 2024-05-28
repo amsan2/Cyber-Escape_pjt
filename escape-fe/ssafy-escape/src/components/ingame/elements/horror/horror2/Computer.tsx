@@ -1,20 +1,23 @@
 import { useGLTF } from "@react-three/drei"
+import handlePointerOver from "@/utils/handlePointerOver"
 
 const Computer = ({ onClick, setInteractNum, solved }: ClickObjectProps) => {
   const computer = useGLTF(
     process.env.NEXT_PUBLIC_IMAGE_URL + "/glb/horror2/computer.glb",
     true,
   )
-  const handlePointerOver = () => {
-    if (solved === 0) {
-      setInteractNum(2)
-    }
-  }
   return (
     <primitive
       object={computer.scene}
       scale={35}
-      onPointerOver={handlePointerOver}
+      onPointerOver={() =>
+        handlePointerOver({
+          solved,
+          targetSolved: 0,
+          targetInteractNum: 2,
+          setInteractNum,
+        })
+      }
       onPointerOut={() => setInteractNum(1)}
       onClick={() => onClick()}
     />

@@ -1,3 +1,4 @@
+import handlePointerOver from "@/utils/handlePointerOver"
 import { useGLTF } from "@react-three/drei"
 import { useEffect, useMemo } from "react"
 
@@ -46,17 +47,18 @@ const Hammer = ({ onClick, solved, setInteractNum }: ClickObjectProps) => {
     }
   }, [hammer, solved])
 
-  const handlePointerOver = () => {
-    if (solved === 3) {
-      setInteractNum(2)
-    }
-  }
-
   return (
     <primitive
       object={hammer.scene}
       scale={2}
-      onPointerOver={handlePointerOver}
+      onPointerOver={() =>
+        handlePointerOver({
+          solved,
+          targetSolved: 3,
+          targetInteractNum: 2,
+          setInteractNum,
+        })
+      }
       onPointerOut={() => setInteractNum(1)}
       onClick={onClick}
     />

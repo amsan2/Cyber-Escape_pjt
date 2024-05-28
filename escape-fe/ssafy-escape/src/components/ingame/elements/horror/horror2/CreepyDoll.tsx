@@ -1,7 +1,7 @@
-import { useGLTF } from "@react-three/drei"
 import { useEffect } from "react"
+import { useGLTF } from "@react-three/drei"
 
-const CreepycreepyDoll = ({ solved }: SolvedObjectProps) => {
+const CreepyDoll = ({ solved }: SolvedObjectProps) => {
   const creepyDoll = useGLTF(
     process.env.NEXT_PUBLIC_IMAGE_URL + "/glb/horror2/horror_doll.glb",
     true,
@@ -12,9 +12,7 @@ const CreepycreepyDoll = ({ solved }: SolvedObjectProps) => {
       creepyDoll.scene.rotation.set(0, -1.55, 0)
     }
   }, [creepyDoll, solved])
-  return solved === 2 ? (
-    <primitive object={creepyDoll.scene} scale={10} />
-  ) : null
+  return solved === 2 && <primitive object={creepyDoll.scene} scale={10} />
 }
 
-export default CreepycreepyDoll
+export default CreepyDoll

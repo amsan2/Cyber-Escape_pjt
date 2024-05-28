@@ -58,8 +58,18 @@ interface ClickObjectProps {
   setInteractNum: (interactNum: number) => void
 }
 
+interface SequenceAction {
+  subtitle: string
+  delay?: number
+  action?: () => void
+  endAction?: () => void
+}
+
 interface StartProps {
   setSubtitle: (subtitle: string) => void
+  bgmName: string
+  firstSubtitle: string
+  sequenceActions: SequenceAction[]
 }
 
 interface SolvedObjectProps {
@@ -107,15 +117,28 @@ interface HintIconBoxProps {
   top: string
 }
 
+interface ContainerProps {
+  opacity: number
+}
+
+interface ArtProps {
+  isTwoMinLater: boolean
+}
+
+interface PortraitProps extends ArtProps {
+  isFiveMinLater: boolean
+}
+
 declare module "three/examples/jsm/utils/SkeletonUtils" {
   import { Object3D } from "three"
   export function clone(source: Object3D): Object3D
 }
 
 interface PenaltyProps {
-  penalty: number
+  penalty: number | undefined
   index?: number
   role?: "experiment" | "scientist"
+  isShowGhost?: boolean
 }
 
 interface RenderThemeProps {
@@ -158,4 +181,25 @@ interface ProblemModalsProps {
 interface ProductionsProps {
   isFiveMinLater: boolean
   ghostIndex: number
+}
+
+interface LightProps {
+  penalty: number
+  solved: number
+}
+
+interface Horror1InteractionsProps {
+  isTwoMinLater: boolean
+  isFiveMinLater: boolean
+  isFlowerClicked: boolean
+  setIsFlowerClicked: (isClicked: boolean) => void
+  setIsModelLoaded: (isModelLoaded: boolean) => void
+  handleFirstProblem: () => void
+  handleSecondProblem: () => void
+  handleThirdProblem: () => void
+}
+
+interface BloodPoolProps {
+  solved: number
+  isFlowerClicked: boolean
 }

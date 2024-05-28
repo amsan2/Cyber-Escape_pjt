@@ -42,8 +42,8 @@ const SecondProblemObject = ({
     setIndices({ first: firstRandomIndex, second: secondRandomIndex })
   }, [])
 
-  return solved === 1 ? (
-    <>
+  return (
+    solved === 1 && (
       <Box
         position={objectArr[indices.first][indices.second]}
         rotation={objectArr[indices.first][4]}
@@ -61,8 +61,8 @@ const SecondProblemObject = ({
           opacity={0}
         />
       </Box>
-    </>
-  ) : null
+    )
+  )
 }
 
 export default SecondProblemObject

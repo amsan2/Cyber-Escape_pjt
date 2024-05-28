@@ -11,7 +11,7 @@ import Player from "../../elements/common/Player"
 import MeshObjects from "../../elements/horror/horror1/Basics/MeshObjects"
 import Floor from "../../elements/common/Floor"
 import Wall from "../../elements/horror/horror1/Basics/Wall"
-import Start from "../../elements/horror/horror1/Basics/Start"
+import Start from "../../elements/common/Start"
 import Result from "../../elements/common/Result"
 import ProblemModals from "../../elements/horror/common/ProblemModals"
 import Interactions from "../../elements/horror/horror1/Basics/Interactions"
@@ -39,6 +39,7 @@ const HorrorTheme = ({ isGameStart, setIsModelLoaded }: IngameMainProps) => {
   const [isTwoMinLater, setIsTwoMinLater] = useState<boolean>(false)
   const [isFiveMinLater, setIsFiveMinLater] = useState<boolean>(false)
   const [ghostIndex, setGhostIndex] = useState(0)
+  const [isNull, setIsNull] = useState(false)
   const { solved } = useIngameQuizStore()
 
   const {
@@ -124,6 +125,29 @@ const HorrorTheme = ({ isGameStart, setIsModelLoaded }: IngameMainProps) => {
     }
   }
 
+  // 시작 시 연출
+  const sequenceActions: SequenceAction[] = [
+    { subtitle: "여긴 어디지?" },
+    { subtitle: "납치 당한건가?" },
+    {
+      subtitle: "무슨 소리지?!",
+      delay: 3000,
+      action: () => {
+        const audio = new Audio(
+          `${process.env.NEXT_PUBLIC_IMAGE_URL}/sound/man_scream.mp3`,
+        )
+        audio.play()
+      },
+    },
+    { subtitle: "빨리 여기서 나가야 해." },
+    {
+      subtitle:
+        "...근데 저 침대 밑의 물체는 뭐지? 안에 무언가가 들어있는 것 같아.",
+      delay: 10000,
+      endAction: () => setIsNull(true),
+    },
+  ]
+
   return (
     <>
       {isGameStart && (
@@ -136,7 +160,14 @@ const HorrorTheme = ({ isGameStart, setIsModelLoaded }: IngameMainProps) => {
               minutes={8}
             />
           )}
-          <Start setSubtitle={setSubtitle} />
+          {!isNull && (
+            <Start
+              setSubtitle={setSubtitle}
+              bgmName="HorrorBgm"
+              firstSubtitle="... ... ..."
+              sequenceActions={sequenceActions}
+            />
+          )}
         </>
       )}
       <Productions isFiveMinLater={isFiveMinLater} ghostIndex={ghostIndex} />

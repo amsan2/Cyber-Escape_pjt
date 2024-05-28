@@ -1,6 +1,6 @@
-import FirstProblemModal from "../horror1/FirstProblemModal"
-import SecondProblemModal from "../horror1/SecondProblemModal"
-import ThirdProblemModal from "../horror1/ThirdProblemModal"
+import FirstProblemModal from "../horror1/Basics/FirstProblemModal"
+import SecondProblemModal from "../horror1/Basics/SecondProblemModal"
+import ThirdProblemModal from "../horror1/Basics/ThirdProblemModal"
 
 const ProblemModals = ({
   showFirstProblem,

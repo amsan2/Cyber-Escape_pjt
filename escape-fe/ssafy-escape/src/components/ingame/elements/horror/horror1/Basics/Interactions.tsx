@@ -10,17 +10,6 @@ import Skull from "../Interactions/Skull"
 import ThirdProblemObject from "../Interactions/ThirdProblemObject"
 import SingleVictory from "../../common/SingleVictory"
 
-interface InteractionsProps {
-  isTwoMinLater: boolean
-  isFiveMinLater: boolean
-  isFlowerClicked: boolean
-  setIsFlowerClicked: (isClicked: boolean) => void
-  setIsModelLoaded: (isModelLoaded: boolean) => void
-  handleFirstProblem: () => void
-  handleSecondProblem: () => void
-  handleThirdProblem: () => void
-}
-
 // 상호작용되는 오브젝트들
 const Interactions = ({
   isFlowerClicked,
@@ -29,7 +18,7 @@ const Interactions = ({
   handleFirstProblem,
   handleSecondProblem,
   handleThirdProblem,
-}: InteractionsProps) => {
+}: Horror1InteractionsProps) => {
   const [isKnobClicked, setIsKnobClicked] = useState<boolean>(false)
   const { userUuid } = useUserStore()
   const { solved } = useIngameQuizStore()
