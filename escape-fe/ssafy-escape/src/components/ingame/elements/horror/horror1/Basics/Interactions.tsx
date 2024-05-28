@@ -16,6 +16,7 @@ const Interactions = ({
   handleFirstProblem,
   handleSecondProblem,
   handleThirdProblem,
+  timerRef,
 }: InteractionsProps) => {
   const [isKnobClicked, setIsKnobClicked] = useState<boolean>(false)
   const { userUuid } = useUserStore()
@@ -52,11 +53,13 @@ const Interactions = ({
     } else {
       // 문고리 찾아서 원위치로 돌아간 문고리 클릭 시 점수 갱신하고 게임 종료
       SingleVictory({
+        timerRef,
         userUuid,
         selectedTheme: 1,
         setClearTime,
         setResult,
         setIsGameFinished,
+        minute: 8,
       })
     }
   }

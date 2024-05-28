@@ -26,6 +26,7 @@ const ThirdProblemModal = ({
   progressUpdate,
 }: HorrorProblemProps) => {
   const [optionData, setOptionData] = useState<HorrorOptionData | null>(null)
+  const [isLoading, setIsLoading] = useState(true)
   const { solved, hint, setSolved, setHint } = useIngameQuizStore()
   const { openHint, isHintModalOpen, setOpenHint, setIsHintModalOpen } =
     useIngameStateStore()
@@ -36,11 +37,15 @@ const ThirdProblemModal = ({
   })
 
   useEffect(() => {
-    // 선지 데이터 저장
-    setOptionData(data)
+    const fetchOptionData = async () => {
+      setIsLoading(true)
+      await setOptionData(data)
+      setIsLoading(false)
+    }
+    fetchOptionData()
   }, [])
 
-  if (!quizData || !optionData) {
+  if (isLoading || !quizData || !optionData) {
     return null
   }
 
@@ -67,9 +72,7 @@ const ThirdProblemModal = ({
     } else {
       alert("오답!")
       timePenalty()
-      if (penalty && setPenalty) {
-        setPenalty(penalty + 1)
-      }
+      setPenalty((currentPenalty: number) => currentPenalty + 1)
     }
   }
   return (

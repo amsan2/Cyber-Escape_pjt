@@ -13,6 +13,7 @@ const Interactions = ({
   handleSecondProblem,
   handleThirdProblem,
   progressUpdate,
+  timerRef,
 }: InteractionsProps) => {
   const { selectedThemeType } = useIngameThemeStore()
   const { userUuid } = useUserStore()
@@ -30,11 +31,13 @@ const Interactions = ({
   const handleFinal = async () => {
     if (selectedThemeType === "single") {
       SingleVictory({
+        timerRef,
         userUuid,
         selectedTheme: 4,
         setClearTime,
         setResult,
         setIsGameFinished,
+        minute: 5,
       })
       if (progressUpdate) {
         progressUpdate()

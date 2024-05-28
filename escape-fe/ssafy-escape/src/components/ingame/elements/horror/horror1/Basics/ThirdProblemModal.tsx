@@ -9,7 +9,7 @@ import data from "@/data/ingame/horror/HorrorOption.json"
 import Hint from "../../common/Hint"
 import ChoiceButton from "../../common/ChoiceButton"
 import useIngameStateStore from "@/stores/IngameStateStore"
-import ShowGhost from "../../common/ShowGhost"
+import Image from "next/image"
 
 const themeIndex = 1 // 1: 실험체의 방 2: 과학자의 방
 const problemIndex = 2 // 0: 첫 번째 문제 1: 두 번째 문제 2: 세 번째 문제
@@ -25,31 +25,39 @@ const ThirdProblemModal = ({
 }: HorrorProblemProps) => {
   const [optionData, setOptionData] = useState<HorrorOptionData | null>(null)
   const [index, setIndex] = useState(0)
-  const [isShowGhost, setIsShowGhost] = useState<boolean>(false)
+  const [isLoading, setIsLoading] = useState(true)
+  const [showExtraImage, setShowExtraImage] = useState(false)
   const { solved, hint, setSolved, setHint } = useIngameQuizStore()
   const { openHint, isHintModalOpen, setOpenHint, setIsHintModalOpen } =
     useIngameStateStore()
 
   useEffect(() => {
-    // 선지 데이터 저장
-    setOptionData(data)
+    const fetchOptionData = async () => {
+      setIsLoading(true)
+      await setOptionData(data)
+      setIsLoading(false)
+    }
+    fetchOptionData()
 
     // 귀신 사진 랜덤 인덱스 저장
-    const randomIndex = Math.floor(Math.random() * 10)
+    const randomIndex = Math.floor(Math.random() * 10) + 1
     setIndex(randomIndex)
 
-    // 일정 시간 후 귀신 등장
-    const showGhost = setTimeout(() => {
+    const playAudio = setTimeout(() => {
+      const audio = new Audio(
+        process.env.NEXT_PUBLIC_IMAGE_URL + "/sound/woman_scream.mp3",
+      )
+      audio.play()
       const showImg = setTimeout(() => {
-        setIsShowGhost(true)
+        setShowExtraImage(true)
         const hideImg = setTimeout(() => {
-          setIsShowGhost(false)
+          setShowExtraImage(false)
         }, 1300)
         return () => clearTimeout(hideImg)
       }, 500)
       return () => clearTimeout(showImg)
     }, 5000)
-    return () => clearTimeout(showGhost)
+    return () => clearTimeout(playAudio)
   }, [])
 
   const { data: quizData } = useQuery({
@@ -57,7 +65,7 @@ const ThirdProblemModal = ({
     queryFn: () => getQuiz(2),
   })
 
-  if (!quizData || !optionData) {
+  if (isLoading || !quizData || !optionData) {
     return null
   }
 
@@ -84,9 +92,7 @@ const ThirdProblemModal = ({
     } else {
       alert("오답!")
       timePenalty()
-      if (penalty && setPenalty) {
-        setPenalty(penalty + 1)
-      }
+      setPenalty((currentPenalty: number) => currentPenalty + 1)
     }
   }
 
@@ -94,11 +100,21 @@ const ThirdProblemModal = ({
     <>
       <MainContainer>
         <>
-          <ShowGhost
-            penalty={penalty}
-            isShowGhost={isShowGhost}
-            index={index}
-          />
+          {showExtraImage && (
+            <BlackBackground>
+              <HorrorImageBox>
+                <Image
+                  src={
+                    process.env.NEXT_PUBLIC_IMAGE_URL +
+                    `/image/ghost/ghost${index}.jpg`
+                  }
+                  alt="귀신 이미지"
+                  layout="fill"
+                  objectFit="contain"
+                />
+              </HorrorImageBox>
+            </BlackBackground>
+          )}
           <img
             src={quizData[problemIndex].url}
             width={620}
@@ -146,7 +162,7 @@ const ThirdProblemModal = ({
           quizData={quizData}
           problemIndex={problemIndex}
           left={"165px"}
-          top={"70px"}
+          top={"40px"}
         />
       </MainContainer>
     </>
@@ -186,4 +202,27 @@ const CloseIconBox = styled.div`
   right: 130px;
   top: 40px;
   z-index: 24;
+`
+
+const HorrorImageBox = styled.div`
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 50%;
+  height: 100%;
+  z-index: 2001;
+  overflow: hidden;
+`
+
+const BlackBackground = styled.div`
+  position: fixed;
+  width: 100vw;
+  height: 100vh;
+  background-color: black;
+  z-index: 2000;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  overflow: hidden;
 `

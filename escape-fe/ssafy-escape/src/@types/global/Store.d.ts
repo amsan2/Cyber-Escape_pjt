@@ -30,6 +30,7 @@ interface IngameAction {
   setIsGameFinished: (finished: boolean) => void
   setOpenHint: (open: boolean) => void
   setIsHintModalOpen: (open: boolean) => void
+  resetIngameState: () => void
 }
 
 interface IngameQuizState {

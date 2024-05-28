@@ -24,20 +24,26 @@ const FirstProblemModal = ({
   progressUpdate,
 }: HorrorProblemProps) => {
   const [optionData, setOptionData] = useState<HorrorOptionData | null>(null)
+  const [isLoading, setIsLoading] = useState(true)
   const { solved, hint, setSolved, setHint } = useIngameQuizStore()
   const { openHint, isHintModalOpen, setOpenHint, setIsHintModalOpen } =
     useIngameStateStore()
 
-  useEffect(() => {
-    setOptionData(data)
-  }, [])
+    useEffect(() => {
+      const fetchOptionData = async () => {
+        setIsLoading(true)
+        await setOptionData(data)
+        setIsLoading(false)
+      }
+      fetchOptionData()
+    }, [])
 
   const { data: quizData } = useQuery({
     queryKey: ["quizList", 3],
     queryFn: () => getQuiz(3),
   })
 
-  if (!quizData || !optionData) {
+  if (isLoading || !quizData || !optionData) {
     return null
   }
 
@@ -68,9 +74,7 @@ const FirstProblemModal = ({
     } else {
       alert("오답!")
       timePenalty()
-      if (penalty && setPenalty) {
-        setPenalty(penalty + 1)
-      }
+      setPenalty((currentPenalty: number) => currentPenalty + 1)
     }
   }
 

@@ -1,6 +1,6 @@
 import { create } from "zustand"
 
-const useIngameStateStore = create<IngameState & IngameAction>((set) => ({
+const initialState: IngameState = {
   penalty: 0,
   showFirstProblem: false,
   showSecondProblem: false,
@@ -15,6 +15,9 @@ const useIngameStateStore = create<IngameState & IngameAction>((set) => ({
   isSolvedFirstProblem: false,
   isSolvedSecondProblem: false,
   isSolvedThirdProblem: false,
+}
+const useIngameStateStore = create<IngameState & IngameAction>((set) => ({
+  ...initialState,
   setIsSolvedFirstProblem: (isSolvedFirstProblem) =>
     set({ isSolvedFirstProblem }),
   setIsSolvedSecondProblem: (isSolvedSecondProblem) =>
@@ -32,6 +35,9 @@ const useIngameStateStore = create<IngameState & IngameAction>((set) => ({
   setClearTime: (clearTime) => set({ clearTime }),
   setIsGameFinished: (isGameFinished) => set({ isGameFinished }),
   setIsHintModalOpen: (isHintModalOpen) => set({ isHintModalOpen }),
+  resetIngameState: () => {
+    set(initialState)
+  },
 }))
 
 export default useIngameStateStore

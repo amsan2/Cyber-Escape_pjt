@@ -21,4 +21,5 @@ const Text = styled.div`
   transform: translate(-50%, -50%);
   font-size: 20px;
   font-weight: bold;
+  color: red;
 `

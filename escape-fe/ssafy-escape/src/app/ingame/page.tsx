@@ -45,7 +45,7 @@ const Page = () => {
     return () => {
       document.removeEventListener("click", handleStartClick)
     }
-  }, [handleStartClick])
+  }, [])
 
   return (
     <Container>

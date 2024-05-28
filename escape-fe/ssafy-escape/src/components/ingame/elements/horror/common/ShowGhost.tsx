@@ -8,21 +8,18 @@ const ShowGhost = ({ penalty, index, isShowGhost }: PenaltyProps) => {
 
   useEffect(() => {
     if (penalty === 4 || isShowGhost) {
-      const playAudio = setTimeout(() => {
-        const audio = new Audio(
-          process.env.NEXT_PUBLIC_IMAGE_URL + "/sound/woman_scream.mp3",
-        )
-        audio.play()
-        const showImg = setTimeout(() => {
-          setShowExtraImage(true)
-          const hideImg = setTimeout(() => {
-            setShowExtraImage(false)
-          }, 1300)
-          return () => clearTimeout(hideImg)
-        }, 500)
-        return () => clearTimeout(showImg)
-      }, 5000)
-      return () => clearTimeout(playAudio)
+      const audio = new Audio(
+        process.env.NEXT_PUBLIC_IMAGE_URL + "/sound/woman_scream.mp3",
+      )
+      audio.play()
+      const showImg = setTimeout(() => {
+        setShowExtraImage(true)
+        const hideImg = setTimeout(() => {
+          setShowExtraImage(false)
+        }, 1300)
+        return () => clearTimeout(hideImg)
+      }, 500)
+      return () => clearTimeout(showImg)
     }
   }, [penalty])
 

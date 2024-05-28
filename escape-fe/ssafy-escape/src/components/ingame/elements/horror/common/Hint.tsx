@@ -32,6 +32,7 @@ const Hint = ({
       CustomAlert({ title: ALERT_MESSAGES.ROOM.GUEST_LEFT })
     }
   }
+
   return (
     <>
       <HintIconBox left={left} top={top} bottom={bottom} onClick={handleModal}>

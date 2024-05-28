@@ -16,27 +16,32 @@ const problemIndex = 0 // 0: 첫 번째 문제 1: 두 번째 문제 2: 세 번�
 // 첫 번째 문제 모달
 const FirstProblemModal = ({
   onClose,
-  penalty,
   timePenalty,
   setPenalty,
   setSubtitle,
   progressUpdate,
 }: HorrorProblemProps) => {
   const [optionData, setOptionData] = useState<HorrorOptionData | null>(null)
+  const [isLoading, setIsLoading] = useState(true)
   const { solved, hint, setSolved, setHint } = useIngameQuizStore()
   const { openHint, isHintModalOpen, setOpenHint, setIsHintModalOpen } =
     useIngameStateStore()
-
-  useEffect(() => {
-    setOptionData(data)
-  }, [])
 
   const { data: quizData } = useQuery({
     queryKey: ["quizList", 2],
     queryFn: () => getQuiz(2),
   })
 
-  if (!quizData || !optionData) {
+  useEffect(() => {
+    const fetchOptionData = async () => {
+      setIsLoading(true)
+      await setOptionData(data)
+      setIsLoading(false)
+    }
+    fetchOptionData()
+  }, [])
+
+  if (isLoading || !quizData || !optionData) {
     return null
   }
 
@@ -60,9 +65,7 @@ const FirstProblemModal = ({
     } else {
       alert("오답!")
       timePenalty()
-      if (penalty && setPenalty) {
-        setPenalty(penalty + 1)
-      }
+      setPenalty((currentPenalty: number) => currentPenalty + 1)
     }
   }
 
@@ -79,30 +82,40 @@ const FirstProblemModal = ({
           <CloseIcon sx={{ fontSize: 40 }} />
         </CloseIconBox>
         <ChoiceBox1>
-          {[0, 1].map((choiceIndex) => (
-            <ChoiceButton
-              key={choiceIndex}
-              optionData={optionData}
-              quizData={quizData}
-              handleAnswerCheck={handleAnswerCheck}
-              themeIndex={themeIndex}
-              problemIndex={problemIndex}
-              choiceIndex={choiceIndex}
-            />
-          ))}
+          <ChoiceButton
+            optionData={optionData}
+            quizData={quizData}
+            handleAnswerCheck={handleAnswerCheck}
+            themeIndex={themeIndex}
+            problemIndex={problemIndex}
+            choiceIndex={0}
+          />
+          <ChoiceButton
+            optionData={optionData}
+            quizData={quizData}
+            handleAnswerCheck={handleAnswerCheck}
+            themeIndex={themeIndex}
+            problemIndex={problemIndex}
+            choiceIndex={1}
+          />
         </ChoiceBox1>
         <ChoiceBox2>
-          {[2, 3].map((choiceIndex) => (
-            <ChoiceButton
-              key={choiceIndex}
-              optionData={optionData}
-              quizData={quizData}
-              handleAnswerCheck={handleAnswerCheck}
-              themeIndex={themeIndex}
-              problemIndex={problemIndex}
-              choiceIndex={choiceIndex}
-            />
-          ))}
+          <ChoiceButton
+            optionData={optionData}
+            quizData={quizData}
+            handleAnswerCheck={handleAnswerCheck}
+            themeIndex={themeIndex}
+            problemIndex={problemIndex}
+            choiceIndex={2}
+          />
+          <ChoiceButton
+            optionData={optionData}
+            quizData={quizData}
+            handleAnswerCheck={handleAnswerCheck}
+            themeIndex={themeIndex}
+            problemIndex={problemIndex}
+            choiceIndex={3}
+          />
         </ChoiceBox2>
       </>
       <Hint

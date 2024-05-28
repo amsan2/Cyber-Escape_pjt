@@ -37,7 +37,7 @@ interface HorrorProblemProps {
   onClose: () => void
   penalty: number
   timePenalty: () => void
-  setPenalty: (penalty: number) => void
+  setPenalty: (penalty: number | ((prevPenalty: number) => number)) => void
   setSubtitle: (subtitle: string) => void
   setShowSpider?: (showSpider: boolean) => void
   progressUpdate?: () => void
@@ -67,9 +67,9 @@ interface SequenceAction {
 
 interface StartProps {
   setSubtitle: (subtitle: string) => void
-  bgmName: string
-  firstSubtitle: string
-  sequenceActions: SequenceAction[]
+  bgmName?: string
+  firstSubtitle?: string
+  sequenceActions?: SequenceAction[]
 }
 
 interface SolvedObjectProps {
@@ -162,6 +162,8 @@ interface SingleVictoryProps {
   setClearTime: (clearTime: string) => void
   setResult: (result: string) => void
   setIsGameFinished: (isGameFinished: boolean) => void
+  timerRef?: React.RefObject<CountdownTimerHandle>
+  minute: number
 }
 
 interface ProblemModalsProps {
@@ -178,15 +180,19 @@ interface ProblemModalsProps {
   handleThirdProblem: () => void
   timePenalty: () => void
   progressUpdate?: (progress: number) => void
-  setPenalty?: (penalty: number) => void
+  setPenalty?: (penalty: number | ((prevPenalty: number) => number)) => void
   setSubtitle?: (subtitle: string) => void
   setShowSpider?: (show: boolean) => void
-  setIsSolvedProblem?: (solve: boolean) => void
+  setIsSolvedFirstProblem?: (solve: boolean) => void
+  setIsSolvedSecondProblem?: (solve: boolean) => void
+  setIsSolvedThirdProblem?: (solve: boolean) => void
 }
 
 interface ProductionsProps {
   isFiveMinLater: boolean
   ghostIndex: number
+  penalty: number
+  subtitle: string
 }
 
 interface LightProps {
@@ -203,8 +209,8 @@ interface InteractionsProps {
   handleFirstProblem: () => void
   handleSecondProblem: () => void
   handleThirdProblem: () => void
+  timerRef?: React.RefObject<CountdownTimerHandle>
 }
-
 
 interface BloodPoolProps {
   solved: number

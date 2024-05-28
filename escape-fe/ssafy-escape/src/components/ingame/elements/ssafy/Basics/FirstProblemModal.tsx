@@ -28,10 +28,10 @@ const FirstProblemModal = ({
   const handleAnswerCheck = async (answer: string) => {
     if ((await postAnswer(quizData[problemIndex].quizUuid, answer)).right) {
       setIsSolvedProblem(true)
+      onClose()
       if (progressUpdate) {
         progressUpdate()
       }
-      onClose()
     } else {
       alert("오답!")
       timePenalty()

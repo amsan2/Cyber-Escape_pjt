@@ -37,6 +37,7 @@ const HorrorTheme2 = ({
   const { solved, resetQuizState } = useIngameQuizStore()
   const { selectedThemeType } = useIngameThemeStore()
   const [showSpider, setShowSpider] = useState<boolean>(false)
+  const [penalty, setPenalty] = useState<number>(0)
   const [isTwoMinLater, setIsTwoMinLater] = useState<boolean>(false)
   const [isFiveMinLater, setIsFiveMinLater] = useState<boolean>(false)
   const [ghostIndex, setGhostIndex] = useState(0)
@@ -45,14 +46,13 @@ const HorrorTheme2 = ({
   const { isHost } = useUserStore()
 
   const {
-    penalty,
     showFirstProblem,
     showSecondProblem,
     showThirdProblem,
     interactNum,
     result,
     isGameFinished,
-    setPenalty,
+    subtitle,
     setShowFirstProblem,
     setShowSecondProblem,
     setShowThirdProblem,
@@ -207,7 +207,6 @@ const HorrorTheme2 = ({
         handleSecondProblem={handleSecondProblem}
         handleThirdProblem={handleThirdProblem}
         penalty={penalty}
-        setPenalty={setPenalty}
         timePenalty={timePenalty}
         setSubtitle={setSubtitle}
         setShowSpider={setShowSpider}
@@ -221,7 +220,12 @@ const HorrorTheme2 = ({
           selectedThemeType={selectedThemeType}
         />
       )}
-      <Productions ghostIndex={ghostIndex} isFiveMinLater={isFiveMinLater} />
+      <Productions
+        ghostIndex={ghostIndex}
+        isFiveMinLater={isFiveMinLater}
+        penalty={penalty}
+        subtitle={subtitle}
+      />
       <PlayPenaltySound penalty={penalty} role="scientist" />
       <BasicScene interactNum={interactNum} mouseSpeed={0.5}>
         <Player position={[3, 40, 0]} speed={80} />

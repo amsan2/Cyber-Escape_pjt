@@ -35,7 +35,7 @@ const Start = ({
   }
 
   useEffect(() => {
-    if (sequence >= 2 && sequence <= sequenceActions.length) {
+    if (sequence >= 1 && sequence <= sequenceActions.length) {
       const { subtitle, delay, action, endAction } =
         sequenceActions[sequence - 1]
       action?.()

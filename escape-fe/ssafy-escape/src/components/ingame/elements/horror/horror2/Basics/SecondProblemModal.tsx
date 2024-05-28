@@ -26,13 +26,18 @@ const SecondProblemModal = ({
   const [index, setIndex] = useState(0)
   const [isShowGhost, setIsShowGhost] = useState<boolean>(false)
   const [optionData, setOptionData] = useState<HorrorOptionData | null>(null)
+  const [isLoading, setIsLoading] = useState(true)
   const { solved, hint, setSolved, setHint } = useIngameQuizStore()
   const { openHint, isHintModalOpen, setOpenHint, setIsHintModalOpen } =
     useIngameStateStore()
 
   useEffect(() => {
-    // 선지 데이터 저장
-    setOptionData(data)
+    const fetchOptionData = async () => {
+      setIsLoading(true)
+      await setOptionData(data)
+      setIsLoading(false)
+    }
+    fetchOptionData()
 
     // 귀신 사진 랜덤 인덱스 저장
     const randomIndex = Math.floor(Math.random() * 10)
@@ -57,10 +62,9 @@ const SecondProblemModal = ({
     queryFn: () => getQuiz(3),
   })
 
-  if (!quizData || !optionData) {
+  if (isLoading || !quizData || !optionData) {
     return null
   }
-
   // 선지 클릭 시 정답여부 확인
   const handleAnswerCheck = async (answer: string) => {
     if ((await postAnswer(quizData[problemIndex].quizUuid, answer)).right) {
@@ -81,9 +85,7 @@ const SecondProblemModal = ({
     } else {
       alert("오답!")
       timePenalty()
-      if (penalty && setPenalty) {
-        setPenalty(penalty + 1)
-      }
+      setPenalty((currentPenalty: number) => currentPenalty + 1)
     }
   }
 

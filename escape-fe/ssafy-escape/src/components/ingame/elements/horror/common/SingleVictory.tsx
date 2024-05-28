@@ -1,4 +1,3 @@
-import { useRef } from "react"
 import postUpdateRank from "@/services/main/ranking/postUpdateRank"
 import SecondToTime from "@/utils/SecondToTime"
 
@@ -6,16 +5,18 @@ import SecondToTime from "@/utils/SecondToTime"
 // 싱글 모드에서 탈출에 성공했을 경우 -> 최고기록 갱신 및 상태변경
 
 const SingleVictory = async ({
+  timerRef,
   userUuid,
   selectedTheme,
   setClearTime,
   setResult,
   setIsGameFinished,
+  minute,
 }: SingleVictoryProps) => {
-  const timerRef = useRef<CountdownTimerHandle | null>(null)
-  if (timerRef.current) {
+  if (timerRef && timerRef.current) {
     const currentTime = timerRef.current.getTime()
-    const clearSeconds = 480 - (currentTime.minutes * 60 + currentTime.seconds)
+    const clearSeconds =
+      minute * 60 - (currentTime.minutes * 60 + currentTime.seconds)
     setClearTime(SecondToTime(clearSeconds))
     await postUpdateRank(
       SecondToTime(clearSeconds),

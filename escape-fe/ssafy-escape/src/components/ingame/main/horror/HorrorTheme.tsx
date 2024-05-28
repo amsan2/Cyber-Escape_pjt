@@ -11,7 +11,6 @@ import Player from "../../elements/common/Player"
 import MeshObjects from "../../elements/horror/horror1/Basics/MeshObjects"
 import Floor from "../../elements/common/Floor"
 import Wall from "../../elements/horror/horror1/Basics/Wall"
-import Start from "../../elements/common/Start"
 import Result from "../../elements/common/Result"
 import ProblemModals from "../../elements/common/ProblemModals"
 import Interactions from "../../elements/horror/horror1/Basics/Interactions"
@@ -21,6 +20,7 @@ import Art from "../../elements/horror/horror1/Basics/Art"
 import Portrait from "../../elements/horror/horror1/Basics/Portrait"
 import Blood from "../../elements/horror/common/Blood"
 import HorrorRoom from "../../elements/horror/horror1/Basics/HorrorRoom"
+import Start from "../../elements/horror/horror1/Basics/Start"
 
 /* 
 <공포 연출>
@@ -39,12 +39,11 @@ const HorrorTheme = ({ isGameStart, setIsModelLoaded }: IngameMainProps) => {
   const [isFlowerClicked, setIsFlowerClicked] = useState<boolean>(false)
   const [isTwoMinLater, setIsTwoMinLater] = useState<boolean>(false)
   const [isFiveMinLater, setIsFiveMinLater] = useState<boolean>(false)
+  const [penalty, setPenalty] = useState<number>(0)
   const [ghostIndex, setGhostIndex] = useState(0)
-  const [isNull, setIsNull] = useState(false)
   const { solved } = useIngameQuizStore()
 
   const {
-    penalty,
     showFirstProblem,
     showSecondProblem,
     showThirdProblem,
@@ -52,13 +51,14 @@ const HorrorTheme = ({ isGameStart, setIsModelLoaded }: IngameMainProps) => {
     result,
     clearTime,
     isGameFinished,
-    setPenalty,
+    subtitle,
     setShowFirstProblem,
     setShowSecondProblem,
     setShowThirdProblem,
     setSubtitle,
     setResult,
     setIsGameFinished,
+    resetIngameState,
   } = useIngameStateStore()
 
   const timerRef = useRef<CountdownTimerHandle | null>(null)
@@ -79,6 +79,7 @@ const HorrorTheme = ({ isGameStart, setIsModelLoaded }: IngameMainProps) => {
   const queryClient = new QueryClient()
 
   useEffect(() => {
+    resetIngameState()
     // 퀴즈 데이터 불러오기
     queryClient.prefetchQuery({
       queryKey: ["quizList", 2],
@@ -125,29 +126,31 @@ const HorrorTheme = ({ isGameStart, setIsModelLoaded }: IngameMainProps) => {
       setShowThirdProblem(!showThirdProblem)
     }
   }
+  // useEffect(() => {
+  // }, [penalty])
 
-  // 시작 시 연출
-  const sequenceActions: SequenceAction[] = [
-    { subtitle: "여긴 어디지?" },
-    { subtitle: "납치 당한건가?" },
-    {
-      subtitle: "무슨 소리지?!",
-      delay: 3000,
-      action: () => {
-        const audio = new Audio(
-          `${process.env.NEXT_PUBLIC_IMAGE_URL}/sound/man_scream.mp3`,
-        )
-        audio.play()
-      },
-    },
-    { subtitle: "빨리 여기서 나가야 해." },
-    {
-      subtitle:
-        "...근데 저 침대 밑의 물체는 뭐지? 안에 무언가가 들어있는 것 같아.",
-      delay: 10000,
-      endAction: () => setIsNull(true),
-    },
-  ]
+  // // 시작 시 연출
+  // const sequenceActions: SequenceAction[] = [
+  //   { subtitle: "여긴 어디지?" },
+  //   { subtitle: "납치 당한건가?" },
+  //   {
+  //     subtitle: "무슨 소리지?!",
+  //     delay: 3000,
+  //     action: () => {
+  //       const audio = new Audio(
+  //         `${process.env.NEXT_PUBLIC_IMAGE_URL}/sound/man_scream.mp3`,
+  //       )
+  //       audio.play()
+  //     },
+  //   },
+  //   { subtitle: "빨리 여기서 나가야 해." },
+  //   {
+  //     subtitle:
+  //       "...근데 저 침대 밑의 물체는 뭐지? 안에 무언가가 들어있는 것 같아.",
+  //     delay: 10000,
+  //     endAction: () => setIsNull(true),
+  //   },
+  // ]
 
   return (
     <>
@@ -161,17 +164,15 @@ const HorrorTheme = ({ isGameStart, setIsModelLoaded }: IngameMainProps) => {
               minutes={8}
             />
           )}
-          {!isNull && (
-            <Start
-              setSubtitle={setSubtitle}
-              bgmName="HorrorBgm"
-              firstSubtitle="... ... ..."
-              sequenceActions={sequenceActions}
-            />
-          )}
+          <Start setSubtitle={setSubtitle} />
         </>
       )}
-      <Productions isFiveMinLater={isFiveMinLater} ghostIndex={ghostIndex} />
+      <Productions
+        isFiveMinLater={isFiveMinLater}
+        ghostIndex={ghostIndex}
+        penalty={penalty}
+        subtitle={subtitle}
+      />
       {isGameFinished && (
         <Result
           type={result}
@@ -213,6 +214,7 @@ const HorrorTheme = ({ isGameStart, setIsModelLoaded }: IngameMainProps) => {
         />
         <Blood penalty={penalty} role="experiment" />
         <Interactions
+          timerRef={timerRef}
           isTwoMinLater={isTwoMinLater}
           isFiveMinLater={isFiveMinLater}
           isFlowerClicked={isFlowerClicked}

@@ -24,11 +24,17 @@ const SecondProblemModal = ({
 }: HorrorProblemProps) => {
   const [optionData, setOptionData] = useState<HorrorOptionData | null>(null)
   const { solved, hint, setSolved, setHint } = useIngameQuizStore()
+  const [isLoading, setIsLoading] = useState(true)
   const { openHint, isHintModalOpen, setOpenHint, setIsHintModalOpen } =
     useIngameStateStore()
 
   useEffect(() => {
-    setOptionData(data)
+    const fetchOptionData = async () => {
+      setIsLoading(true)
+      await setOptionData(data)
+      setIsLoading(false)
+    }
+    fetchOptionData()
   }, [])
 
   const { data: quizData } = useQuery({
@@ -36,7 +42,7 @@ const SecondProblemModal = ({
     queryFn: () => getQuiz(2),
   })
 
-  if (!quizData || !optionData) {
+  if (isLoading || !quizData || !optionData) {
     return null
   }
 
@@ -60,9 +66,7 @@ const SecondProblemModal = ({
     } else {
       alert("오답!")
       timePenalty()
-      if (penalty && setPenalty) {
-        setPenalty(penalty + 1)
-      }
+      setPenalty((currentPenalty: number) => currentPenalty + 1)
     }
   }
 
@@ -115,8 +119,8 @@ const SecondProblemModal = ({
         timePenalty={timePenalty}
         quizData={quizData}
         problemIndex={problemIndex}
-        left={"165px"}
-        top={"70px"}
+        left={"60px"}
+        top={"90px"}
       />
     </MainContainer>
   )
@@ -156,15 +160,4 @@ const CloseIconBox = styled.div`
   right: 60px;
   top: 92px;
   z-index: 10;
-`
-
-const HintIconBox = styled.div`
-  position: absolute;
-  display: flex;
-  align-items: center;
-  cursor: pointer;
-  left: 60px;
-  top: 90px;
-  z-index: 10;
-  font-size: 16px;
 `

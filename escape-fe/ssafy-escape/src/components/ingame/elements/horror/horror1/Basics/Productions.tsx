@@ -1,4 +1,3 @@
-import useIngameStateStore from "@/stores/IngameStateStore"
 import Subtitle from "@/components/ingame/elements/common/Subtitle"
 import PlayPenaltySound from "@/components/ingame/elements/horror/common/PlayPenaltySound"
 import BloodText from "@/components/ingame/elements/horror/common/BloodText"
@@ -7,8 +6,7 @@ import PlaySound from "@/components/ingame/elements/horror/common/PlaySound"
 import BlackOut from "@/components/ingame/elements/horror/common/BlackOut"
 
 // 연출
-const Productions = ({ isFiveMinLater, ghostIndex }: ProductionsProps) => {
-  const { penalty, subtitle } = useIngameStateStore()
+const Productions = ({ isFiveMinLater, ghostIndex, penalty, subtitle }: ProductionsProps) => {
   return (
     <>
       <Subtitle text={subtitle} />

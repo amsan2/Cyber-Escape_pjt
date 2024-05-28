@@ -5,11 +5,11 @@ import Horror2FirstProblemModal from "../horror/horror2/Basics/FirstProblemModal
 import Horror2SecondProblemModal from "../horror/horror2/Basics/SecondProblemModal"
 import Horror2ThirdProblemModal from "../horror/horror2/Basics/ThirdProblemModal"
 import Ssafy1FirstProblemModal from "@/components/ingame/elements/ssafy/Basics/FirstProblemModal"
-import Ssafy1SecondProblemModal from "@/components/ingame/elements/ssafy/Basics/FirstProblemModal"
-import Ssafy1ThirdProblemModal from "@/components/ingame/elements/ssafy/Basics/FirstProblemModal"
+import Ssafy1SecondProblemModal from "@/components/ingame/elements/ssafy/Basics/SecondProblemModal"
+import Ssafy1ThirdProblemModal from "@/components/ingame/elements/ssafy/Basics/ThirdProblemModal"
 import Ssafy2FirstProblemModal from "@/components/ingame/elements/ssafy2/Basics/FirstProblemModal"
-import Ssafy2SecondProblemModal from "@/components/ingame/elements/ssafy2/Basics/FirstProblemModal"
-import Ssafy2ThirdProblemModal from "@/components/ingame/elements/ssafy2/Basics/FirstProblemModal"
+import Ssafy2SecondProblemModal from "@/components/ingame/elements/ssafy2/Basics/SecondProblemModal"
+import Ssafy2ThirdProblemModal from "@/components/ingame/elements/ssafy2/Basics/ThirdProblemModal"
 
 const modalComponents: {
   [key: string]: ((props: any) => JSX.Element | null | undefined)[]
@@ -46,11 +46,13 @@ const ProblemModals = ({
   isSolvedFirstProblem,
   isSolvedSecondProblem,
   isSolvedThirdProblem,
+  setIsSolvedFirstProblem,
+  setIsSolvedSecondProblem,
+  setIsSolvedThirdProblem,
   penalty,
   timePenalty,
   setPenalty,
   setSubtitle,
-  setIsSolvedProblem,
   setShowSpider,
   role,
   progressUpdate,
@@ -104,25 +106,25 @@ const ProblemModals = ({
               onClose={handleFirstProblem}
               timePenalty={timePenalty}
               progressUpdate={progressUpdate}
-              setIsSolvedProblem={setIsSolvedProblem}
+              setIsSolvedProblem={setIsSolvedFirstProblem}
             />
           )}
           {showSecondProblem &&
             SecondProblemModal &&
             !isSolvedSecondProblem && (
               <SecondProblemModal
-                onClose={handleFirstProblem}
+                onClose={handleSecondProblem}
                 timePenalty={timePenalty}
                 progressUpdate={progressUpdate}
-                setIsSolvedProblem={setIsSolvedProblem}
+                setIsSolvedProblem={setIsSolvedSecondProblem}
               />
             )}
           {showThirdProblem && ThirdProblemModal && !isSolvedThirdProblem && (
             <ThirdProblemModal
-              onClose={handleFirstProblem}
+              onClose={handleThirdProblem}
               timePenalty={timePenalty}
               progressUpdate={progressUpdate}
-              setIsSolvedProblem={setIsSolvedProblem}
+              setIsSolvedProblem={setIsSolvedThirdProblem}
             />
           )}
         </>
