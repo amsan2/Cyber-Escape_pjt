@@ -16,6 +16,7 @@ const Hint = ({
   problemIndex,
   left,
   top,
+  bottom,
 }: HintProps) => {
   const handleModal = () => {
     if (isHintModalOpen === true) {
@@ -33,7 +34,7 @@ const Hint = ({
   }
   return (
     <>
-      <HintIconBox left={left} top={top} onClick={handleModal}>
+      <HintIconBox left={left} top={top} bottom={bottom} onClick={handleModal}>
         <Image
           src={process.env.NEXT_PUBLIC_IMAGE_URL + "/image/hint.png"}
           alt="힌트 아이콘"
@@ -60,6 +61,7 @@ const HintIconBox = styled.div<HintIconBoxProps>`
   cursor: pointer;
   left: ${(props) => props.left};
   top: ${(props) => props.top};
+  bottom: ${(props) => props.bottom};
   z-index: 10;
   font-size: 16px;
 `

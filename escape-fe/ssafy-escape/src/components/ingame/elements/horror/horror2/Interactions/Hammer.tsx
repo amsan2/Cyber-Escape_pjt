@@ -1,10 +1,10 @@
-import handlePointerOver from "@/utils/handlePointerOver"
-import { useGLTF } from "@react-three/drei"
 import { useEffect, useMemo } from "react"
+import { useGLTF } from "@react-three/drei"
+import handlePointerOver from "@/utils/handlePointerOver"
 
 // 마지막 탈출하기 전 찾을 망치 랜덤 4곳 (시간 남으면 더 추가할 예정)
 const Hammer = ({ onClick, solved, setInteractNum }: ClickObjectProps) => {
-  const hammer = useGLTF(
+  const { scene: hammer } = useGLTF(
     process.env.NEXT_PUBLIC_IMAGE_URL + "/glb/horror2/hammer.glb",
     true,
   )
@@ -33,13 +33,13 @@ const Hammer = ({ onClick, solved, setInteractNum }: ClickObjectProps) => {
   }, [])
 
   useEffect(() => {
-    if (hammer.scene) {
-      hammer.scene.position.set(
+    if (hammer) {
+      hammer.position.set(
         objectArr[randomIndex][0][0],
         objectArr[randomIndex][0][1],
         objectArr[randomIndex][0][2],
       )
-      hammer.scene.rotation.set(
+      hammer.rotation.set(
         objectArr[randomIndex][1][0],
         objectArr[randomIndex][1][1],
         objectArr[randomIndex][1][2],
@@ -49,7 +49,7 @@ const Hammer = ({ onClick, solved, setInteractNum }: ClickObjectProps) => {
 
   return (
     <primitive
-      object={hammer.scene}
+      object={hammer}
       scale={2}
       onPointerOver={() =>
         handlePointerOver({

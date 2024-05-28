@@ -1,5 +1,5 @@
-import { useGLTF } from "@react-three/drei"
 import { useEffect, useMemo } from "react"
+import { useGLTF } from "@react-three/drei"
 
 // 두 번째 문제 오브젝트
 // 구겨서 뭉친 종이(랜덤 6곳, 시간 남으면 추가 예정)
@@ -8,7 +8,7 @@ const ScrunchedPaper = ({
   setInteractNum,
   solved,
 }: ClickObjectProps) => {
-  const scrunchedPaper = useGLTF(
+  const { scene: scrunchedPaper } = useGLTF(
     process.env.NEXT_PUBLIC_IMAGE_URL + "/glb/horror2/scrunched_paper.glb",
     true,
   )
@@ -29,8 +29,8 @@ const ScrunchedPaper = ({
   }, [])
 
   useEffect(() => {
-    if (scrunchedPaper.scene) {
-      scrunchedPaper.scene.position.set(
+    if (scrunchedPaper) {
+      scrunchedPaper.position.set(
         scrunchedPaperPosition[randomIndex][0],
         scrunchedPaperPosition[randomIndex][1],
         scrunchedPaperPosition[randomIndex][2],
@@ -38,15 +38,17 @@ const ScrunchedPaper = ({
     }
   }, [scrunchedPaper])
 
-  return solved == 1 ? (
-    <primitive
-      object={scrunchedPaper.scene}
-      scale={0.3}
-      onPointerOver={() => setInteractNum(2)}
-      onPointerOut={() => setInteractNum(1)}
-      onClick={() => onClick()}
-    />
-  ) : null
+  return (
+    solved == 1 && (
+      <primitive
+        object={scrunchedPaper}
+        scale={0.3}
+        onPointerOver={() => setInteractNum(2)}
+        onPointerOut={() => setInteractNum(1)}
+        onClick={() => onClick()}
+      />
+    )
+  )
 }
 
 export default ScrunchedPaper

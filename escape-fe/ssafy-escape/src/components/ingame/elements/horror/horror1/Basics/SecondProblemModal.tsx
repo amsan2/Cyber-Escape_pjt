@@ -21,7 +21,7 @@ const SecondProblemModal = ({
   setSubtitle,
   timePenalty,
   progressUpdate,
-}: ProblemProps) => {
+}: HorrorProblemProps) => {
   const [optionData, setOptionData] = useState<HorrorOptionData | null>(null)
   const { solved, hint, setSolved, setHint } = useIngameQuizStore()
   const { openHint, isHintModalOpen, setOpenHint, setIsHintModalOpen } =
@@ -42,7 +42,7 @@ const SecondProblemModal = ({
 
   // 선지 클릭 시 정답여부 확인
   const handleAnswerCheck = async (answer: string) => {
-    if ((await postAnswer(quizData[1].quizUuid, answer)).right) {
+    if ((await postAnswer(quizData[problemIndex].quizUuid, answer)).right) {
       setSolved(solved + 1)
       if (progressUpdate) {
         progressUpdate()

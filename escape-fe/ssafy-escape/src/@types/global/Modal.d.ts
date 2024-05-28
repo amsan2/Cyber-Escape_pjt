@@ -4,3 +4,7 @@ interface ModalProps {
   isOpen: boolean
   onClose: () => void
 }
+
+interface HintModalProps extends ModalProps {
+  quizUuid: string
+}

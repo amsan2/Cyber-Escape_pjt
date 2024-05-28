@@ -33,17 +33,17 @@ interface RoomProps {
   onLoaded: (isLoaded: boolean) => void
 }
 
-interface ProblemProps {
+interface HorrorProblemProps {
   onClose: () => void
-  penalty?: number
+  penalty: number
   timePenalty: () => void
-  setPenalty?: (penalty: number) => void
-  setSubtitle?: (subtitle: string) => void
+  setPenalty: (penalty: number) => void
+  setSubtitle: (subtitle: string) => void
   setShowSpider?: (showSpider: boolean) => void
   progressUpdate?: () => void
 }
 
-interface SSAFTYProblemProps {
+interface SSAFYProblemProps {
   onClose: () => void
   timePenalty: () => void
   progressUpdate?: () => void
@@ -108,25 +108,24 @@ interface HintProps {
   isHintModalOpen: boolean
   quizData: QuizDataProps[]
   problemIndex: number
-  left: string
-  top: string
+  left?: string
+  top?: string
+  bottom?: string
 }
 
 interface HintIconBoxProps {
-  left: string
-  top: string
+  left?: string
+  top?: string
+  bottom?: string
 }
 
 interface ContainerProps {
   opacity: number
 }
 
-interface ArtProps {
-  isTwoMinLater: boolean
-}
-
-interface PortraitProps extends ArtProps {
-  isFiveMinLater: boolean
+interface TimeProps {
+  isTwoMinLater?: boolean
+  isFiveMinLater?: boolean
 }
 
 declare module "three/examples/jsm/utils/SkeletonUtils" {
@@ -176,6 +175,10 @@ interface ProblemModalsProps {
   timePenalty: () => void
   setPenalty?: (penalty: number) => void
   setSubtitle?: (subtitle: string) => void
+  role: string
+  setShowSpider?: (show: boolean) => void
+  progressUpdate?: (progress: number) => void
+  setIsSolvedProblem?: (solve: boolean) => void
 }
 
 interface ProductionsProps {
@@ -188,12 +191,12 @@ interface LightProps {
   solved: number
 }
 
-interface Horror1InteractionsProps {
+interface HorrorInteractionsProps {
   isTwoMinLater: boolean
   isFiveMinLater: boolean
-  isFlowerClicked: boolean
-  setIsFlowerClicked: (isClicked: boolean) => void
-  setIsModelLoaded: (isModelLoaded: boolean) => void
+  isFlowerClicked?: boolean
+  setIsFlowerClicked?: (isClicked: boolean) => void
+  progressUpdate?: () => void
   handleFirstProblem: () => void
   handleSecondProblem: () => void
   handleThirdProblem: () => void
@@ -202,4 +205,8 @@ interface Horror1InteractionsProps {
 interface BloodPoolProps {
   solved: number
   isFlowerClicked: boolean
+}
+
+interface SpiderProps {
+  showSpider: boolean
 }

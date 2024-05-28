@@ -1,24 +1,21 @@
 import { useEffect } from "react"
 import { useGLTF } from "@react-three/drei"
 
-const Portrait = ({ isTwoMinLater, isFiveMinLater }: PortraitProps) => {
-  // 일반 초상화
-  const portrait = useGLTF(
-    process.env.NEXT_PUBLIC_IMAGE_URL + "/glb/horror/before_portrait.glb",
-    true,
-  )
+const Portrait = ({ isTwoMinLater, isFiveMinLater }: TimeProps) => {
+  const portraitPaths = [
+    "/glb/horror/before_portrait.glb",
+    "/glb/horror/after_portrait.glb",
+  ]
 
-  // 무서운 버전 초상화
-  const horrorPortrait = useGLTF(
-    process.env.NEXT_PUBLIC_IMAGE_URL + "/glb/horror/after_portrait.glb",
-    true,
-  )
+  const [portrait, horrorPortrait] = portraitPaths
+    .map((path) => useGLTF(process.env.NEXT_PUBLIC_IMAGE_URL + path, true))
+    .map((gltf) => gltf.scene)
 
   // 초기 위치 설정
   useEffect(() => {
-    if (portrait.scene && horrorPortrait.scene) {
-      portrait.scene.position.set(-8, 0, 0)
-      horrorPortrait.scene.position.set(-8, 0, 0)
+    if (portrait && horrorPortrait) {
+      portrait.position.set(-8, 0, 0)
+      horrorPortrait.position.set(-8, 0, 0)
     }
   }, [portrait, horrorPortrait])
 
@@ -28,8 +25,8 @@ const Portrait = ({ isTwoMinLater, isFiveMinLater }: PortraitProps) => {
 
   useEffect(() => {
     if (isFiveMinLater) {
-      horrorPortrait.scene.position.set(15, 105, -132)
-      horrorPortrait.scene.rotation.set(3, 0, 0)
+      horrorPortrait.position.set(15, 105, -132)
+      horrorPortrait.rotation.set(3, 0, 0)
       horrorPortraitScale = 45
     }
   }, [isFiveMinLater])
@@ -37,9 +34,9 @@ const Portrait = ({ isTwoMinLater, isFiveMinLater }: PortraitProps) => {
   return (
     <>
       {isTwoMinLater ? (
-        <primitive object={horrorPortrait.scene} scale={horrorPortraitScale} />
+        <primitive object={horrorPortrait} scale={horrorPortraitScale} />
       ) : (
-        <primitive object={portrait.scene} scale={35} />
+        <primitive object={portrait} scale={35} />
       )}
     </>
   )

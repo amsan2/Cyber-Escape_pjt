@@ -72,22 +72,24 @@ const ThirdProblemObject = ({
     return { randomIndex }
   }, [])
 
-  return solved === 2 ? (
-    <Box
-      position={objectArr[randomIndex][0]}
-      args={objectArr[randomIndex][1]}
-      onClick={() => onClick()}
-      onPointerOver={() => setInteractNum(2)}
-      onPointerOut={() => setInteractNum(1)}
-    >
-      <meshStandardMaterial
-        attach="material"
-        color="orange"
-        transparent={true}
-        opacity={0}
-      />
-    </Box>
-  ) : null
+  return (
+    solved === 2 && (
+      <Box
+        position={objectArr[randomIndex][0]}
+        args={objectArr[randomIndex][1]}
+        onClick={() => onClick()}
+        onPointerOver={() => setInteractNum(2)}
+        onPointerOut={() => setInteractNum(1)}
+      >
+        <meshStandardMaterial
+          attach="material"
+          color="orange"
+          transparent={true}
+          opacity={0}
+        />
+      </Box>
+    )
+  )
 }
 
 export default ThirdProblemObject

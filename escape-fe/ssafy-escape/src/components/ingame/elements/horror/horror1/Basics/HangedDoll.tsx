@@ -4,15 +4,15 @@ import { useThree } from "@react-three/fiber"
 import * as THREE from "three"
 
 const HangedDoll = () => {
-  const doll = useGLTF(
+  const { scene: doll } = useGLTF(
     process.env.NEXT_PUBLIC_IMAGE_URL + "/glb/horror/hanged_doll.glb",
     true,
   )
   const { scene } = useThree()
 
   useEffect(() => {
-    if (doll.scene) {
-      doll.scene.position.set(55, 65, -65)
+    if (doll) {
+      doll.position.set(55, 65, -65)
     }
   }, [doll])
 
@@ -26,7 +26,7 @@ const HangedDoll = () => {
     }
   }, [scene])
 
-  return <primitive object={doll.scene} scale={1} />
+  return <primitive object={doll} scale={1} />
 }
 
 export default HangedDoll

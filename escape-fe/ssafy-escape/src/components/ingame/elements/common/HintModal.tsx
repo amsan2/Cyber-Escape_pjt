@@ -2,10 +2,7 @@ import MainModal from "@/components/common/MainModal"
 import postHint from "@/services/ingame/postHint"
 import { useQuery } from "@tanstack/react-query"
 
-interface HintModalProps extends ModalProps {
-  quizUuid: string
-}
-const HintModal = ({ open, onClose, quizUuid }: HintModalProps) => {
+const HintModal = ({ isOpen, onClose, quizUuid }: HintModalProps) => {
   const { data: hintData } = useQuery({
     queryKey: ["quizHint", quizUuid],
     queryFn: () =>
@@ -21,7 +18,7 @@ const HintModal = ({ open, onClose, quizUuid }: HintModalProps) => {
     <>
       <MainModal
         text="힌트"
-        isOpen={open}
+        isOpen={isOpen}
         onClose={onClose}
         width="200px"
         height="200px"

@@ -3,7 +3,6 @@ import useIngameStateStore from "@/stores/IngameStateStore"
 import useUserStore from "@/stores/UserStore"
 import useIngameQuizStore from "@/stores/IngameQuizStore"
 import Flower from "../Interactions/Flower"
-import HorrorRoom from "./HorrorRoom"
 import Knob from "../Interactions/Knob"
 import SecondProblemObject from "../Interactions/SecondProblemObject"
 import Skull from "../Interactions/Skull"
@@ -14,11 +13,10 @@ import SingleVictory from "../../common/SingleVictory"
 const Interactions = ({
   isFlowerClicked,
   setIsFlowerClicked,
-  setIsModelLoaded,
   handleFirstProblem,
   handleSecondProblem,
   handleThirdProblem,
-}: Horror1InteractionsProps) => {
+}: HorrorInteractionsProps) => {
   const [isKnobClicked, setIsKnobClicked] = useState<boolean>(false)
   const { userUuid } = useUserStore()
   const { solved } = useIngameQuizStore()
@@ -33,7 +31,9 @@ const Interactions = ({
 
   // 침대 위 꽃 클릭 시 이벤트
   const handleFlowerClick = () => {
-    setIsFlowerClicked(true)
+    if (setIsFlowerClicked) {
+      setIsFlowerClicked(true)
+    }
     setInteractNum(1)
   }
 
@@ -72,7 +72,6 @@ const Interactions = ({
         solved={solved}
         setInteractNum={setInteractNum}
       />
-      <HorrorRoom onLoaded={setIsModelLoaded} />
       <Skull
         onClick={handleFirstProblem}
         solved={solved}

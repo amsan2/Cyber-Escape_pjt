@@ -1,10 +1,10 @@
-import handlePointerOver from "@/utils/handlePointerOver"
-import { useGLTF } from "@react-three/drei"
 import { useEffect, useMemo } from "react"
+import { useGLTF } from "@react-three/drei"
+import handlePointerOver from "@/utils/handlePointerOver"
 
 // 마지막 탈출하기 전 찾을 주사기 랜덤 3곳 (시간 남으면 더 추가할 예정)
 const Syringe = ({ onClick, solved, setInteractNum }: ClickObjectProps) => {
-  const syringe = useGLTF(
+  const { scene: syringe } = useGLTF(
     process.env.NEXT_PUBLIC_IMAGE_URL + "/glb/horror2/syringe.glb",
     true,
   )
@@ -29,13 +29,13 @@ const Syringe = ({ onClick, solved, setInteractNum }: ClickObjectProps) => {
   }, [])
 
   useEffect(() => {
-    if (syringe.scene) {
-      syringe.scene.position.set(
+    if (syringe) {
+      syringe.position.set(
         objectArr[randomIndex][0][0],
         objectArr[randomIndex][0][1],
         objectArr[randomIndex][0][2],
       )
-      syringe.scene.rotation.set(
+      syringe.rotation.set(
         objectArr[randomIndex][1][0],
         objectArr[randomIndex][1][1],
         objectArr[randomIndex][1][2],
@@ -45,7 +45,7 @@ const Syringe = ({ onClick, solved, setInteractNum }: ClickObjectProps) => {
 
   return (
     <primitive
-      object={syringe.scene}
+      object={syringe}
       scale={40}
       onPointerOver={() =>
         handlePointerOver({

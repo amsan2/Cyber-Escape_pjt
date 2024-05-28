@@ -2,13 +2,13 @@ import { useGLTF } from "@react-three/drei"
 import handlePointerOver from "@/utils/handlePointerOver"
 
 const FinalDoor = ({ onClick, setInteractNum, solved }: ClickObjectProps) => {
-  const finalDoor = useGLTF(
+  const { scene: finalDoor } = useGLTF(
     process.env.NEXT_PUBLIC_IMAGE_URL + "/glb/horror2/final_door.glb",
     true,
   )
   return (
     <primitive
-      object={finalDoor.scene}
+      object={finalDoor}
       scale={35}
       onPointerOver={() =>
         handlePointerOver({

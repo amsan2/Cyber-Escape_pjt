@@ -2,24 +2,25 @@ import { useEffect, useState } from "react"
 import { useQuery } from "@tanstack/react-query"
 import { styled } from "styled-components"
 import CloseIcon from "@mui/icons-material/Close"
-import postAnswer from "@/services/ingame/postAnswer"
-import getQuiz from "@/services/ingame/getQuiz"
 import useIngameQuizStore from "@/stores/IngameQuizStore"
 import useIngameStateStore from "@/stores/IngameStateStore"
+import postAnswer from "@/services/ingame/postAnswer"
+import getQuiz from "@/services/ingame/getQuiz"
 import ChoiceButton from "../../common/ChoiceButton"
 import Hint from "../../common/Hint"
 import data from "@/data/ingame/horror/HorrorOption.json"
 
-const themeIndex = 1 // 1: 실험체의 방 2: 과학자의 방
+const themeIndex = 2 // 1: 실험체의 방 2: 과학자의 방
 const problemIndex = 0 // 0: 첫 번째 문제 1: 두 번째 문제 2: 세 번째 문제
 
 // 첫 번째 문제 모달
 const FirstProblemModal = ({
   onClose,
   penalty,
-  timePenalty,
   setPenalty,
   setSubtitle,
+  timePenalty,
+  setShowSpider,
   progressUpdate,
 }: HorrorProblemProps) => {
   const [optionData, setOptionData] = useState<HorrorOptionData | null>(null)
@@ -32,8 +33,8 @@ const FirstProblemModal = ({
   }, [])
 
   const { data: quizData } = useQuery({
-    queryKey: ["quizList", 2],
-    queryFn: () => getQuiz(2),
+    queryKey: ["quizList", 3],
+    queryFn: () => getQuiz(3),
   })
 
   if (!quizData || !optionData) {
@@ -48,10 +49,17 @@ const FirstProblemModal = ({
         progressUpdate()
       }
       onClose()
+      setTimeout(() => {
+        if (setShowSpider) {
+          setShowSpider(true)
+        }
+      }, 500)
       if (setSubtitle) {
-        setSubtitle("뭔가 단서가 될 만한 것을 찾아봐야겠어.")
+        setSubtitle("이제 백업은 됐고...")
         setTimeout(() => {
-          setSubtitle("서랍장을 한번 뒤져볼까?")
+          setSubtitle(
+            "이 근처에 실험에 쓸 약물에 대해 적어놓은 메모가 있었던 것 같은데...버렸나?",
+          )
           setTimeout(() => {
             setSubtitle("")
           }, 10000)
@@ -115,8 +123,8 @@ const FirstProblemModal = ({
         timePenalty={timePenalty}
         quizData={quizData}
         problemIndex={problemIndex}
-        left={"165px"}
-        top={"70px"}
+        left={"70px"}
+        top={"63px"}
       />
     </MainContainer>
   )
@@ -128,7 +136,7 @@ const MainContainer = styled.div`
   display: flex;
   flex-direction: column;
   position: absolute;
-  top: 50%;
+  top: 52%;
   left: 50%;
   transform: translate(-50%, -50%);
   padding: 20px;
@@ -153,7 +161,7 @@ const ChoiceBox2 = styled(ChoiceBox1)`
 const CloseIconBox = styled.div`
   position: absolute;
   cursor: pointer;
-  right: 110px;
-  top: 75px;
+  right: 65px;
+  top: 60px;
   z-index: 10;
 `

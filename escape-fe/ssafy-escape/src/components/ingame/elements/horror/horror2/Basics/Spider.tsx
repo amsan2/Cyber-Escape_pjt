@@ -1,13 +1,9 @@
+import { useEffect, useState } from "react"
 import { useGLTF } from "@react-three/drei"
 import { motion } from "framer-motion-3d"
-import { useEffect, useState } from "react"
 
-interface Props {
-  showSpider: boolean
-}
-
-const Spider = ({ showSpider }: Props) => {
-  const spider = useGLTF(
+const Spider = ({ showSpider }: SpiderProps) => {
+  const { scene: spider } = useGLTF(
     process.env.NEXT_PUBLIC_IMAGE_URL + "/glb/horror2/spider.glb",
     true,
   )
@@ -34,7 +30,7 @@ const Spider = ({ showSpider }: Props) => {
         ease: "easeIn",
       }}
     >
-      <primitive object={spider.scene} scale={0.4} />
+      <primitive object={spider} scale={0.4} />
     </motion.group>
   )
 }

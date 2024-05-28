@@ -3,21 +3,21 @@ import { useGLTF } from "@react-three/drei"
 import handlePointerOver from "@/utils/handlePointerOver"
 
 const Skull = ({ onClick, solved, setInteractNum }: ClickObjectProps) => {
-  const skull = useGLTF(
+  const {scene: skull} = useGLTF(
     process.env.NEXT_PUBLIC_IMAGE_URL + "/glb/horror/skull.glb",
     true,
   )
 
   useEffect(() => {
-    if (skull.scene) {
-      skull.scene.position.set(-20, 6, -3)
-      skull.scene.rotation.set(0, 0, 80)
+    if (skull) {
+      skull.position.set(-20, 6, -3)
+      skull.rotation.set(0, 0, 80)
     }
   }, [skull, solved])
 
   return (
     <primitive
-      object={skull.scene}
+      object={skull}
       scale={40}
       onPointerOver={() =>
         handlePointerOver({

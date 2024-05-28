@@ -20,6 +20,7 @@ import BloodPool from "../../elements/horror/horror1/Basics/BloodPool"
 import Art from "../../elements/horror/horror1/Basics/Art"
 import Portrait from "../../elements/horror/horror1/Basics/Portrait"
 import Blood from "../../elements/horror/common/Blood"
+import HorrorRoom from "../../elements/horror/horror1/Basics/HorrorRoom"
 
 /* 
 <공포 연출>
@@ -190,6 +191,7 @@ const HorrorTheme = ({ isGameStart, setIsModelLoaded }: IngameMainProps) => {
         setPenalty={setPenalty}
         timePenalty={timePenalty}
         setSubtitle={setSubtitle}
+        role="experiment"
       />
       <BasicScene interactNum={interactNum} mouseSpeed={0.5}>
         <Lights penalty={penalty} solved={solved} />
@@ -199,6 +201,7 @@ const HorrorTheme = ({ isGameStart, setIsModelLoaded }: IngameMainProps) => {
           color="white"
           position={[0, -0.5, 0]}
         />
+        <HorrorRoom onLoaded={setIsModelLoaded} />
         <MeshObjects />
         <Wall />
         <HangedDoll />
@@ -214,7 +217,6 @@ const HorrorTheme = ({ isGameStart, setIsModelLoaded }: IngameMainProps) => {
           isFiveMinLater={isFiveMinLater}
           isFlowerClicked={isFlowerClicked}
           setIsFlowerClicked={setIsFlowerClicked}
-          setIsModelLoaded={setIsModelLoaded}
           handleFirstProblem={handleFirstProblem}
           handleSecondProblem={handleSecondProblem}
           handleThirdProblem={handleThirdProblem}

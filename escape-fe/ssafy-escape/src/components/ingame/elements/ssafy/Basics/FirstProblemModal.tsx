@@ -5,13 +5,13 @@ import postAnswer from "@/services/ingame/postAnswer"
 import { useQuery } from "@tanstack/react-query"
 import getQuiz from "@/services/ingame/getQuiz"
 
-// 세 번째 문제 모달
-const ThirdProblemModal = ({
+// 첫 번째 문제 모달
+const FirstProblemModal = ({
   onClose,
   timePenalty,
   setIsSolvedProblem,
   progressUpdate,
-}: SSAFTYProblemProps) => {
+}: SSAFYProblemProps) => {
   const { data: quizData } = useQuery({
     queryKey: ["quizList", 5],
     queryFn: () => getQuiz(5),
@@ -23,7 +23,7 @@ const ThirdProblemModal = ({
 
   // 선지 클릭 시 정답여부 확인
   const handleAnswerCheck = async (answer: string) => {
-    if ((await postAnswer(quizData[2].quizUuid, answer)).right) {
+    if ((await postAnswer(quizData[0].quizUuid, answer)).right) {
       setIsSolvedProblem(true)
       if (progressUpdate) {
         progressUpdate()
@@ -39,10 +39,11 @@ const ThirdProblemModal = ({
   return (
     <MainContainer>
       <div>
-        <img src={quizData[2].url} width={600} height={550} alt="세번째 문제" />
+        <img src={quizData[0].url} width={600} height={550} alt="첫번째 문제" />
         <CloseIconBox onClick={onClose}>
           <CloseIcon sx={{ fontSize: 40 }} />
         </CloseIconBox>
+
         <ChoiceBox>
           <Button
             theme="fail"
@@ -78,7 +79,7 @@ const ThirdProblemModal = ({
   )
 }
 
-export default ThirdProblemModal
+export default FirstProblemModal
 
 const MainContainer = styled.div`
   display: flex;
@@ -106,6 +107,6 @@ const CloseIconBox = styled.div`
   position: absolute;
   cursor: pointer;
   right: 30px;
-  top: 30px;
+  top: 25px;
   z-index: 10;
 `
